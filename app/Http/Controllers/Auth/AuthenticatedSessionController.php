@@ -25,9 +25,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+       
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        // $ip_do_usuario = $_SERVER['REMOTE_ADDR'];
+        // print_r($ip_do_usuario); exit;
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }
@@ -40,9 +44,9 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
+        
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }
