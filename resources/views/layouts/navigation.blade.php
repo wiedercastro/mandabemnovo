@@ -1,21 +1,226 @@
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+    <div class="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-20">
             <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
-                </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
+                <!-- <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                    <span class="sr-only">Open sidebar</span>
+                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                    </svg>
+                </button> -->
+
+
+                <!-- Logo -->
+                
+                <aside class="bg-current text-black w-64 min-h-screen p-4" style="margin-left: -32px; border:1px radius rgb(226 232 240); background-color: rgb(226 232 240);">
+                    <div class="shrink-10 flex items-center">
+                        <a href="{{ route('dashboard') }}">
+                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        </a>
+                    </div>
+                    
+                    <nav style="margin-top: 30px;">
+                        <ul class="space-y-2">
+                            <li class="opcion-con-desplegable">
+                                <div class="flex items-center justify-between p-2 hover:bg-gray-700" >
+                                    <div class="flex items-center">
+                                        <i class="fas fa-calendar-alt mr-2"></i>
+                                        <span>Gerar</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                                <!-- <ul class="desplegable ml-4 hidden">
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Gestion de citas
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Polizas
+                                        </a>
+                                    </li>
+                                </ul> -->
+                            </li>
+                            <li class="opcion-con-desplegable">
+                                <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-money-bill-wave mr-2"></i>
+                                        <span>Etiquetas</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                                <!-- <ul class="desplegable ml-4 hidden">
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Tratamientos
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Gastos
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Facturas
+                                        </a>
+                                    </li>
+                                </ul> -->
+                            </li>
+                            <li class="opcion-con-desplegable">
+                                <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-chart-bar mr-2"></i>
+                                        <span>Reversa</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                                <!-- <ul class="desplegable ml-4 hidden">
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Presupuestos
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Informe médico
+                                        </a>
+                                    </li>
+                                </ul> -->
+                            </li>
+                            <li class="opcion-con-desplegable">
+                                <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-file-alt mr-2"></i>
+                                        <span>Declarações</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                                <!-- <ul class="desplegable ml-4 hidden">
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Firmas pendientes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Documentos
+                                        </a>
+                                    </li>
+                                </ul> -->
+                            </li>
+                            <li class="opcion-con-desplegable">
+                                <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-file-alt mr-2"></i>
+                                        <span>Pagamentos</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                                <!-- <ul class="desplegable ml-4 hidden">
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Firmas pendientes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Documentos
+                                        </a>
+                                    </li>
+                                </ul> -->
+                            </li>
+
+                            <li class="opcion-con-desplegable">
+                                <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-file-alt mr-2"></i>
+                                        <span>Acompanhamento</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                                <!-- <ul class="desplegable ml-4 hidden">
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Firmas pendientes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Documentos
+                                        </a>
+                                    </li>
+                                </ul> -->
+                            </li>
+
+                            <li class="opcion-con-desplegable">
+                                <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-file-alt mr-2"></i>
+                                        <span>Estatistica</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                                <!-- <ul class="desplegable ml-4 hidden">
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Firmas pendientes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Documentos
+                                        </a>
+                                    </li>
+                                </ul> -->
+                            </li>
+
+                            <li class="opcion-con-desplegable">
+                                <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-file-alt mr-2"></i>
+                                        <span>Cotações</span>
+                                    </div>
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                                <!-- <ul class="desplegable ml-4 hidden">
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Firmas pendientes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Documentos
+                                        </a>
+                                    </li>
+                                </ul> -->
+                            </li>
+                            <!-- Agrega más enlaces para la navegación lateral -->
+                        </ul>
+                    </nav>
+                </aside>
             </div>
 
             <!-- Settings Dropdown -->
@@ -35,17 +240,36 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            {{ __('Meus Dados') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Relatório Etiquetas') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Cobrança') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Integrações') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Manifestações') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('profile.edit')">
+                            {{ __('Cupom') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                            <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('Sair') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -88,8 +312,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                    <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>

@@ -33,3 +33,249 @@
         </form>
     </div>
 </div>
+
+<style>
+            
+
+
+            /* Nws Add */
+
+            body {
+                background-color: #F0F1F3;
+            }
+
+            #sidebarMenu {
+                /*border-radius: 20px;*/
+                /*border-top-left-radius: 20px;*/ 
+                /*border-bottom-left-radius: 20px;*/ 
+
+                border-top-right-radius: 20px; 
+                border-bottom-right-radius: 20px; 
+                height: 1000px;
+                position:relative;
+            }
+
+            #sidebarMenu a {
+                color: #728189;
+                font-weight: bold;
+            }
+
+            .container-menu-lateral {
+                padding-left: 2px;
+            }
+
+            
+
+            .nav-link.selected {
+                color: #25688B !important;
+            }
+
+            .navbar-toggler {
+                padding: 0px;
+            }
+
+            .btn-expand-top-menu {
+                width: 45px;
+                height: 40px;
+                border-color: transparent;
+                background-color: #FFF;
+                border-radius: 10px;
+                float: left;
+            }
+
+            .btn-expand-top-menu .line {
+                width: 100%;
+                float: left;
+                height: 2px;
+                background-color: #728189;
+                margin-bottom: 4px;
+            }
+
+            .logo-cli-xs {
+                /*float: left;*/
+                /*margin-left: 50%;*/
+                /*width: 80%;*/
+                /*text-align: center;*/
+                /*border: solid 1px;*/
+            }
+            
+            .borda-redonda{
+                border-radius: 10px;
+                display: block;
+                background-color: #fff;
+                color: #728189 ;
+                height: 380px;
+                width: 100%;
+                padding:  15px;
+                margin-left: -15px;
+            }
+ 
+            .borda-redonda-pagamentos{
+                border-radius: 10px;
+                background-color: #fff;
+                color: #728189 ;
+                height: 180px;
+                width: 100%;
+                padding:  10px;
+                margin-left: -15px;
+            }
+
+            .logo-cli-xs img {
+                width: 120px;
+            }
+            .btn-tamanho-img img{
+                width: 20px;
+            }
+
+            .clear-both {
+                clear: both;
+            }
+            .menu-user-xs {
+                float: right;
+                /*border: solid 1px;*/
+            }
+
+            .menu-user-xs img {
+                width: 20px;
+                margin-top: 10px;
+            }
+
+            .icon-menu {
+                width: 22px;
+                float: left;
+            }
+
+            .title-page {
+                color: #142D3A;
+            }
+            .content-main {
+                float: left; 
+                margin-top: 10px; 
+                /*margin-left: 265px;*/
+                /*width: max-content;*/
+            }
+            .content-left {
+                margin-left: 265px;
+
+            }
+            
+            .main-content {
+                height: 2000px;
+            }
+
+            .red-box {
+                margin-top: 10px;
+                /*width: 400px;*/
+                /*position: relative;*/
+                padding: 5px;
+            }
+
+            .table-red{
+                background-color: #A01E26;
+                text-decoration-color: white; 
+                border-radius: 15px;
+                /*display: block;*/
+                width: 100%;
+                /*text-align: center;*/
+                /*margin:  30px;*/
+                /*margin-left: 0px;*/
+                padding:  10px;
+                margin-top: 0px;
+                /*margin-top: -25px;*/
+                vertical-align: middle;
+
+            }
+            .table-red tbody {
+
+                padding: 5px;
+            }
+            .table-red td {
+                border: none;
+                line-height: 20px;
+            }
+            .btn-search-top, .btn-search-top:hover, .btn-show-itens, .btn-show-itens:hover{
+                background-color: #25688B;
+                font-weight: bold;
+            }
+            .line-table-color{
+                background-color: #25688B !important;
+                color:#fff!important;
+            }
+            .btn-color-danger{
+                background-color: #A01E26;
+                font-size: 13px;
+                line-height: 15px;
+
+            }
+            .text-table-color{
+                color: #25688B;
+            }
+            .text-color-gray{
+                color: #728189;
+            }
+            .text-color-blue{
+                color: #25688B;
+            }
+            .badge-danger{
+                background-color: #f0e289;
+                color: #25688B;
+                line-height: 30px;
+                font-size: 13px;
+            }
+
+            .filtro-top.shadow-sm {
+                border-radius: 30px !important;
+            }
+            .filtro-top input[type=text], .filtro-top select{
+                background-color: #F0F1F3;
+            }
+
+            .div-table-general {
+                border-radius: 10px;
+                background-color: #FFF;
+            }
+            .table-general thead th {
+                font-weight: normal;
+                color: #728189 !important;
+                font-weight: bold;
+            }  
+            
+            .form-control input{
+                line-height: 2;
+                border: 0px !important;
+                
+            }
+            
+            .form-control select{
+                line-height: 2;
+                border: 0px !important;
+            }
+            
+            .form-control textarea{
+                line-height: 2; 
+                border: 0px !important;
+            }
+           
+            
+            .menu-consulta-user{
+                border-radius: 15px;
+                color: #728189 !important;
+                padding:  10px;
+                margin-top: 0px;
+                vertical-align: middle;
+            }
+            @media screen and (max-width: 1000px){
+                .div-web {display: none;} 
+                #sidebarMenu {display: none !important;}
+                .hide-mobile {display: none;}
+                .content-main {margin-left: 0px;}
+                .content-left {margin-left: 0px;}
+            }
+            
+            @media screen and (min-width: 1000px){
+                .div-mobile {display: none;} 
+                .d-md-block {display: block!important;}
+                .navbar-expand-md, .navbar-toggler {display: none !important;}
+                 
+            }
+        </style>
