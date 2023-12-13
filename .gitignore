@@ -5,6 +5,8 @@
 /vendor
 /storage
 /config
+Dockerfile
+docker-compose.yml
 .env
 .env.backup
 .phpunit.result.cache
