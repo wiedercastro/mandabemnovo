@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\{ReplySupportController, SupportController};
+use App\Http\Controllers\ColetaController;
+use App\Http\Controllers\EtiquetaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Site\SiteController;
+use App\Models\Envio;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [SiteController::class, 'index']);
@@ -12,8 +16,15 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $envios = DB::table('coletas')->join('envios','coletas.id','=','envios.coleta_id')->select('coletas.id',DB::raw('Count(envios.id) as qte'),DB::raw('sum(envios.valor_total) as total'),DB::raw('sum(envios.valor_desconto) as desconto'),'coletas.type')->where("coletas.user_id","=",5)->groupBy("coletas.id")->paginate();
+    return view('layouts.dashboard',compact("envios"));
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/etiquetas/{id}', [EtiquetaController::class, 'show'])->middleware(['auth', 'verified'])->name('etiqueta.show');
+
+Route::get('/teste', [EtiquetaController::class, 'teste']);
+
+Route::get('coleta/{id}',[ColetaController::class, "getlistItens"])->middleware(['auth', 'verified'])->name('coleta.show');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
