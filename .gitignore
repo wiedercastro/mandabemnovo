@@ -4,7 +4,7 @@
 /storage/*.key
 /vendor
 /storage
-/config
+/config/*.php
 Dockerfile
 docker-compose.yml
 .env
