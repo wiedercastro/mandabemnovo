@@ -5,8 +5,8 @@
         <div class="flex justify-between h-20">
             <div class="flex">
                 
-                <aside class="bg-current text-black w-64 min-h-screen p-4"
-                    style="margin-left: -32px; border:1px radius rgb(226 232 240); background-color: rgb(255 255 255);">
+                <aside class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+                    style="border:1px radius rgb(226 232 240); background-color: rgb(255 255 255);">
                     <div class="shrink-10 flex items-center">
                         <a href="{{ route('dashboard') }}">
                             <x-application-logo
