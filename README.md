@@ -34,8 +34,12 @@ REDIS_HOST=redis
 REDIS_PASSWORD=null
 REDIS_PORT=6379
 ```
+dar permissão nas pastas
+chmod 777 -R mandabemnovo/
 
+php artisan serve
 
+//somente para rodar local
 Suba os containers do projeto
 ```sh
 docker-compose up -d
