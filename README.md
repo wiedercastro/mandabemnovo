@@ -1,7 +1,7 @@
 ## Passo a passo para rodar o projeto
 Clone o projeto
 ```sh
-git clone https://github.com/wiedercastro/mandabemnovo.git
+git clone https://github.com/wiedercastro/mandabemnovo.git 
 ```
 ```sh
 cd mandabemnovo/
