@@ -15,10 +15,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/etiquetas', function () {
     $envios = DB::table('coletas')->join('envios','coletas.id','=','envios.coleta_id')->select('coletas.id',DB::raw('Count(envios.id) as qte'),DB::raw('sum(envios.valor_total) as total'),DB::raw('sum(envios.valor_desconto) as desconto'),'coletas.type')->where("coletas.user_id","=",5)->groupBy("coletas.id")->paginate();
-    return view('layouts.dashboard',compact("envios"));
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return view('layouts.etiquetas',compact("envios"));
+})->middleware(['auth', 'verified'])->name('etiquetas');
+
+Route::get('/gerar', function () {
+    $envios = DB::table('coletas')->join('envios','coletas.id','=','envios.coleta_id')->select('coletas.id',DB::raw('Count(envios.id) as qte'),DB::raw('sum(envios.valor_total) as total'),DB::raw('sum(envios.valor_desconto) as desconto'),'coletas.type')->where("coletas.user_id","=",5)->groupBy("coletas.id")->paginate();
+    return view('layouts.gerar.gerar',compact("envios"));
+})->middleware(['auth', 'verified'])->name('gerar');
+
+Route::get('/reversa', function () {
+    // $envios = DB::table('coletas')->join('envios','coletas.id','=','envios.coleta_id')->select('coletas.id',DB::raw('Count(envios.id) as qte'),DB::raw('sum(envios.valor_total) as total'),DB::raw('sum(envios.valor_desconto) as desconto'),'coletas.type')->where("coletas.user_id","=",5)->groupBy("coletas.id")->paginate();
+    return view('layouts.reversa.reversa');
+})->middleware(['auth', 'verified'])->name('reversa');
+
+Route::get('/declaracoes', function () {
+    $envios = DB::table('coletas')->join('envios','coletas.id','=','envios.coleta_id')->select('coletas.id',DB::raw('Count(envios.id) as qte'),DB::raw('sum(envios.valor_total) as total'),DB::raw('sum(envios.valor_desconto) as desconto'),'coletas.type')->where("coletas.user_id","=",5)->groupBy("coletas.id")->paginate();
+    return view('layouts.declaracoes.declaracoes',compact("envios"));
+})->middleware(['auth', 'verified'])->name('declaracoes');
 
 Route::get('/etiquetas/{id}', [EtiquetaController::class, 'show'])->middleware(['auth', 'verified'])->name('etiqueta.show');
 
