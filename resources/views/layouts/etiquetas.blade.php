@@ -398,9 +398,9 @@
                 <h1 style="color:#728189"><b>Etiquetas</b></h1>
             </div>
             <br>
-            <div class=" w-full dark:bg-gray-800" style="border: 0px solid black;">
+            <div class=" w-full dark:bg-gray-800" style="border: 1px solid black;">
                 <div class="w-full text-gray-900 dark:text-gray-100">
-                    <table class="table table-red" style="width:500px !important;">
+                    {{-- <table class="table table-red" style="width:500px !important;">
                         <tr style="color:white;">
                             <td colspan="2">
                                 <small class="d-inline-block" tabindex="0" data-toggle="tooltip"
@@ -461,7 +461,7 @@
                             <td class="bar text-right"> R$ 00,00 </td>
                         </tr>
                     </table>
-                    <br>
+                    <br> --}}
                     {{-- <div class="text-4xl" style="margin-left: 5px;">
                         <h2 style="color:#728189"><b>Buscar</b></h2>
                     </div> --}}
@@ -493,9 +493,9 @@
                     <h1 style="color:#728189"><b>Etiquetas</b></h1>
                 </div> --}}
 
-
+                <div  class="mx-auto overflow-x-auto">
                 <table
-                    class="w-full ml-auto bg-white text-sm text-left text-gray-500 dark:text-gray-400 border-collapse">
+                    class="min-w-full table-auto ml-auto bg-white text-sm text-left text-gray-500 dark:text-gray-400 border-collapse">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -584,7 +584,7 @@
                 <div class="w-full m-auto py-4">
                     {{ $envios->links() }}
                 </div>
-
+            </div>
 
 
             </div>

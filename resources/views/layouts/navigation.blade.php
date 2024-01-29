@@ -4,30 +4,32 @@
     <div class="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-20">
             <div class="flex">
-                
-                <aside class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+
+                <aside
+                    class="fixed top-0 left-0 z-40 w-72 h-screen transition-transform -translate-x-full sm:translate-x-0"
                     style="border:1px radius rgb(226 232 240); background-color: rgb(255 255 255);">
-                    <div class="shrink-10 flex items-center">
-                        <a href="{{ route('dashboard') }}">
-                            <x-application-logo
-                                class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                        </a>
-                    </div>
+                    <div style="border: 0px solid red;" class="ml-3.5 mr-3.5">
+                        <div class="shrink-10 flex items-center ml-3.5">
+                            <a href="{{ route('etiquetas') }}">
+                                <x-application-logo
+                                    class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                            </a>
+                        </div>
 
-                    <nav style="margin-top: 30px;">
-                        <ul class="space-y-2">
-                            <li class="opcion-con-desplegable">
-                                <a href="#"
-                                    class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                                    <div class="flex items-center">
+                        <nav style="margin-top: 30px;">
+                            <ul class="space-y-2">
+                                <li  class="{{ request()->routeIs('gerar') ? 'rounded-lg bg-gray-100':'' }} opcion-con-desplegable">
+                                    <a href="{{ route('gerar') }}"
+                                        class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                                        <div class="flex items-center">
 
-                                        <x-gerar-icone />
+                                            <x-gerar-icone />
 
-                                        <span>Gerar</span>
-                                    </div>
-                                    
-                                </a>
-                                <!-- <ul class="desplegable ml-4 hidden">
+                                            <span>Gerar</span>
+                                        </div>
+
+                                    </a>
+                                    <!-- <ul class="desplegable ml-4 hidden">
                                     <li>
                                         <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
                                             <i class="fas fa-chevron-right mr-2 text-xs"></i>
@@ -41,17 +43,17 @@
                                         </a>
                                     </li>
                                 </ul> -->
-                            </li>
-                            <li class="opcion-con-desplegable">
-                                <a href="{{ route('dashboard') }}"
-                                    class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
-                                    <div class="flex items-center">
-                                        <x-etiqueta-icone />
-                                        <span>Etiquetas</span>
-                                    </div>
-                                    
-                                </a>
-                                <!-- <ul class="desplegable ml-4 hidden">
+                                </li>
+                                <li class="{{ request()->routeIs('etiquetas') ? 'rounded-lg bg-gray-100':'' }} opcion-con-desplegable">
+                                    <a href="{{ route('etiquetas') }}"
+                                        class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
+                                        <div class="flex items-center">
+                                            <x-etiqueta-icone />
+                                            <span>Etiquetas</span>
+                                        </div>
+
+                                    </a>
+                                    <!-- <ul class="desplegable ml-4 hidden">
                                     <li>
                                         <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
                                             <i class="fas fa-chevron-right mr-2 text-xs"></i>
@@ -71,17 +73,17 @@
                                         </a>
                                     </li>
                                 </ul> -->
-                            </li>
-                            <li class="opcion-con-desplegable">
-                                <a href="#"
-                                    class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
-                                    <div class="flex items-center">
-                                        <x-reversa-icone />
-                                        <span>Reversa</span>
-                                    </div>
-                                    
-                                </a>
-                                <!-- <ul class="desplegable ml-4 hidden">
+                                </li>
+                                <li class="{{ request()->routeIs('reversa') ? 'rounded-lg bg-gray-100':'' }} opcion-con-desplegable">
+                                    <a  href="{{ route('reversa') }}"
+                                        class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
+                                        <div class="flex items-center">
+                                            <x-reversa-icone />
+                                            <span>Reversa</span>
+                                        </div>
+
+                                    </a>
+                                    <!-- <ul class="desplegable ml-4 hidden">
                                     <li>
                                         <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
                                             <i class="fas fa-chevron-right mr-2 text-xs"></i>
@@ -95,66 +97,17 @@
                                         </a>
                                     </li>
                                 </ul> -->
-                            </li>
-                            <li class="opcion-con-desplegable">
-                                <a href="#"
-                                    class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
-                                    <div class="flex items-center">
-                                        <x-declaracoes-icone />
-                                        <span>Declarações</span>
-                                    </div>
-                                    
-                                </a>
-                                <!-- <ul class="desplegable ml-4 hidden">
-                                    <li>
-                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                            Firmas pendientes
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                            Documentos
-                                        </a>
-                                    </li>
-                                </ul> -->
-                            </li>
-                            <li class="opcion-con-desplegable">
-                                <a href="#"
-                                    class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
-                                    <div class="flex items-center">
-                                        <x-pagamento-icone />
-                                        <span>Pagamentos</span>
-                                    </div>
-                                    
-                                </a>
-                                <!-- <ul class="desplegable ml-4 hidden">
-                                    <li>
-                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                            Firmas pendientes
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                            Documentos
-                                        </a>
-                                    </li>
-                                </ul> -->
-                            </li>
+                                </li>
+                                <li class="{{ request()->routeIs('declaracoes') ? 'rounded-lg bg-gray-100':'' }} opcion-con-desplegable">
+                                    <a  href="{{ route('declaracoes') }}"
+                                        class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
+                                        <div class="flex items-center">
+                                            <x-declaracoes-icone />
+                                            <span>Declarações</span>
+                                        </div>
 
-                            <li class="opcion-con-desplegable">
-                                <a href="#"
-                                    class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
-                                    <div class="flex items-center">
-                                        <x-acompanhamento-icone />
-                                        <span>Acompanhamento</span>
-                                    </div>
-                                   
-                                </a>
-                                <!-- <ul class="desplegable ml-4 hidden">
+                                    </a>
+                                    <!-- <ul class="desplegable ml-4 hidden">
                                     <li>
                                         <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
                                             <i class="fas fa-chevron-right mr-2 text-xs"></i>
@@ -168,18 +121,17 @@
                                         </a>
                                     </li>
                                 </ul> -->
-                            </li>
+                                </li>
+                                <li class="opcion-con-desplegable">
+                                    <a href="#"
+                                        class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
+                                        <div class="flex items-center">
+                                            <x-pagamento-icone />
+                                            <span>Pagamentos</span>
+                                        </div>
 
-                            <li class="opcion-con-desplegable">
-                                <a href="#"
-                                    class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
-                                    <div class="flex items-center">
-                                        <x-estatistica-icone />
-                                        <span>Estatistica</span>
-                                    </div>
-                                    
-                                </a>
-                                <!-- <ul class="desplegable ml-4 hidden">
+                                    </a>
+                                    <!-- <ul class="desplegable ml-4 hidden">
                                     <li>
                                         <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
                                             <i class="fas fa-chevron-right mr-2 text-xs"></i>
@@ -193,18 +145,18 @@
                                         </a>
                                     </li>
                                 </ul> -->
-                            </li>
+                                </li>
 
-                            <li class="opcion-con-desplegable">
-                                <a href="#"
-                                    class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
-                                    <div class="flex items-center">
-                                        <x-cotacao-icone />
-                                        <span>Cotações</span>
-                                    </div>
-                                    
-                                </a>
-                                <!-- <ul class="desplegable ml-4 hidden">
+                                <li class="opcion-con-desplegable">
+                                    <a href="#"
+                                        class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
+                                        <div class="flex items-center">
+                                            <x-acompanhamento-icone />
+                                            <span>Acompanhamento</span>
+                                        </div>
+
+                                    </a>
+                                    <!-- <ul class="desplegable ml-4 hidden">
                                     <li>
                                         <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
                                             <i class="fas fa-chevron-right mr-2 text-xs"></i>
@@ -218,10 +170,61 @@
                                         </a>
                                     </li>
                                 </ul> -->
-                            </li>
-                            <!-- Agrega más enlaces para la navegación lateral -->
-                        </ul>
-                    </nav>
+                                </li>
+
+                                <li class="opcion-con-desplegable">
+                                    <a href="#"
+                                        class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
+                                        <div class="flex items-center">
+                                            <x-estatistica-icone />
+                                            <span>Estatistica</span>
+                                        </div>
+
+                                    </a>
+                                    <!-- <ul class="desplegable ml-4 hidden">
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Firmas pendientes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Documentos
+                                        </a>
+                                    </li>
+                                </ul> -->
+                                </li>
+
+                                <li class="opcion-con-desplegable">
+                                    <a href="#"
+                                        class="flex items-center justify-between p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 grou">
+                                        <div class="flex items-center">
+                                            <x-cotacao-icone />
+                                            <span>Cotações</span>
+                                        </div>
+
+                                    </a>
+                                    <!-- <ul class="desplegable ml-4 hidden">
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Firmas pendientes
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
+                                            <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                                            Documentos
+                                        </a>
+                                    </li>
+                                </ul> -->
+                                </li>
+                                <!-- Agrega más enlaces para la navegación lateral -->
+                            </ul>
+                        </nav>
+                    </div>
                 </aside>
             </div>
 
@@ -302,8 +305,8 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('etiquetas')" :active="request()->routeIs('etiquetas')">
+                {{ __('etiquetas') }}
             </x-responsive-nav-link>
         </div>
 
