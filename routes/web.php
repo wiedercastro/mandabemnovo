@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\ColetasController;
+use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\EtiquetasController;
 use App\Http\Controllers\GerarEnvioController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReversaController;
 use App\Http\Controllers\Site\SiteController;
+use App\Http\Controllers\SoapController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [SiteController::class, 'index']);
@@ -31,6 +33,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Coletas
   */
   Route::get('coleta/{id}',[ColetasController::class, 'getlistItens'])->name('coleta.show');
+
+   /*
+  Coletas
+  */
+  Route::get('/buscacep',[EnderecoController::class, 'getCEp'])->name('endereco.show');
+
+  Route::get('/soap', [SoapController::class, 'index']);
 
   /*
   Reversa
