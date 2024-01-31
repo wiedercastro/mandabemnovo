@@ -57,12 +57,12 @@
             </div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             <div x-show="open"
-              class="inline-block align-bottom bg-white 
+              class="ml-56 inline-block align-bottom bg-white 
               rounded-lg text-left overflow-hidden shadow-xl 
-              transform transition-all sm:my-8 sm:align-middle sm:max-w-3x1"
+              transform transition-all sm:my-8 sm:align-middle sm:w-1/2"
               >
               <!-- Conteúdo do modal aqui -->
-              <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <div class=" px-4 pt-5 pb-4 sm:p-6 sm:pb-4 bg-white">
                 <div class="sm:flex sm:items-start">
                     <!-- Título do modal -->
                   <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
