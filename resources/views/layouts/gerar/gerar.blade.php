@@ -49,7 +49,7 @@
           </button>
         </div>
         <!-- O modal -->
-        <div x-show="open" @click.away="open = false" class="w-full fixed inset-0 overflow-y-auto">
+        <div x-show="open" @click.away="open = false" class="w-full fixed inset-0 overflow-y-auto animate__animated animate__fadeIn">
           <div
             class="w-full flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 bg-gray-800 bg-opacity-75 transition-opacity">
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
