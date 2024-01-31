@@ -365,7 +365,6 @@
 
                     <td dir="rtl" class="px-2 py-2 rounded-s-lg ml-2">
                       <div class="flex cursor-pointer">
-
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke-width="1.5" stroke="currentColor"
                             class="w-4 h-4 sm:w-5 sm:h-6 stroke-red-600">
@@ -381,7 +380,6 @@
                                   d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                           </svg>
                         </a>
-
                       </div>
                     </td>
 
@@ -397,10 +395,58 @@
                 @endforeach
             </tbody>
           </table>
-          <div class="m-auto py-4">
-              {{ $envios->links() }}
+          <div class="flex justify-between pb-6">
+            <div class="flex mt-2 text-xs">
+              <button @click="open = true"
+                class="bg-red-500 hover:bg-red-700 text-white font-bold px-2 py-1 rounded flex items-center">    
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>                          
+                <p class="ml-1">Remover</p>
+              </button>
+              <button @click="open = true"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 ml-2 rounded flex items-center"> 
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6 9 12.75l4.286-4.286a11.948 11.948 0 0 1 4.306 6.43l.776 2.898m0 0 3.182-5.511m-3.182 5.51-5.511-3.181" />
+                </svg>                
+                <p class="ml-1">Gerar etiquetas</p>
+              </button>
+            </div>
+            <nav class="mt-2">
+              <ul class="inline-flex -space-x-px mt-2 text-xs">
+                @if ($envios->currentPage() > 1)
+                  <li>
+                    <a href="?page={{ $envios->currentPage() - 1 }}" 
+                      class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white 
+                        rounded-l-lg border border-gray-300 hover:bg-gray-100 
+                        hover:text-gray-700">
+                      Anterior
+                    </a>
+                  </li>
+                @endif
+                @for ($i = 1; $i <= $envios->lastPage(); $i++)
+                  <li>
+                    <a href="?page={{ $i }}" 
+                        class="py-2 px-3 {{ $envios->currentPage() == $i ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white' }}
+                        border border-gray-300 hover:bg-gray-100 
+                        hover:text-gray-700">
+                        {{ $i }}
+                    </a>
+                  </li>
+                @endfor
+                @if ($envios->currentPage() < $envios->lastPage())
+                  <li>
+                    <a href="?page={{ $envios->currentPage() + 1 }}" 
+                      class="py-2 px-3 leading-tight text-gray-500 bg-white
+                      rounded-r-lg border border-gray-300 hover:bg-gray-100 
+                      hover:text-gray-700">
+                      Próxima
+                    </a>
+                  </li>
+                @endif
+              </ul>
+            </nav>
           </div>
-
 
       </div>
   </div>
