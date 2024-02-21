@@ -4,6 +4,7 @@ use App\Http\Controllers\ColetasController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\EtiquetasController;
 use App\Http\Controllers\GerarEnvioController;
+use App\Http\Controllers\PagamentoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReversaController;
 use App\Http\Controllers\Site\SiteController;
@@ -50,6 +51,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Declaracoes
   */
   Route::get('declaracoes',[ReversaController::class, 'index'])->name('declaracoes');
+
+  /*
+  Pagamentos
+  */
+  Route::get('pagamentos',[PagamentoController::class, 'index'])->name('pagamentos.index');
   
   /*
   Profile

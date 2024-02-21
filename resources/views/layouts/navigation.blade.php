@@ -110,7 +110,7 @@
                     </ul> -->
                   </li>
                   <li class="opcion-con-desplegable">
-                      <a href="#"
+                      <a href="{{route('pagamentos.index')}}"
                           class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 grou">
                           <div class="flex items-center">
                               <x-pagamento-icone />

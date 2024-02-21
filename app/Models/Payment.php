@@ -40,6 +40,12 @@ class Payment extends Authenticatable
         return $this->error;
     }
 
+    public function getDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
+    }
+
+
     public function getFieldCustomer()
     {
         $field = $this->fields_cobranca['cliente'];
