@@ -40,6 +40,8 @@ class EtiquetasController extends Controller
       ->where("coletas.user_id","=",5)
       ->groupBy("coletas.id")
       ->paginate();
+
+     /*  dd($envios); */
       
     return view('layouts.etiquetas',compact("envios"));
   }
