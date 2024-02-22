@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-class Coleta extends Model
+class Reversa extends Model
 {
     private $error;
 

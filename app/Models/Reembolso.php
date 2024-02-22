@@ -15,9 +15,7 @@ class Reembolso extends Model
 
     public function __construct()
     {
-        parent::__construct();
-        $this->load->database();
-        $this->load->library('date_utils');
+        parent::__construct(); 
     }
 
     public function getList($param = [])

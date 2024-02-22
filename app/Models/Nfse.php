@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Models\User;
 use DOMDocument;
+use App\Http\Controllers\EnderecoController;
 
 class Nfse extends Model
 {
@@ -19,9 +20,9 @@ class Nfse extends Model
         $nfse->codigo_verificacao = preg_replace('/-/', '', $nfse->codigo_verificacao);
         $dom = new \DOMDocument();
         @$dom->loadXML($nfse->xml_resposta);
-        $nfse->numero_nfse = $dom->getElementsByTagName('InfNfse')->item(0)->getElementsByTagName('Numero')->item(0)->nodeValue;
+        $nfse->numero_nfse = $dom->getElementsByTagName('InfNfse')->item(0)->$dom->getElementsByTagName('Numero')->item(0)->nodeValue;
 
-        $environment = config('nfse.enviroment'); // Certifique-se de definir a configuração correta em config/nfse.php
+        $environment = config('nfse.enviroment');  
 
         if ($nfse->environment == 'sandbox') {
             return 'https://homologacao.notacarioca.rio.gov.br/contribuinte/notaprint.aspx?inscricao=10468930&nf=' . $nfse->numero_nfse . '&verificacao=' . $nfse->codigo_verificacao;
@@ -160,11 +161,11 @@ class Nfse extends Model
             $cancelamento = $dom->getElementsByTagName('Cancelamento')->item(0);
 
             if (!$cancelamento) {
-                $mensagemRetorno = $dom->getElementsByTagName('MensagemRetorno')->item(0)->getElementsByTagName('Mensagem')->item(0)->nodeValue;
+                $mensagemRetorno = $dom->getElementsByTagName('MensagemRetorno')->item(0)->$dom->getElementsByTagName('Mensagem')->item(0)->nodeValue;
                 $correcao = '';
 
-                if ($dom->getElementsByTagName('MensagemRetorno')->item(0)->getElementsByTagName('Correcao')->length) {
-                    $correcao = $dom->getElementsByTagName('MensagemRetorno')->item(0)->getElementsByTagName('Correcao')->item(0)->nodeValue;
+                if ($dom->getElementsByTagName('MensagemRetorno')->item(0)->$dom->getElementsByTagName('Correcao')->length) {
+                    $correcao = $dom->getElementsByTagName('MensagemRetorno')->item(0)->$dom->getElementsByTagName('Correcao')->item(0)->nodeValue;
                 }
 
                 if ($mensagemRetorno) {
@@ -232,10 +233,10 @@ class Nfse extends Model
                 'iss_retido' => $iss_retido,
                 'perc_iss' => $perc_iss,
                 'descriminacao' => $data['descriminacao'],
-                'prestador' => get_info_prestador_nfse(),
+                'prestador' => getInfoPrestadorNfse(),
             ];
-
-            $cod_municipio = Modules::run('mandabem/endereco/get_by_cep', ['cep' => $user->CEP]);
+            $enderecoController = new EnderecoController();
+            $cod_municipio = $enderecoController->getByCep(['cep' => $user->CEP]);
 
             $dataGerar['tomador'] = [
                 'cnpj' => $user->cnpj,
@@ -331,10 +332,10 @@ class Nfse extends Model
                 if (!$error) {
                     $Nfse = $dom->getElementsByTagName('Nfse')->item(0);
                     if (!$Nfse) {
-                        $MensagemRetorno = $dom->getElementsByTagName('MensagemRetorno')->item(0)->getElementsByTagName('Mensagem')->item(0)->nodeValue;
+                        $MensagemRetorno = $dom->getElementsByTagName('MensagemRetorno')->item(0)->$dom->getElementsByTagName('Mensagem')->item(0)->nodeValue;
                         $Correcao = '';
-                        if ($dom->getElementsByTagName('MensagemRetorno')->item(0)->getElementsByTagName('Correcao')->length) {
-                            $Correcao = $dom->getElementsByTagName('MensagemRetorno')->item(0)->getElementsByTagName('Correcao')->item(0)->nodeValue;
+                        if ($dom->getElementsByTagName('MensagemRetorno')->item(0)->$dom->getElementsByTagName('Correcao')->length) {
+                            $Correcao = $dom->getElementsByTagName('MensagemRetorno')->item(0)->$dom->getElementsByTagName('Correcao')->item(0)->nodeValue;
                         }
                         if ($MensagemRetorno) {
                             $error[] = $MensagemRetorno . '<br>' . $Correcao;
@@ -342,7 +343,7 @@ class Nfse extends Model
                             $error[] = "Falha DOM load xml(2)";
                         }
                     } else {
-                        $codigo_verificacao = $Nfse->getElementsByTagName('CodigoVerificacao')->item(0)->nodeValue;
+                        $codigo_verificacao = $Nfse->$dom->getElementsByTagName('CodigoVerificacao')->item(0)->nodeValue;
                     }
                 }
             }

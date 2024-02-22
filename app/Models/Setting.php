@@ -4,14 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SettingModel extends Model
+class Setting extends Model
 {
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->database(); // Removido, pois não é necessário em Laravel
-        $this->load->library('date_utils');
     }
 
     public function getCredentialsEtiqueta($type = null)

@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
+use App\Libraries\DateUtils;
 
-class ProcessModel extends Model
+class Process extends Model
 {
     protected $table = 'process_runtime';
     protected $primaryKey = 'id';
@@ -79,6 +79,7 @@ class ProcessModel extends Model
 
     public function finishProcess($name)
     {
+        $dateUtils = new DateUtils();
         $process = $this->where('name', $name)->first();
 
         if ($process) {
@@ -94,7 +95,7 @@ class ProcessModel extends Model
             'date_end' => now()
         ]);
 
-        echo now() . " - Processo $name finalizado | Tempo de execução: " . $this->date_utils->timeToHour(($timeEnd - $timeStart), true) . " \n";
+        echo now() . " - Processo $name finalizado | Tempo de execução: " . $dateUtils->timeToHour(($timeEnd - $timeStart), true) . " \n";
 
         return true;
     }
