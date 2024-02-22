@@ -16,6 +16,9 @@ use App\Models\User;
 use App\Models\Envio;
 use App\Models\Boleto;
 use Carbon\Carbon;
+use App\Libraries\FormBuilder;
+use App\Libraries\Validation;
+use App\Libraries\DateUtils;
 
 class Payment extends Authenticatable
 {
@@ -116,8 +119,7 @@ class Payment extends Authenticatable
 
     public function getFieldsCredito()
     {
-        // Assume que você já tem a lista de usuários disponível
-        $lista_users = User::all();
+        $lista_users = array();
 
         // Tipo
         $tipos = [
@@ -204,7 +206,7 @@ class Payment extends Authenticatable
     {
         return $this->getPayments($param);
     }
-
+    //corrigir erro foreach linha 372
     public function getPayments($param = [])
     {
         if (!isset($param['user_id']) && auth()->user()->group_code != 'mandabem') {
@@ -370,30 +372,26 @@ class Payment extends Authenticatable
                 ->orderByDesc('payment.date');
         } else {
             $query->orderBy('payment.date');
-        }
-        
-        if (auth()->user()->user_id == 'x3748') {
-            dd($query->toSql(), $query->getBindings());
-        }
+        } 
         
         $rows = $query->get();
 
         foreach ($rows as $i) {
 
-            if ($i->tipo == 'mercado_pago') {
-                $i->tipo = 'Mercado Pago';
+            if ($i['tipo'] == 'mercado_pago') {
+                $i['tipo'] = 'Mercado Pago';
             }
         
             if (auth()->user()->user_id == '3748') {
-                $i->descontos = DB::select("SELECT * FROM `payment_credit_discount` WHERE `payment_id` = ? ORDER BY `id` DESC", [$i->id]);
+                $i['descontos'] = DB::select("SELECT * FROM `payment_credit_discount` WHERE `payment_id` = ? ORDER BY `id` DESC", [$i['id']]);
             }
         
-            if (strlen($i->description)) {
+            if (strlen($i['description'])) {
                 continue;
             }
         
             // Verificar coletas relacionadas
-            $coletas = DB::table('coletas')->where('payment_id', $i->payment_id)->get();
+            $coletas = DB::table('coletas')->where('payment_id', $i['payment_id'])->get();
         
             $str_desc = '';
             foreach ($coletas as $c) {
@@ -404,13 +402,13 @@ class Payment extends Authenticatable
                 $str_desc = substr($str_desc, 0, -1);
             }
         
-            if (!$i->description) {
-                $i->description = "Conjunto de etiquetas: " . $str_desc;
-                DB::table('payment')->where('id', $i->row_id)->update(['description' => $i->description]);
+            if (!$i['description']) {
+                $i['description'] = "Conjunto de etiquetas: " . $str_desc;
+                DB::table('payment')->where('id', $i['row_id'])->update(['description' => $i['description']]);
             }
         
-            $i->descricao = $i->description;
-            $i->coleta_id = $str_desc;
+            $i['descricao'] = $i['description'];
+            $i['coleta_id'] = $str_desc;
         }
         
         return $rows;
@@ -445,7 +443,7 @@ class Payment extends Authenticatable
         if ($infoSaldoDivergencia) {
             foreach ($infoSaldoDivergencia['divergencias'] as $divergencia) {
                 // Obtemos saldo atual a cada interação
-                $saldo = $this->payment_model->get_credito_saldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
+                $saldo = $this->getCreditoSaldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
 
                 // Nao ha mais saldo
                 if (!$saldo) {
@@ -481,6 +479,7 @@ class Payment extends Authenticatable
 
     public function updateCredits($saldo, $coletaId, $userId, $infoDivergencia)
     {
+        $envioModel = new Envio();
         if (!$saldo) {
             return;
         }
@@ -505,7 +504,7 @@ class Payment extends Authenticatable
             if ($infoDivergencia) {
                 foreach ($infoDivergencia as $divergencia) {
                     // Obtemos saldo atual a cada interação
-                    $saldo = $this->payment_model->get_credito_saldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
+                    $saldo = $this->getCreditoSaldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
 
                     // Nao ha mais saldo
                     if (!$saldo) {
@@ -533,20 +532,20 @@ class Payment extends Authenticatable
                             'date' => now(),
                         ]);
 
-                        $this->envio_model->update_indo_pagto_divergencia(['id' => $paymentId], [['id' => $divergencia['id']]]);
+                        $envioModel->updateIndoPagtoDivergencia(['id' => $paymentId], [['id' => $divergencia['id']]]);
                     }
                 }
                 return;
             }
 
             // Obtendo divergências para desconto via crédito
-            $infoAddDivergencia = $this->envio_model->get_divergencias(['user_id' => $userId]);
+            $infoAddDivergencia = $envioModel->getDivergencias(['user_id' => $userId]);
 
             if ($infoAddDivergencia) {
                 // Verificar cada divergência
                 foreach ($infoAddDivergencia as $divergencia) {
                     // Obtemos saldo atual a cada interação
-                    $saldo = $this->payment_model->get_credito_saldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
+                    $saldo = $this->getCreditoSaldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
 
                     // Nao ha mais saldo
                     if (!$saldo) {
@@ -573,7 +572,7 @@ class Payment extends Authenticatable
                             'date' => now(),
                         ]);
 
-                        $this->envio_model->update_indo_pagto_divergencia(['id' => $paymentId], [['id' => $divergencia['id']]]);
+                        $envioModel->updateIndoPagtoDivergencia(['id' => $paymentId], [['id' => $divergencia['id']]]);
                     }
                 }
             }
@@ -716,8 +715,8 @@ class Payment extends Authenticatable
 
         unset($post['is_credito']);
         unset($post['is_cancelamento']);
-
-        $data_post = form_builder()->validateData(getFieldsCredito(), $post);
+        $formBuilder = new FormBuilder();
+        $data_post = $formBuilder->validadeData($this->getFieldsCredito(), $post);
 
         if (!$data_post) {
             return false;
@@ -800,12 +799,10 @@ class Payment extends Authenticatable
 
     public function savePayment($post)
     {
-        $this->load->library('form_builder');
-        $this->load->model('user_model');
-
-        $data_post = $this->form_builder->validade_data($this->getFieldsCobranca(), $post);
+        $formBuilder = new FormBuilder();
+        $data_post = $formBuilder->validadeData($this->getFieldsCobranca(), $post);
         if (!$data_post) {
-            $this->error = $this->form_builder->get_error_validation();
+            $this->error = $formBuilder->getErrorValidation();
             return FALSE;
         } else {
             $user = User::find($post['user_id']);
@@ -819,7 +816,7 @@ class Payment extends Authenticatable
 
             $valor_cobrar = number_format(preg_replace('/,/', '.', $post['value']), '2', '.', '');
 
-            $BA_ = $this->get_authorization(['user_id' => $post['user_id']]);
+            $BA_ = $this->getAuthorization(['user_id' => $post['user_id']]);
             if (!$BA_) {
                 $this->error = "TOKEN do Acordo Cobrança para o cliente " . $user->name . " invalido.";
                 return false;
@@ -852,7 +849,7 @@ class Payment extends Authenticatable
                 'user_id' => $user->id,
             ];
             //trocar quando houver a librarie
-            $paymentResult = $paypalPayment->create_bil_payment($param);
+            $paymentResult = $paypalPayment->createBilPayment($param);
 
             if (!$paymentResult) {
                 if ($paypalPayment->get_error() == 'INSTRUMENT_DECLINED') {
@@ -1056,8 +1053,9 @@ class Payment extends Authenticatable
 
     public function getEntradasPagtos($data)
     {
-        $dateStart = $this->dateUtils->toEn($data['date_start']) . ' 00:00:00';
-        $dateEnd = $this->dateUtils->toEn($data['date_end']) . ' 23:59:59';
+        $dateUtils = new DateUtils();
+        $dateStart = $dateUtils->toEn($data['date_start']) . ' 00:00:00';
+        $dateEnd = $dateUtils->toEn($data['date_end']) . ' 23:59:59';
 
         $list = DB::table('payment')
             ->select('payment.*', 'user.razao_social as cliente', 'user.tipo_cliente', 'user.cpf', 'user.cnpj', 'ec.id as cancelamento_id')
@@ -1081,7 +1079,6 @@ class Payment extends Authenticatable
             $doc = null;
 
             if ($i->transferencia_id) {
-                // transferencia_id
                 $transf = $this->getTransf(['id' => $i->transferencia_id, 'group' => 'mandabem', 'banco' => 'neon']);
 
                 if ($transf) {
@@ -1136,8 +1133,7 @@ class Payment extends Authenticatable
             if ($i->tipo == 'boleto') {
                 $i->forma_pagamento = 'Boleto';
             }
-            //trocar quando tiver a librarie 
-            $i->date = $this->dateUtils->toBr($i->date);
+            $i->date = $dateUtils->toBr($i->date);
             $i->value = abs($i->value);
 
             $info[$i->user_id]['transacoes'][$i->tipo]['total'] += abs($i->value);
@@ -1165,28 +1161,18 @@ class Payment extends Authenticatable
 
     public function saveTransferencia($request)
     {
-        //trocar quando houver a librarie 
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
-            'banco' => 'required',
-            'doc' => 'required_if:banco,neon',
-            'anexo' => 'required',
-            'valor' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()->first()], 400);
-        }
+        $validation = new Validation();
 
         $doc = $request->banco == 'pixiugu' ? $request->doc : preg_replace('/[0-9^]/', '', $request->doc);
 
         // Banco neon, Necessário CPF ou CNPJ
         if ($request->banco == 'neon') {
-            $validCpf = Validator::make(['doc' => $doc], ['doc' => 'cpf']);
-            $validCnpj = Validator::make(['doc' => $doc], ['doc' => 'cnpj']);
+            $validCpf = $validation->validCpf($doc);
+            $validCnpj = $validation->validCnpj($doc);
 
-            if (!$validCpf->passes() && !$validCnpj->passes()) {
-                return response()->json(['error' => 'Documento fornecido para o pagante é inválido'], 400);
+            if (!$validCpf && !$validCnpj) {
+                $this->error = "Documento fornecido para o pagante é inválido";
+                return false;
             }
         }
 
@@ -1205,8 +1191,6 @@ class Payment extends Authenticatable
         if (!$transferencia) {
             return response()->json(['error' => 'Falha ao inserir Transferência, tente novamente mais tarde.'], 500);
         }
-
-        // A lógica abaixo referente a creditos_antecipados não está totalmente replicada, ajuste conforme necessário
 
         if ($request->banco == 'pixiugu' && $request->has('creditos_antecipados') && false) {
             foreach ($request->creditos_antecipados as $ca) {
