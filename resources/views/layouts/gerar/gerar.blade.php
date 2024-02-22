@@ -407,7 +407,7 @@
                             Forma de Envio
                         </th>
                         <th scope="col" class="px-1 py-3">
-                            Balcão
+                            Balcãoo
                         </th>
                         <th scope="col" class="px-1 py-3">
                             Desconto
