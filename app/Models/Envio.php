@@ -16,6 +16,10 @@ use App\Services\CalPrazoFrete;
 use App\Models\Log;
 use App\Models\Coleta;
 use App\Libraries\Correio\Correio;
+use App\Libraries\Correios\CalPrazoFrete as CorreiosCalPrazoFrete;
+use App\Libraries\Correios\CorreiosPrazoFreteOffline as CorreiosCorreiosPrazoFreteOffline;
+use App\Libraries\EmailMaker;
+use App\Libraries\FormBuilder;
 use App\Models\User;
 use App\Models\Payment;
 
@@ -34,6 +38,7 @@ class Envio extends Authenticatable
         'date_postagem',
     ];
     private $CalPrazoFrete;
+
     protected $table = "envios";
 
     public function getError()
@@ -44,15 +49,16 @@ class Envio extends Authenticatable
     public function simuleEnvio($param = [])
     {
         $this->error = '';
-
+        
         // restringir dimensoes e AR
         if (true || request()->server('REMOTE_ADDR')) {
-            $this->CalPrazoFrete = new CorreiosPrazoFreteOffline();
+            //$this->CalPrazoFrete = new CorreiosPrazoFreteOffline();
+            $this->CalPrazoFrete = new CorreiosCalPrazoFrete();
         } else {
             $this->CalPrazoFrete = new CalPrazoFrete();
             exit;
         }
-
+        
         //se soma for maior que 90 trocar o peso do pedido pelo peso cubico
         if (
             ($param['user_id'] == 69865) ||
@@ -71,7 +77,7 @@ class Envio extends Authenticatable
                 $peso_cubico = $param['peso'];
             }
         }
-
+        
         if (!isset($param['peso']) || !$param['peso']) {
             $param['peso'] = 0.300;
         }
@@ -241,7 +247,7 @@ class Envio extends Authenticatable
         if (true) {
             $param_correio['cal_seguro_local'] = true;
         }
-
+        
         $frete = $this->CalPrazoFrete->calc($param_correio);
 
         // ... Código posterior ...
@@ -266,14 +272,20 @@ class Envio extends Authenticatable
             $this->error = "Sistema dos Correios não respondeu à nossa Requisição, por gentileza tente novamente mais tarde (VL).";
             return false;
         }
-
+        
         return $frete;
     }
 
-    public function saveEnvio($post)
+    public static function saveEnvio($post)
     {
-        $this->error = '';
+       
         $userModel = app(User::class);
+        $envioModel = app(Envio::class);
+        // $formBuilder = app(FormBuilder::class);
+        $emailMaker = app(EmailMaker::class);
+        // dd("teste");
+
+        
 
         $post['CEP'] = preg_replace('/[^0-9]/', '', $post['CEP']);
         $error_description = [];
@@ -297,8 +309,8 @@ class Envio extends Authenticatable
                 $emailCubagem['formaEnvio'] = $post['forma_envio'];
                 $emailCubagem['endereco'] = $post['CEP'] . ' - ' . $post['logradouro'] . ' - ' . $post['bairro'] . ' - ' . $post['cidade'] . ' - ' . $post['estado'];
 
-                app()->make('email_maker')->msg([
-                    'to' => 'reginaldo@mandabem.com.br,clayton@mandabem.com.br,wieder@mandabem.com.br',
+                $emailMaker->msg([
+                    'to' => 'wieder@mandabem.com.br',
                     'subject' => 'Calculo Cubico User ' . $post['user_id'],
                     'msg' => "<pre>" . print_r($emailCubagem, true) . "</pre>"
                 ]);
@@ -314,15 +326,14 @@ class Envio extends Authenticatable
                 $post['peso'] = 0.3;
             } else {
                 if ($post['peso'] > 0.3) {
-                    $this->error = "Para Envio Mini o peso da encomenda não pode passar de 300 gramas";
-                    return false;
+                    throw new \Exception("Para Envio Mini o peso da encomenda não pode passar de 300 gramas");
+                    
                 }
             }
         }
 
         if ($post['forma_envio'] == 'SEDEX HOJE' && strlen($post['telefone']) < 10) {
-            $this->error = "Para envios do tipo SEDEX HOJE preencha o telefone do Destinatário";
-            return false;
+            throw new \Exception("Para envios do tipo SEDEX HOJE preencha o telefone do Destinatário");
         }
 
         // Somente números no telefone
@@ -356,63 +367,73 @@ class Envio extends Authenticatable
                         ->first();
 
                     if (!$has_cancel) {
-                        $this->error = "Envio " . $post['ref_id'] . " já gerado";
-                        return false;
+                        throw new \Exception("Envio " . $post['ref_id'] . " já gerado");
+                        // $error = "Envio " . $post['ref_id'] . " já gerado";
+                        // return false;
                     }
                 }
             }
         }
+
 
         // Formatação do retorno do erro
         $type_error_return = 'NORMAL';
         if (isset($post['type_error_return'])) {
             $type_error_return = $post['type_error_return'];
         }
-        $data_post = $this->form_builder->validade_data($this->fields, $post, $type_error_return);
-
+        //dd($post);
+        $data_post = $post; //$formBuilder->validade_data($this->fields, $post, $type_error_return);
+        // $teste = Form_builder::validade_data($this->fields, $post, $type_error_return);
+        // dd($teste);
+        
         // Caso for NUVEM SHOP salvar envio com erro + alerta
-        if (!$data_post) {
-            if (isset($post['api']) && in_array($post['api'], ['NUVEM_SHOP', 'BLING', 'LINX', 'YAMPI', 'SHOPIFY', 'WEBSTORE', 'FASTCOMMERCE', 'LOJA_INTEGRADA', 'WORDPRESS', 'TINY'])) {
-                $error_description = $this->form_builder->get_error_validation();
-                $data_post = $this->form_builder->get_data_post();
-            } else {
-                $this->error = $this->form_builder->get_error_validation();
-                return false;
-            }
-        }
+        
+    //Verificar Wieder
 
-        // Neste caso é uma situação apenas de validação do envio, se as infos estão totalmente preenchidas
-        if (isset($post['only_validate']) && $post['only_validate']) {
-            return true;
-        }
+        // if (!$data_post) {
+        //     if (isset($post['api']) && in_array($post['api'], ['NUVEM_SHOP', 'BLING', 'LINX', 'YAMPI', 'SHOPIFY', 'WEBSTORE', 'FASTCOMMERCE', 'LOJA_INTEGRADA', 'WORDPRESS', 'TINY'])) {
+        //         $error_description = $formBuilder->get_error_validation();
+        //         $data_post = $formBuilder->get_data_post();
+        //     } else {
+        //         $this->error = $formBuilder->get_error_validation();
+        //         return false;
+        //     }
+        // }
+
+        // // Neste caso é uma situação apenas de validação do envio, se as infos estão totalmente preenchidas
+        // if (isset($post['only_validate']) && $post['only_validate']) {
+        //     return true;
+        // }
 
         $user = $userModel->get($post['user_id']);
+        
 
         if (!$user) {
-            $this->error = "Falha ao obter usuário";
-            return false;
-        }
+            // $this->error = "Falha ao obter usuário";
+            throw new \Exception('Falha ao obter usuário');
 
+        }
+       
         // Validação da Nota Fiscal
         $data_post['nota_fiscal'] = trim($data_post['nota_fiscal']);
         if (strlen($data_post['nota_fiscal']) && (strlen($data_post['nota_fiscal']) < 3 || strlen($data_post['nota_fiscal']) > 15)) {
             if (isset($post['api']) && in_array($post['api'], ['NUVEM_SHOP', 'BLING', 'LINX', 'YAMPI', 'SHOPIFY', 'WEBSTORE', 'FASTCOMMERCE', 'LOJA_INTEGRADA', 'WORDPRESS', 'TINY'])) {
                 $error_description[] = '<br>' . "O campo Nota fiscal, quando preenchido, deve ter entre 3 e 15 caracteres.";
             } else {
-                $this->error = "O campo Nota fiscal, quando preenchido, deve ter entre 3 e 15 caracteres.";
-                return false;
+                throw new \Exception("O campo Nota fiscal, quando preenchido, deve ter entre 3 e 15 caracteres.");
             }
         }
-
+        
         // Assumindo default para o campo peso
         if (!isset($data_post['peso']) || !$data_post['peso']) {
             $data_post['peso'] = 0.300;
         }
+        
         // Assumindo default para o campo AR
         if (!isset($data_post['AR']) || $data_post['AR'] != 'S') {
             $data_post['AR'] = null;
         }
-
+        
         // Caso peso for maior que 0.3 vamos arredondar para o próximo inteiro maior
         if ($data_post['peso'] > 0.3) {
             $data_post['peso'] = ceil($data_post['peso']);
@@ -425,43 +446,42 @@ class Envio extends Authenticatable
         // Validacoes do PAC mini
         if ($data_post['forma_envio'] == 'PACMINI') {
             if (isset($data_post['AR']) && $data_post['AR'] == 'S') {
-                $this->error = 'Nas formas de envio "Envio Mini" não é permitido informar AR.';
-                return false;
+                throw new \Exception('Nas formas de envio "Envio Mini" não é permitido informar AR.');
+                
             }
             if ($data_post['peso'] > 0.3) {
-                $this->error = 'Nas formas de envio "Envio Mini" o peso não pode passar de 300 gramas.';
-                return false;
+                throw new \Exception('Nas formas de envio "Envio Mini" o peso não pode passar de 300 gramas.');
+                
             }
             if ($data_post['altura'] > 4) {
-                $this->error = 'Nas formas de envio "Envio Mini" a Altura não pode passar de 4 Cm.';
-                return false;
+                throw new \Exception('Nas formas de envio "Envio Mini" a Altura não pode passar de 4 Cm.');
+                
             }
             if ($data_post['largura'] > 16) {
-                $this->error = 'Nas formas de envio "Envio Mini" a Largura não pode passar de 16 Cm.';
-                return false;
+                throw new \Exception('Nas formas de envio "Envio Mini" a Largura não pode passar de 16 Cm.');
+                
             }
             if ($data_post['comprimento'] > 24) {
-                $this->error = 'Nas formas de envio "Envio Mini" o Comprimento não pode passar de 24 Cm.';
-                return false;
+                throw new \Exception('Nas formas de envio "Envio Mini" o Comprimento não pode passar de 24 Cm.');
             }
         }
-
+       
         // Soma das dimensões não pode passar de 200 CM
         $sum_size = (int) $data_post['altura'] + (int) $data_post['comprimento'] + (int) $data_post['largura'];
         if ($sum_size > 200) {
             if (isset($post['api']) && in_array($post['api'], ['NUVEM_SHOP', 'BLING', 'LINX', 'YAMPI', 'SHOPIFY', 'WEBSTORE', 'FASTCOMMERCE', 'LOJA_INTEGRADA', 'WORDPRESS', 'TINY'])) {
                 $error_description[] = '<br>' . "Somatório (altura + largura + comprimento) acima de 200 cm.<br>Somatório deve ser menor do que 200 cm.";
             } else {
-                $this->error = "Somatório (altura + largura + comprimento) acima de 200 cm.<br>Somatório deve ser menor do que 200 cm.";
-                return false;
+                throw new \Exception("Somatório (altura + largura + comprimento) acima de 200 cm.<br>Somatório deve ser menor do que 200 cm.");
+                
             }
         }
         if (strlen(preg_replace('/[^0-9]/', '', $data_post['CEP'])) != 8) {
             if (isset($post['api']) && in_array($post['api'], ['NUVEM_SHOP', 'BLING', 'LINX', 'YAMPI', 'SHOPIFY', 'WEBSTORE', 'FASTCOMMERCE', 'LOJA_INTEGRADA', 'WORDPRESS', 'TINY'])) {
                 $error_description[] = '<br>' . "CEP (" . $data_post['CEP'] . ") destino inválido";
             } else {
-                $this->error = "CEP (" . $data_post['CEP'] . ") destino inválido";
-                return false;
+                throw new \Exception("CEP (" . $data_post['CEP'] . ") destino inválido");
+
             }
         }
 
@@ -473,8 +493,10 @@ class Envio extends Authenticatable
             'altura' => $data_post['altura'],
             'comprimento' => $data_post['comprimento'],
             'largura' => $data_post['largura'],
+            'user_id' => $data_post['user_id'],
         ];
-
+        
+        
         // Adicionando Seguro aos parâmetros de consulta
         if ($data_post['seguro'] && $data_post['seguro'] > 0) {
             $data_post['seguro'] = preg_replace('/,/', '.', $data_post['seguro']);
@@ -486,43 +508,42 @@ class Envio extends Authenticatable
         // Validacoes do Seguro PAC mini
         if ($data_post['forma_envio'] == 'PACMINI') {
             if ((float) $data_post['seguro'] > 100) {
-                $this->error = 'Em formas de envio "Envio Mini" o Seguro informado não pode ser maior que R$ 100.';
-                return false;
+                throw new \Exception('Em formas de envio "Envio Mini" o Seguro informado não pode ser maior que R$ 100.');
+               
             }
             if ($data_post['seguro'] && (float) $data_post['seguro'] < 12.25) {
-                $this->error = 'O Seguro, para "Envio Mini", quando informado, precisa ser maior que R$ 12,25.';
-                return false;
+                throw new \Exception('O Seguro, para "Envio Mini", quando informado, precisa ser maior que R$ 12,25.');
             }
         }
 
         // Validacoes Seguro para Sedex e PAC
         if ($data_post['forma_envio'] == 'SEDEX' || $data_post['forma_envio'] == 'PAC') {
             if ($data_post['seguro'] && (float) $data_post['seguro'] < 24.50) {
-                $this->error = 'O Seguro, para "PAC" e "SEDEX", quando informado, precisa ser maior que R$ 24,50.';
-                return false;
+                throw new \Exception('O Seguro, para "PAC" e "SEDEX", quando informado, precisa ser maior que R$ 24,50.');
+                
             }
 
             if ($data_post['forma_envio'] == 'PAC') {
                 if ((float) $data_post['seguro'] > 3000) {
-                    $this->error = 'Em formas de envio "PAC" o Seguro informado não pode ser maior que R$ 3000.';
-                    return false;
+                    throw new \Exception('Em formas de envio "PAC" o Seguro informado não pode ser maior que R$ 3000.');
+                    
                 }
             } else {
                 if ((float) $data_post['seguro'] > 10000) {
-                    $this->error = 'Em formas de envio "SEDEX" o Seguro informado não pode ser maior que R$ 10000.';
-                    return false;
+                    throw new \Exception('Em formas de envio "SEDEX" o Seguro informado não pode ser maior que R$ 10000.');
+                    
                 }
             }
         }
-
+       
         // CEP vem da API | Plugin | Webservice
         $info_remetente = false;
         if (isset($post['cep_origem'])) {
             $post['cep_origem'] = preg_replace('/[^0-9]/', '', $post['cep_origem']);
-            $info_remetente = app('App\Http\Controllers\UserController')->getUserRemetenteByCep($post['cep_origem'], $user->id);
+            $info_remetente = app(User::class)->getUserRemetenteByCep($post['cep_origem'], $user->id);
             if (!$info_remetente) {
-                $this->error = "Falha ao obter Endereço do Remetente (CEP: " . $post['cep_origem'] . " não cadastrado no perfil Manda Bem), Contate suporte.";
-                return false;
+                throw new \Exception("Falha ao obter Endereço do Remetente (CEP: " . $post['cep_origem'] . " não cadastrado no perfil Manda Bem), Contate suporte.");
+               
             }
             $data_post['user_remetente_id'] = $info_remetente->id;
 
@@ -530,10 +551,10 @@ class Envio extends Authenticatable
         } else {
             // CEP vem de Multi-remetente para ENVIO NORMAL e REVERSA
             if (isset($post['remetente_id']) && (int) $post['remetente_id']) {
-                $info_remetente = app('App\Http\Controllers\UserController')->getUserRemetente($post['remetente_id'], $user->id);
+                $info_remetente = app(User::class)->getUserRemetente($post['remetente_id'], $user->id);
                 if (!$info_remetente) {
-                    $this->error = "Falha ao obter Endereço do Remetente, Contate suporte.";
-                    return false;
+                    throw new \Exception("Falha ao obter Endereço do Remetente, Contate suporte.");
+                    
                 }
                 $data_post['user_remetente_id'] = $info_remetente->id;
                 $param_consulta['cep_origem'] = $info_remetente->cep;
@@ -544,10 +565,11 @@ class Envio extends Authenticatable
                 $param_consulta['cep_origem'] = $user->CEP;
             }
         }
+        
         if (isset($data_post['AR']) && $data_post['AR'] == 'S') {
             $param_consulta['AR'] = true;
         }
-
+        
         // Ajuste industrial
         if (isset($post['tipo_contrato']) && $post['tipo_contrato'] == 'industrial' && $data_post['type'] == 'NORMAL') {
             $param_consulta['is_industrial'] = true;
@@ -555,17 +577,12 @@ class Envio extends Authenticatable
 
         // Config
         $user_config = $userModel->getConfig($user);
-
+       
         // Setando Industrial para o usuário
         if ((isset($user_config['config_enable_industrial']) && (int) $user_config['config_enable_industrial']) || ($user->id == 6727 || $user->id == 16947 || $user->id == 62885)) {
             $param_consulta['is_industrial'] = true;
         }
-
-        if (request()->server('REMOTE_ADDR') == '177.25.215.226') {
-            print_r($param_consulta);
-            exit;
-        }
-
+        
         // Mudar consulta REVERSA
         if ($data_post['type'] == 'NORMAL') {
             $data_post['CEP_origem'] = $param_consulta['cep_origem'];
@@ -577,7 +594,7 @@ class Envio extends Authenticatable
             // Invertendo para salvar o CEP como CEP Destino | CEP em tb envios será sempre o Destino
             $data_post['CEP'] = $param_consulta['cep_destino'];
         }
-
+        
         // VERIFICAR DISPONIBILIDADE DO SERVIÇO PARA ESTAS MODALIDADES
         if ($param_consulta['forma_envio'] == 'SEDEX HOJE' || $param_consulta['forma_envio'] == 'SEDEX 10' || $param_consulta['forma_envio'] == 'SEDEX 12') {
             $param_consulta['is_industrial'] = false;
@@ -590,8 +607,8 @@ class Envio extends Authenticatable
             ]);
 
             if ($is_servico_disponivel != 'ok') {
-                $this->error = "CEP de origem não pode postar para CEP destino utilizando a modalidade " . $param_consulta['forma_envio'];
-                return false;
+                throw new \Exception("CEP de origem não pode postar para CEP destino utilizando a modalidade " . $param_consulta['forma_envio']);
+                
             }
         }
 
@@ -599,7 +616,7 @@ class Envio extends Authenticatable
         // para PAC mini vamos simular o valor do PAC comum para métrica de Balcão
         if ($param_consulta['forma_envio'] == 'PACMINI') {
             $param_consulta['forma_envio'] = 'PAC';
-            $return = $this->simule_envio($param_consulta);
+            $return = $envioModel->simuleEnvio($param_consulta);
 
             if (!$return) {
                 return false;
@@ -609,13 +626,15 @@ class Envio extends Authenticatable
             $param_consulta['cod_empresa'] = '18086160';
             $param_consulta['senha_empresa'] = '27347642';
             $param_consulta['forma_envio'] = 'PACMINI';
-            $return_contrato = $this->simule_envio($param_consulta);
+            $return_contrato = $envioModel->simuleEnvio($param_consulta);
 
             if (!$return_contrato) {
                 return false;
             }
         } else {
-            $return = $this->simule_envio($param_consulta);
+           
+            $return = $envioModel->simuleEnvio($param_consulta);
+           
 
             if (!$return) {
                 return false;
@@ -624,7 +643,7 @@ class Envio extends Authenticatable
 
             $param_consulta['cod_empresa'] = '18086160';
             $param_consulta['senha_empresa'] = '27347642';
-            $return_contrato = $this->simule_envio($param_consulta);
+            $return_contrato = $envioModel->simuleEnvio($param_consulta);
 
             if (!$return_contrato) {
                 return false;
@@ -636,17 +655,19 @@ class Envio extends Authenticatable
             $taxa_mandabem = 0; 
             if (true) {
                 $param_consulta['cal_industrial'] = true;
-                $return_industrial = $this->simule_envio($param_consulta);
+                $return_industrial = $envioModel->simuleEnvio($param_consulta);
                 $data_post['valor_industrial'] = preg_replace('/,/', '.', $return_industrial['valor']);
             }
         } else {
-            $taxa_mandabem = app('App\Http\Controllers\YourController')->getTaxaEnvio([
+           
+            $taxa_mandabem = $envioModel->getTaxaEnvio([
                 'valor_envio' => $valor_contrato,
                 'forma_envio' => $data_post['forma_envio'],
                 'grupo_taxa_pacmini' => $user->grupo_taxa_pacmini
             ]);
+           
         }
-
+        
         $data_post['taxa_mandabem'] = $taxa_mandabem;
 
         $data_post['type'] = strtoupper($post['type']);
@@ -697,7 +718,7 @@ class Envio extends Authenticatable
                 }
             }
         }
-    
+       
         if (isset($post['ref_id']) && strlen(trim($post['ref_id']))) {
             // || $post['user_id'] == '5'
             if ($post['user_id'] == '426' || $post['user_id'] == '873') {
@@ -707,8 +728,8 @@ class Envio extends Authenticatable
                     ->first();
         
                 if ($has_pedido) {
-                    $this->error = "Pedido de numero " . (int) $post['ref_id'] . " já possui envio gerado.";
-                    return false;
+                    throw new \Exception("Pedido de numero " . (int) $post['ref_id'] . " já possui envio gerado.");
+                   
                 }
             }
         
@@ -754,11 +775,7 @@ class Envio extends Authenticatable
             $data_post['ref_id_api_source'] = $post['ref_id_api_source'] ?? null;
         }
         
-        if($post['integration']){
-            $data_post['integration'] = $post['integration'];
-        }
-        
-        if ($post['integration']) {
+        if(isset($post['integration'])){
             $data_post['integration'] = $post['integration'];
         }
         
@@ -776,7 +793,7 @@ class Envio extends Authenticatable
             $data_post['validado'] = 1;
         }
         
-        if ($error_description_cubagem[0]) {
+        if (isset($error_description_cubagem[0])) {
             $data_post['error_description'] = $error_description_cubagem[0];
             $data_post['validado'] = 1;
         }
@@ -789,15 +806,16 @@ class Envio extends Authenticatable
         
         // Ajuste º
         $data_post['numero'] = preg_replace('/º|\'|"/', '', $data_post['numero']);
-        
+       
         if (isset($param_consulta['is_industrial']) && $param_consulta['is_industrial']) {
             $data_post['etiqueta_correios'] = 'industrial';
         }
         
-        if ($post['correio_amigo']) {
+      
+        if (isset($post['correio_amigo'])) {
             $data_post['remetente_amigo'] = $post['correio_amigo'];
         }
-    
+
         if (isset($post['id']) && (int) $post['id']) {
             $alter_env = DB::table('envios')->where('id', $post['id'])->first();
         
@@ -817,14 +835,16 @@ class Envio extends Authenticatable
         
             DB::table('alt_registros_log')->insert($alteracoes);
         } else {
+            unset($data_post['_token'],$data_post['remetente']);
+            
             $exec = DB::table('envios')->insert($data_post);
-        
+            
             if (!$exec) {
                 abort(500, "Falha ao salvar Envio, tente novamente mais tarde");
             }
         }
         
-        $envio_id = isset($post['id']) && (int) $post['id'] ? $post['id'] : DB::table('envios')->insertGetId($data_post);
+        $envio_id = isset($post['id']) && (int) $post['id'] ? $post['id'] : DB::table('envios')->latest('id')->first()->id;
         
         // Salvando endereco remetente 
         if (true) {
@@ -859,17 +879,7 @@ class Envio extends Authenticatable
             }
         
             if ($address_origin) {
-                // Atualizar registro existente
-                DB::table('envio_origem')
-                    ->where('id', $address_origin->id)
-                    ->where('envio_id', $envio_id)
-                    ->update($data_envio_origem);
-            } else {
-                // Inserir novo registro
-                $data_envio_origem['date_insert'] = now();
-                $data_envio_origem['envio_id'] = $envio_id;
-                
-                DB::table('envio_origem')->insert($data_envio_origem);
+                // Atualizar registro existentelarguraio_origem);
             }
         }
         
@@ -881,6 +891,10 @@ class Envio extends Authenticatable
     {
         $taxaMandabem = 0;
 
+        $grupoTaxa = app(GrupoTaxa::class); 
+        $userModel = app(User::class);
+        $emailMaker = app(EmailMaker::class);
+
         $valorEnvio = $param['valor_envio'] ?? 0;
 
         if (isset($param['id_industrial'])) {
@@ -890,7 +904,7 @@ class Envio extends Authenticatable
                 $tabela = DB::selectOne("SELECT * FROM grupo_taxa WHERE id = ? AND tabela = ?", [$idGrupoIndustrial->grupo_taxa, 'industrial']);
                 
                 if ($tabela) {
-                    $taxaMandabem = app('grupo_taxa_model')->getTaxa($idGrupoIndustrial, $valorEnvio, true);
+                    $taxaMandabem = $grupoTaxa->getTaxa($idGrupoIndustrial, $valorEnvio, true);
                     return $taxaMandabem;
                 } else {
                     return 0;
@@ -903,13 +917,13 @@ class Envio extends Authenticatable
         // Tratamento PAC MINI 
         if (isset($param['forma_envio']) && $param['forma_envio'] == 'PACMINI') {
             if (isset($param['grupo_taxa_pacmini']) && (int) $param['grupo_taxa_pacmini']) {
-                $taxaMandabem = app('grupo_taxa_model')->getTaxa($param['grupo_taxa_pacmini'], $valorEnvio);
+                $taxaMandabem = $grupoTaxa->getTaxa($param['grupo_taxa_pacmini'], $valorEnvio);
             } else {
                 $param['grupo_taxa_pacmini'] = null;
 
                 // Se houver usuário
                 if ((int) auth()->id()) {
-                    $user = app('user_model')->get(auth()->id());
+                    $user = $userModel->get(auth()->id());
 
                     if ((int) $user->grupo_taxa_pacmini) {
                         $param['grupo_taxa_pacmini'] = $user->grupo_taxa_pacmini;
@@ -921,11 +935,11 @@ class Envio extends Authenticatable
                     $param['grupo_taxa_pacmini'] = 14;
                 }
 
-                $taxaMandabem = app('grupo_taxa_model')->getTaxa($param['grupo_taxa_pacmini'], $valorEnvio);
+                $taxaMandabem = $grupoTaxa->getTaxa($param['grupo_taxa_pacmini'], $valorEnvio);
             }
 
             if (!$taxaMandabem) {
-                app('email_maker')->msg([
+                $emailMaker->msg([
                     'to' => 'reginaldo@mandabem.com.br',
                     'subject' => 'GRUPO TAXA PAC MINI SEM TAXA',
                     'msg' => "Param:<br><pre>" . print_r($param, true) . "</pre>"
@@ -941,7 +955,7 @@ class Envio extends Authenticatable
         // Se não houver taxa, pegamos o grupo do usuário logado
         if (!isset($param['grupo_taxa']) || !(int) $param['grupo_taxa']) {
             if ((int) auth()->id()) {
-                $user = app('user_model')->get(auth()->id());
+                $user = $userModel->get(auth()->id());
 
                 if ((int) $user->grupo_taxa) {
                     $param['grupo_taxa'] = $user->grupo_taxa;
@@ -952,7 +966,7 @@ class Envio extends Authenticatable
         }
 
         if (isset($param['grupo_taxa']) && (int) $param['grupo_taxa']) {
-            $taxaMandabem = app('grupo_taxa_model')->getTaxa($param['grupo_taxa'], $valorEnvio);
+            $taxaMandabem = $grupoTaxa->getTaxa($param['grupo_taxa'], $valorEnvio);
         } else {
             if ($valorEnvio <= 14) {
                 $taxaMandabem = 1.07;
@@ -988,7 +1002,7 @@ class Envio extends Authenticatable
                 $taxaMandabem = 32.00;
             }
         }
-
+        
         return $taxaMandabem;
     }
 
@@ -1265,9 +1279,11 @@ class Envio extends Authenticatable
         return $del;
     }
 
-    public function getPesos($key = null)
+    public static function getPesos($key = null)
     {
-        $user_id = session('user_id');
+        
+        $user_id = session('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+
 
         if (isset($user_id) && $user_id == 5) {
             $pesos = [
@@ -1331,7 +1347,7 @@ class Envio extends Authenticatable
             // Substituído por função Loop
             if (true) {
                 $pesos = [];
-                $pesos['0.300'] = 'Até 300g';
+                $pesos['0'] = 'Até 300g';
 
                 for ($x = 1; $x <= 30; $x++) {
                     $pesos[$x] = $x == 1 ? 'De 300g a 1Kg' : 'De ' . ($x - 1) . 'Kg a ' . $x . 'Kg';
@@ -1344,6 +1360,40 @@ class Envio extends Authenticatable
 
             return $pesos;
         }
+    }
+
+   public static function get_lista_estados($key_sigla = false) {
+        $estados = array(
+            'AC' => 'Acre',
+            'AL' => 'Alagoas',
+            'AP' => 'Amapá',
+            'AM' => 'Amazonas',
+            'BA' => 'Bahia',
+            'CE' => 'Ceará',
+            'DF' => 'Distrito Federal',
+            'ES' => 'Espírito Santo',
+            'GO' => 'Goiás',
+            'MA' => 'Maranhão',
+            'MT' => 'Mato Grosso',
+            'MS' => 'Mato Grosso do Sul',
+            'MG' => 'Minas Gerais',
+            'PA' => 'Pará',
+            'PB' => 'Paraíba',
+            'PR' => 'Paraná',
+            'PE' => 'Pernambuco',
+            'PI' => 'Piauí',
+            'RJ' => 'Rio de Janeiro',
+            'RN' => 'Rio Grande do Norte',
+            'RS' => 'Rio Grande do Sul',
+            'RO' => 'Rondônia',
+            'RR' => 'Roraima',
+            'SC' => 'Santa Catarina',
+            'SP' => 'São Paulo',
+            'SE' => 'Sergipe',
+            'TO' => 'Tocantins',
+        );
+        
+        return $estados;
     }
 
     public function cancelEnvio($data = [])

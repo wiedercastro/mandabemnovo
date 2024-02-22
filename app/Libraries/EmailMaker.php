@@ -1,254 +1,230 @@
 <?php
+namespace App\Libraries;
+use Illuminate\Support\Facades\Mail;
 
-defined('BASEPATH') or exit('No direct access');
+class EmailMaker 
+{
 
-class Email_maker {
-
-    private $ci;
     private $error;
     protected $obj_email = null;
 
-    public function __construct() {
-        $this->ci = &get_instance();
-    }
-
-    public function get_error() {
+    public function getError() {
         return $this->error;
     }
 
-    public function sendAmazon($data = []) 
+    public function sendAmazon($data = [])
     {
-        $config = Array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://email-smtp.sa-east-1.amazonaws.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'AKIAVA4QDQYXLDY7BJOI',
-            'smtp_pass' => 'BDB/SJR3ouzpMGCOHvEBKfYmvrE3DKmmXenQDMNnvUVx',
-            'mailtype' => 'html',
-            'charset' => 'UTF-8',
-            'wordwrap' => TRUE
-        );
-        
-        $email_copy = 'reginaldo@mandabem.com.br';
-        $this->ci->load->library('email', $config);
-        $this->obj_email = new CI_Email($config);
-        
+        // Configurações de e-mail
+        $config = [
+            'driver' => 'smtp',
+            'host' => 'email-smtp.sa-east-1.amazonaws.com',
+            'port' => 465,
+            'username' => 'AKIAVA4QDQYXLDY7BJOI',
+            'password' => 'BDB/SJR3ouzpMGCOHvEBKfYmvrE3DKmmXenQDMNnvUVx',
+            'encryption' => 'ssl',
+            'from' => ['address' => 'info@updateenvio.com.br', 'name' => ''], // Seu endereço de e-mail e nome
+            'reply_to' => ['address' => 'info@updateenvio.com.br', 'name' => ''],
+            'charset' => 'utf-8',
+            'newline' => "\r\n",
+        ];
+
+        // Configuração do e-mail
+        Mail::send([], [], function ($message) use ($data, $config) {
+            if (isset($data['unique']) && $data['unique']) {
+                // Configuração para e-mail único
+                $this->configureSingleEmail($message, $data, $config);
+            } else {
+                // Configuração para e-mails múltiplos
+                $this->configureMultipleEmails($message, $data, $config);
+            }
+        });
+    }
+
+    private function configureSingleEmail($message, $data, $config)
+    {
         if (isset($data['in_reply_to']) && $data['in_reply_to']) {
-            $this->obj_email->set_header('References', $data['in_reply_to']);
-            $this->obj_email->set_header('In-Reply-To', $data['in_reply_to']);
-        }
-        
-
-        if (isset($data['unique']) && $data['unique']) {
-            $this->obj_email->set_newline("\r\n");
-            $from = isset($data['from']) ? $data['from'] : 'info@updateenvio.com.br';
-            $message = isset($data['msg']) ? $data['msg'] : '';
-
-            $to = isset($data['to']) ? $data['to'] : 'regygom@gmail.com';
-            $subject = isset($data['subject']) ? $data['subject'] : '--';
-            
-            if(isset($data['name_from'])) {
-                $data['name_from'] = preg_replace('/:|\!/', '', $data['name_from']);
-                $data['name_from'] = preg_replace('/Ôxe/', 'Oxe', $data['name_from']);
-            }
-            $this->obj_email->from($from, (isset($data['name_from']) ? $data['name_from'] : ''));
-            
-            if(isset($data['email_from'])) {
-                $this->obj_email->reply_to($data['email_from'], (isset($data['name_from']) ? $data['name_from'] : ''));
-            } else {
-                $this->obj_email->reply_to('info@updateenvio.com.br', (isset($data['name_from']) ? $data['name_from'] : ''));
-            }
-            $this->obj_email->to($to);
-            if(isset($data['email_replicate'])) {
-                $this->obj_email->bcc($data['email_replicate']);
-            }  
-             
-            $this->obj_email->subject($subject);
-            $this->obj_email->message($message);
-
-            $send = ($this->obj_email->send(true));
-
-            if (!$send) {
-                $this->error = $this->obj_email->print_debugger();
-                return false;
-            }
-
-            return true;
-
+            $message->getHeaders()->addTextHeader('References', $data['in_reply_to']);
+            $message->getHeaders()->addTextHeader('In-Reply-To', $data['in_reply_to']);
         }
 
+        $from = isset($data['from']) ? $data['from'] : $config['from']['address'];
+        $name_from = isset($data['name_from']) ? $data['name_from'] : $config['from']['name'];
+        $message->from($from, $name_from);
+
+        $email_from = isset($data['email_from']) ? $data['email_from'] : $config['reply_to']['address'];
+        $message->replyTo($email_from, $name_from);
+
+        $to = isset($data['to']) ? $data['to'] : 'regygom@gmail.com';
+        $message->to($to);
+
+        if (isset($data['email_replicate'])) {
+            $message->bcc($data['email_replicate']);
+        }
+
+        $subject = isset($data['subject']) ? $data['subject'] : '--';
+        $message->subject($subject);
+
+        $message->setBody($data['msg'], 'text/html');
+    }
+
+    private function configureMultipleEmails($message, $data, $config)
+    {
         $main_sent = [];
-        foreach ($data['emails'] as $params) {
-            $this->obj_email->set_newline("\r\n");
-            $from = 'info@updateenvio.com.br';
-            $message = isset($params['msg']) ? $params['msg'] : '';
 
-            $to = isset($params['to']) ? $params['to'] : 'regygom@gmail.com';
-            $subject = isset($params['subject']) ? $params['subject'] : '--';
-            
-            if(isset($params['name_from'])) {
-                $params['name_from'] = preg_replace('/:|\!/', '', $params['name_from']);
-                $params['name_from'] = preg_replace('/Ôxe/', 'Oxe', $params['name_from']);
-            }
-            
-                $this->obj_email->reply_to($params['email_from'], (isset($params['name_from']) ? $params['name_from'] : ''));
-                $this->obj_email->from($from, (isset($params['name_from']) ? $params['name_from'] : ''));
-            $this->obj_email->to($to);
-            
-            if(isset($data['email_replicate'])) {
-                $this->obj_email->bcc($data['email_replicate']);
-            }            
-            $this->obj_email->subject($subject);
-            $this->obj_email->message($message);
-            if ($this->obj_email->send(true)) {
-                $main_sent[$params['ref_id']] = 1;
+        foreach ($data['emails'] as $params) {
+            $this->configureSingleEmail($message, $params, $config);
+
+            if (Mail::send()->failures()) {
+                $this->error = 'Erro no envio de e-mail para: ' . implode(', ', Mail::failures());
             } else {
-                $this->error = $this->obj_email->print_debugger();
+                $main_sent[$params['ref_id']] = 1;
             }
         }
+
         return $main_sent;
     }
-    # Email sends
 
-    public function sendInMassa($data) 
+    public function sendInMassa($data)
     {
-
-        if (!count($data['emails'])) {
-            echo "Sem lista de email fornecida\n";
+        if (empty($data['emails'])) {
+            echo "Sem lista de e-mails fornecida\n";
             return;
         }
 
-        $config = Array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://smtp.gmail.com',
-        //            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'informativo@mandabem.com.br', // change it to yours
-            'smtp_pass' => '5*eV%S2Zws', // change it to yours - 
+        $config = [
+            'driver' => 'smtp',
+            'host' => 'smtp.gmail.com',
+            'port' => 587,
+            'encryption' => 'tls',
+            'username' => 'informativo@mandabem.com.br',
+            'password' => '5*eV%S2Zws',
+            'from' => ['address' => 'informativo@mandabem.com.br', 'name' => ''],
+            'reply_to' => ['address' => 'informativo@mandabem.com.br', 'name' => ''],
             'mailtype' => 'html',
             'charset' => 'UTF-8',
-            'wordwrap' => TRUE
-        );
+            'wordwrap' => TRUE,
+        ];
 
         if (isset($data['credenciais'])) {
-            $config['smtp_user'] = $data['credenciais']['user'];
-            $config['smtp_pass'] = $data['credenciais']['pass'];
+            $config['username'] = $data['credenciais']['user'];
+            $config['password'] = $data['credenciais']['pass'];
         }
 
         if (isset($data['account_email'])) {
-            $config['smtp_user'] = $data['account_email'];
-            $config['smtp_pass'] = $data['account_pass'];
+            $config['username'] = $data['account_email'];
+            $config['password'] = $data['account_pass'];
         }
 
-        $this->ci->load->library('email', $config);
-        $this->obj_email = new CI_Email($config);
         $main_sent = [];
+
         foreach ($data['emails'] as $params) {
-            $this->obj_email->set_newline("\r\n");
-            $from = isset($params['from']) ? $params['from'] : 'informativo@mandabem.com.br';
-            $message = isset($params['msg']) ? $params['msg'] : '';
+            Mail::send([], [], function ($message) use ($params, $config) {
+                $this->configureEmailMessage($message, $params, $config);
+            });
 
-            $to = isset($params['to']) ? $params['to'] : 'regygom@gmail.com';
-            $subject = isset($params['subject']) ? $params['subject'] : '--';
-
-            if (isset($params['email_from'])) {
-                $this->obj_email->from($params['email_from'], (isset($params['name_from']) ? $params['name_from'] : ''));
-                $this->obj_email->reply_to($params['email_from'], (isset($params['name_from']) ? $params['name_from'] : ''));
+            if (Mail::failures()) {
+                $this->error = 'Erro no envio de e-mail para: ' . implode(', ', Mail::failures());
             } else {
-                $this->obj_email->from($from, $this->ci->config->item('site_name'));
-                $this->obj_email->reply_to($from, $this->ci->config->item('site_name'));
-            }
-            if (isset($params['bcc']) && $params['bcc'] != null) {
-                $this->obj_email->bcc($params['bcc']);
-            } else {
-                $this->obj_email->to($to);
-            }
-            $this->obj_email->subject($subject);
-            $this->obj_email->message($message);
-            if ($this->obj_email->send(true)) {
-        //                return true;
                 $main_sent[$params['ref_id']] = 1;
-            } else {
-                $this->error = $this->obj_email->print_debugger();
             }
         }
+
         return $main_sent;
     }
 
-    public function sendMail($params = []) 
+    private function configureEmailMessage($message, $params, $config)
     {
+        $message->setNewline("\r\n");
 
+        $from = isset($params['from']) ? $params['from'] : $config['from']['address'];
+        $message->from($from, isset($params['name_from']) ? $params['name_from'] : '');
+
+        if (isset($params['email_from'])) {
+            $message->replyTo($params['email_from'], isset($params['name_from']) ? $params['name_from'] : '');
+        } else {
+            $message->replyTo($config['reply_to']['address'], $config['reply_to']['name']);
+        }
+
+        if (isset($params['bcc']) && $params['bcc'] != null) {
+            $message->bcc($params['bcc']);
+        } else {
+            $message->to(isset($params['to']) ? $params['to'] : 'regygom@gmail.com');
+        }
+
+        $message->subject(isset($params['subject']) ? $params['subject'] : '--');
+        $message->html(isset($params['msg']) ? $params['msg'] : '');
+    }
+
+    public function sendMail($params = [])
+    {
         $from = isset($params['from']) ? $params['from'] : 'marcos@mandabem.com.br';
 
         // Configuração para gmail
-        $config = Array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://smtp.gmail.com',
-            //            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'marcos@mandabem.com.br', // change it to yours
-            'smtp_pass' => '5*eV%S2Zws', // change it to yours - 
+        $config = [
+            'driver' => 'smtp',
+            'host' => 'smtp.gmail.com',
+            'port' => 587,
+            'encryption' => 'tls',
+            'username' => 'marcos@mandabem.com.br', // change it to yours
+            'password' => '5*eV%S2Zws', // change it to yours
+            'from' => ['address' => $from, 'name' => ''], // Seu endereço de e-mail e nome
+            'reply_to' => ['address' => $from, 'name' => ''],
             'mailtype' => 'html',
             'charset' => 'UTF-8',
-            'wordwrap' => TRUE
-        );
+            'wordwrap' => TRUE,
+        ];
 
         if (isset($params['credenciais'])) {
-            $config['smtp_user'] = $params['credenciais']['user'];
-            $config['smtp_pass'] = $params['credenciais']['pass'];
+            $config['username'] = $params['credenciais']['user'];
+            $config['password'] = $params['credenciais']['pass'];
         }
 
         if (isset($params['account_email'])) {
-            $config['smtp_user'] = $params['account_email'];
-            $config['smtp_pass'] = $params['account_pass'];
+            $config['username'] = $params['account_email'];
+            $config['password'] = $params['account_pass'];
         }
 
         $message = isset($params['msg']) ? $params['msg'] : '';
 
-        $to = isset($params['to']) ? $params['to'] : 'regygom@gmail.com';
-        $subject = isset($params['subject']) ? $params['subject'] : '--';
+        // Configuração do e-mail
+        Mail::send([], [], function ($message) use ($params, $config) {
+            if (isset($params['in_reply_to']) && $params['in_reply_to']) {
+                $message->getHeaders()->addTextHeader('References', $params['in_reply_to']);
+                $message->getHeaders()->addTextHeader('In-Reply-To', $params['in_reply_to']);
+            }
+            $to = isset($params['to']) ? $params['to'] : 'regygom@gmail.com';
+            $subject = isset($params['subject']) ? $params['subject'] : '--';
 
-        $this->ci->load->library('email', $config);
-        $this->obj_email = new CI_Email($config);
-        $this->obj_email->set_newline("\r\n");
-        
-        if (isset($params['in_reply_to']) && $params['in_reply_to']) {
-            $this->obj_email->set_header('References', $params['in_reply_to']);
-            $this->obj_email->set_header('In-Reply-To', $params['in_reply_to']);
-        }
-
-        // Anexos 
-        if (isset($params['attach']) && count($params['attach'])) {
-            foreach ($params['attach'] as $attach) {
-                if (isset($attach['path'])) {
-                    $this->obj_email->attach($attach['path'], 'attachment', $attach['name']);
-                } else if (isset($attach['content'])) {
-                    $this->obj_email->attach($attach['content'], 'attachment', $attach['name'], $attach['mime']);
+            // Anexos 
+            if (isset($params['attach']) && count($params['attach'])) {
+                foreach ($params['attach'] as $attach) {
+                    if (isset($attach['path'])) {
+                        $message->attach($attach['path'], ['as' => $attach['name']]);
+                    } elseif (isset($attach['content'])) {
+                        $message->attachData($attach['content'], $attach['name'], ['mime' => $attach['mime']]);
+                    }
                 }
             }
-        }
 
-        if (isset($params['email_from'])) {
-            $this->obj_email->from($params['email_from'], (isset($params['name_from']) ? $params['name_from'] : ''));
-            $this->obj_email->reply_to($params['email_from'], (isset($params['name_from']) ? $params['name_from'] : ''));
-        } else {
-            $this->obj_email->from($from, $this->ci->config->item('site_name'));
-            $this->obj_email->reply_to($from, $this->ci->config->item('site_name'));
-        }
-        if (isset($params['bcc']) && $params['bcc'] != null) {
-            $this->obj_email->bcc($params['bcc']);
-        } else {
-            $this->obj_email->to($to);
-        }
-        $this->obj_email->subject($subject);
-        $this->obj_email->message($message);
-        if ($this->obj_email->send()) {
-            return true;
-        }
+            if (isset($params['email_from'])) {
+                $message->from($params['email_from'], (isset($params['name_from']) ? $params['name_from'] : ''));
+                $message->replyTo($params['email_from'], (isset($params['name_from']) ? $params['name_from'] : ''));
+            } else {
+                $message->from($config['from']['address'], $config['from']['name']);
+                $message->replyTo($config['reply_to']['address'], $config['reply_to']['name']);
+            }
 
-        $this->error = $this->obj_email->print_debugger();
+            if (isset($params['bcc']) && $params['bcc'] != null) {
+                $message->bcc($params['bcc']);
+            } else {
+                $message->to($to);
+            }
 
-        return false;
+            $message->subject($subject);
+            $message->setBody($message, 'text/html');
+        });
+
+        return true;  
     }
 
     public function msg($param = array()) 

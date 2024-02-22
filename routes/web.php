@@ -21,6 +21,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Gerar envios
   */
   Route::get('/gerar', [GerarEnvioController::class, 'index'])->name('gerar');
+  Route::post('/saveEnvio', [GerarEnvioController::class, 'saveEnvio'])->name('saveEnvio');
+  Route::get('/obter-dados-peso', [GerarEnvioController::class, 'buscarPeso'])->name('retornarPeso');
+  Route::get('/obter-dados-estado', [GerarEnvioController::class, 'buscarEstado'])->name('retornarEstado');
+  Route::post('/buscarDestinatiro', [GerarEnvioController::class, 'buscarDestinatiro'])->name('buscarDestinatiro');
+  Route::get('/excluirEnvio/{id}',[GerarEnvioController::class, 'excluirEnvio'])->name('excluirEnvio');
+  Route::post('/excluirEnviosSelecionados', [GerarEnvioController::class, 'excluirEnviosSelecionados'])->name('excluirEnviosSelecionados');
 
   /*
   Etiquetas
@@ -35,9 +41,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('coleta/{id}',[ColetasController::class, 'getlistItens'])->name('coleta.show');
 
    /*
-  Coletas
+  Soap
   */
-  Route::get('/buscacep',[EnderecoController::class, 'getCEp'])->name('endereco.show');
+  Route::get('/buscaCep/{cep}',[EnderecoController::class, 'getCEp'])->name('endereco.show');
 
   Route::get('/soap', [SoapController::class, 'index']);
 
