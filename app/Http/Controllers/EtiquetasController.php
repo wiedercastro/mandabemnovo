@@ -19,7 +19,24 @@ class EtiquetasController extends Controller
       ->join('envios','coletas.id','=','envios.coleta_id')
       ->select('coletas.id', DB::raw('Count(envios.id) as qte'), 
                              DB::raw('sum(envios.valor_total) as total'), 
-                             DB::raw('sum(envios.valor_desconto) as desconto'),'coletas.type')
+                             DB::raw('sum(envios.valor_desconto) as desconto'),
+                              'coletas.type',
+                              'envios.email',
+                              'envios.forma_envio',
+                              'envios.logradouro',
+                              'envios.cep',
+                              'envios.numero',
+                              'envios.complemento',
+                              'envios.destinatario',
+                              'envios.cidade',
+                              'envios.estado',
+                              'envios.peso',
+                              'envios.seguro',
+                              'envios.ar',
+                              'envios.prazo',
+                              'envios.etiqueta_correios',
+                              'envios.date_postagem'
+                            )
       ->where("coletas.user_id","=",5)
       ->groupBy("coletas.id")
       ->paginate();

@@ -270,10 +270,6 @@
         </div>
       </div>
       <br>
-      {{-- <div class="text-4xl" style="margin-left: 5px;">
-      <h1 style="color:#728189"><b>Etiquetas</b></h1>
-      </div> --}}
-
       <table
         class="min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
         text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
