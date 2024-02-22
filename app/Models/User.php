@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use App\Libraries\DateUtils;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,6 +11,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
+use App\Libraries\EmailMaker;
+use App\Libraries\FormBuilder;
 
 class User extends Authenticatable
 {
@@ -100,6 +101,7 @@ class User extends Authenticatable
 
     public function getFields()
     {
+        $grupoTaxaModel = new GrupoTaxa();
         $listaEstados_ = getListaEstados(true);
         $listaEstados = [];
         foreach ($listaEstados_ as $id => $name) {
@@ -175,8 +177,8 @@ class User extends Authenticatable
             "config_enable_industrial" => ['type' => 'select', 'opts' => $listYesNo, 'label' => 'Habilitar Industrial', 'required' => false, 'no_show_empty' => true],
             "razao_social" => ['type' => 'text', 'label' => 'Razão Social', 'required' => false, 'placeholder' => 'Será o nome do Remetente nas etiquetas', 'maxlength' => '50'],
             "franquia_responsavel" => ['type' => 'select', 'opts' => $listaFranquias, 'label' => 'Franquia Responsavel', 'required' => false, 'cols' => [4, 8]],
-            "grupo_taxa" => ['type' => 'select', 'opts' => array($this->grupoTaxaModel->getList(['active' => true, 'application' => 'DEFAULT'])), 'label' => 'Grupo Taxa (PAC & SEDEX)', 'required' => true, 'cols' => [4, 8]],
-            "grupo_taxa_pacmini" => ['type' => 'select', 'opts' => array($this->grupoTaxaModel->getList(['active' => true, 'application' => 'PACMINI'])), 'label' => 'Grupo Taxa PAC Mini', 'required' => false, 'cols' => [4, 8]],
+            "grupo_taxa" => ['type' => 'select', 'opts' => array($grupoTaxaModel->getList(['active' => true, 'application' => 'DEFAULT'])), 'label' => 'Grupo Taxa (PAC & SEDEX)', 'required' => true, 'cols' => [4, 8]],
+            "grupo_taxa_pacmini" => ['type' => 'select', 'opts' => array($grupoTaxaModel->getList(['active' => true, 'application' => 'PACMINI'])), 'label' => 'Grupo Taxa PAC Mini', 'required' => false, 'cols' => [4, 8]],
         ];
 
         return $this->fields;
@@ -186,11 +188,10 @@ class User extends Authenticatable
     {
         return $this->error;
     }
-
     public function saveUser($request, $skip_val_cpf = false)
     {
         $fields = $this->getFields();
-
+        $formBuilder =  new FormBuilder();
         // Setando grupo default: 3 = Cliente sem Contrato
         if (!$request->has('user_group_id') || !$request->input('user_group_id')) {
             $request->merge(['user_group_id' => 3]);
@@ -204,92 +205,163 @@ class User extends Authenticatable
             $request->merge(['CEP' => preg_replace('/[^0-9]/', '', $request->input('CEP'))]);
         }
 
-        $validator = Validator::make($request->all(), $fields);
+        $data_post = $formBuilder->validadeData($fields, $request);
 
-        if ($validator->fails()) {
-            $this->error = $validator->errors()->first();
-            return false;
-        }
+        if (!$data_post) {
+            $this->error = $formBuilder->getErrorValidation();
+            return FALSE;
+        }else{
 
-        $data_post = $this->mapData($request->all());
+            $config = array();
 
-        // Config
-        $config = $this->extractConfig($data_post);
+            if (isset($data_post['config_enable_autocomplete'])) {
+                $config['config_enable_autocomplete'] = (int) $data_post['config_enable_autocomplete'];
+            }
 
-        if ($config) {
-            $data_post['config'] = serialize($config);
-        }
+            if (isset($data_post['config_enable_plp'])) {
+                $config['config_enable_plp'] = (int) $data_post['config_enable_plp'];
+            }
+            if (isset($data_post['config_enable_seguro'])) {
+                $config['config_enable_seguro'] = (int) $data_post['config_enable_seguro'];
+            }
+            if (isset($data_post['config_enable_sedex'])) {
+                $config['config_enable_sedex'] = (int) $data_post['config_enable_sedex'];
+            }
+            if (isset($data_post['config_enable_pac'])) {
+                $config['config_enable_pac'] = (int) $data_post['config_enable_pac'];
+            }
+            if (isset($data_post['config_enable_pacmini'])) {
+                $config['config_enable_pacmini'] = (int) $data_post['config_enable_pacmini'];
+            }
+            
+            if (isset($data_post['config_enable_cupom'])) {
+                $config['config_enable_cupom'] = (int) $data_post['config_enable_cupom'];
+            }
+            if (isset($data_post['config_enable_industrial'])) {
+                $config['config_enable_industrial'] = (int) $data_post['config_enable_industrial'];
+            }
 
-        $data_post['metodo_transferencia'] = $data_post['tipo_pix'] . '_' . $data_post['codigo_pix'];
+            if (isset($data_post['config_enable_afiliado'])) {
+                $config['config_enable_afiliado'] = (int) $data_post['config_enable_afiliado'];
+            }
+            if (isset($data_post['config_enable_sedex_hoje'])) {
+                $config['config_enable_sedex_hoje'] = (int) $data_post['config_enable_sedex_hoje'];
+            }
+            if (isset($data_post['config_enable_sedex_12'])) {
+                $config['config_enable_sedex_12'] = (int) $data_post['config_enable_sedex_12'];
+            }
 
-        // Remova campos desnecessários antes de salvar no banco de dados...
+            if (isset($data_post['config_etiquetas_por_pag'])) {
+                $config['config_etiquetas_por_pag'] = (int) $data_post['config_etiquetas_por_pag'];
+            }
+            if (isset($data_post['config_enable_manifestacao'])) {
+                $config['config_enable_manifestacao'] = (int) $data_post['config_enable_manifestacao'];
+            }
+            if (isset($data_post['config_num_boletos_permitidos'])) {
+                $config['config_num_boletos_permitidos'] = (int) $data_post['config_num_boletos_permitidos'];
+            }
+            if (isset($data_post['config_enable_view_nfse'])) {
+                $config['config_enable_view_nfse'] = (int) $data_post['config_enable_view_nfse'];
+            }
 
-        $data_post['cnpj'] = preg_replace('/[^0-9]/', '', $data_post['cnpj']);
+            if (!isset($post['id'])) {
+                $config['config_enable_manifestacao'] = 1;
+                $config['config_num_boletos_permitidos'] = 1;
+            }
+            $config['config_enable_cupom'] = 1;
+            if ($config) {
+                $data_post['config'] = serialize($config);
+            }
+            $data_post['metodo_transferencia'] = $data_post['tipo_pix'] . '_' . $data_post['codigo_pix'];
+            unset($data_post['config_enable_autocomplete']);
+            unset($data_post['config_enable_plp']);
+            unset($data_post['config_enable_seguro']);
+            unset($data_post['config_etiquetas_por_pag']);
+            unset($data_post['config_enable_manifestacao']);
+            unset($data_post['config_num_boletos_permitidos']);
+            unset($data_post['config_enable_view_nfse']);
 
-        if (isset($data_post['cpf']) && preg_replace('/[0-9^]/', '', $data_post['cpf']) == '06405298604') {
-            $data_post['status'] = 'BLOCK';
-        }
+            // mudar campos para $lista_alteraves = ['nome','telefone','...']; para evitar ter que por aqui
+            unset($data_post['config_enable_sedex']);
+            unset($data_post['config_enable_pac']);
+            unset($data_post['config_enable_pacmini']);
+            unset($data_post['config_enable_sedex_hoje']);
+            unset($data_post['config_enable_sedex_12']);
+            unset($data_post['config_enable_industrial']);
 
-        if (isset($data_post['password']) && strlen($data_post['password'])) {
-            $data_post['password'] = bcrypt($data_post['password']);
-        } else {
-            unset($data_post['password']);
-        }
+            unset($data_post['config_enable_cupom']);
+            
+            unset($data_post['config_enable_afiliado']);
+            unset($data_post['tipo_pix']);
+            unset($data_post['codigo_pix']);
 
-        $data_post['date_update'] = now();
+            $data_post['cnpj'] = preg_replace('/[^0-9]/', '', $data_post['cnpj']);
 
-        if ($data_post['login'] == '') {
-            $data_post['login'] = null;
-        }
+            if (isset($data_post['cpf']) && preg_replace('/[0-9^]/', '', $data_post['cpf']) == '06405298604') {
+                $data_post['status'] = 'BLOCK';
+            }
 
-        if ($request->has('id')) {
-            $oldUser = DB::table('user')->where('id', $request->input('id'))->first();
+            if (isset($data_post['password']) && strlen($data_post['password'])) {
+                $data_post['password'] = bcrypt($data_post['password']);
+            } else {
+                unset($data_post['password']);
+            }
 
-            if ($request->input('id') > 2370) {
-                if (!$oldUser->status && $request->input('status') == 'ACTIVE') {
-                    $this->sendEmailRegister($oldUser);
+            $data_post['date_update'] = now();
+
+            if ($data_post['login'] == '') {
+                $data_post['login'] = null;
+            }
+
+            if ($request->has('id')) {
+                $oldUser = DB::table('user')->where('id', $request->input('id'))->first();
+
+                if ($request->input('id') > 2370) {
+                    if (!$oldUser->status && $request->input('status') == 'ACTIVE') {
+                        $this->sendEmailRegister($oldUser);
+                    }
                 }
-            }
 
-            $oldDataU = DB::table('user')->where('id', $request->input('id'))->first();
+                $oldDataU = DB::table('user')->where('id', $request->input('id'))->first();
 
-            if (!strlen($oldDataU->status) && $request->input('status') == 'ACTIVE' && !strlen($oldDataU->date_approve)) {
-                $data_post['date_approve'] = now();
-            }
-
-            unset($data_post['volume_medio']);
-            $alterUser = DB::table('user')->where('id', $request->input('id'))->first();
-
-            DB::table('user')->where('id', $request->input('id'))->update($data_post);
-
-            $alteracoes = [
-                'id_user_alt' => session('user_id'),
-                'type' => 'EDICAO_USER',
-                'id_table' => $request->input('id'),
-                'data_before' => json_encode($alterUser),
-                'data_after' => json_encode($data_post),
-                'date_insert' => now(),
-            ];
-
-            DB::table('alt_registros_log')->insert($alteracoes);
-
-            $uId = $request->input('id');
-        } else {
-            if (isset($data_post['email'])) {
-                $emailExist = DB::table('user')->where('email', $data_post['email'])->first();
-
-                if ($emailExist) {
-                    $this->error = '<div class="alert alert-danger">O email informado já possui cadastro no sistema.</div>';
-                    return false;
+                if (!strlen($oldDataU->status) && $request->input('status') == 'ACTIVE' && !strlen($oldDataU->date_approve)) {
+                    $data_post['date_approve'] = now();
                 }
+
+                unset($data_post['volume_medio']);
+                $alterUser = DB::table('user')->where('id', $request->input('id'))->first();
+
+                DB::table('user')->where('id', $request->input('id'))->update($data_post);
+
+                $alteracoes = [
+                    'id_user_alt' => session('user_id'),
+                    'type' => 'EDICAO_USER',
+                    'id_table' => $request->input('id'),
+                    'data_before' => json_encode($alterUser),
+                    'data_after' => json_encode($data_post),
+                    'date_insert' => now(),
+                ];
+
+                DB::table('alt_registros_log')->insert($alteracoes);
+
+                $uId = $request->input('id');
+            } else {
+                if (isset($data_post['email'])) {
+                    $emailExist = DB::table('user')->where('email', $data_post['email'])->first();
+
+                    if ($emailExist) {
+                        $this->error = '<div class="alert alert-danger">O email informado já possui cadastro no sistema.</div>';
+                        return false;
+                    }
+                }
+
+                $data_post['date_insert'] = now();
+                DB::table('user')->insert($data_post);
+                $uId = DB::getPdo()->lastInsertId();
             }
 
-            $data_post['date_insert'] = now();
-            DB::table('user')->insert($data_post);
-            $uId = DB::getPdo()->lastInsertId();
+            return $uId;
         }
-
-        return $uId;
     }
 
     public function insert($data, &$error = [])
@@ -514,7 +586,7 @@ class User extends Authenticatable
 
     public function resolveLogin($username, $password)
     {
-        $emailMaker = app()->make('email_maker');
+        $emailMaker = new EmailMaker();
 
         if (preg_match('/@/', $username)) {
             $row = DB::table('user')->where('email', $username)->first();
@@ -629,6 +701,7 @@ class User extends Authenticatable
 
     public function generateKeyConfirmation($param, &$error = [])
     {
+        $emailMaker = new EmailMaker();
         $userEmail = $param['email'];
         $generateType = isset($param['type']) ? $param['type'] : 'recover';
 
@@ -690,9 +763,15 @@ class User extends Authenticatable
         }
 
         try {
-            Mail::raw($msg, function ($message) use ($email, $subject) {
-                $message->to($email)->subject($subject);
-            });
+            $emailMaker->msg(array(
+                'server_send' => 'google',
+                'to' => $email,
+                'subject' => $subject,
+                'msg' => $msg,
+                'email_from' => 'marcos@mandabem.com.br',
+                'name_from' => 'Marcos Castro',
+                'credenciais' => array('user' => 'marcos@mandabem.com.br', 'pass' => 'Maquinabem17!')
+            ));
         } catch (\Exception $e) {
             return false;
         }
@@ -904,6 +983,7 @@ class User extends Authenticatable
         $cs = (int) $request->input('current_step');
         $post = $request->input('post');
         $steps = $request->input('steps');
+        $emailMaker = new EmailMaker();
 
         if ($cs === 0) {
             $email = $post['email'];
@@ -1083,7 +1163,7 @@ class User extends Authenticatable
                             $insIndc = DB::table('indicacoes')->insert($paramInsIndc);
 
                             if (!$insIndc) {
-                                $this->emailMaker->msg([
+                                $emailMaker->msg([
                                     'subject' => 'Erro indicação Afiliados',
                                     'msg' => "ERROR:\nDados indicação:\n" . print_r($paramInsIndc, true) . "\nDados parâmetros:\n" . print_r($request->all(), true),
                                     'to' => 'reginaldo@mandabem.com.br,clayton@mandabem.com.br'
@@ -1224,6 +1304,7 @@ class User extends Authenticatable
 
     public function setConfig($user, $configName, $configValue)
     {
+        $dateUtils = new DateUtils();
         if (true) {
             if (!isset($user->id)) {
                 $user_ = new \stdClass();
@@ -1235,13 +1316,13 @@ class User extends Authenticatable
         $exist = DB::table('user_settings')->where(['name' => $configName, 'user_id' => $user->id])->first();
 
         if ($exist) {
-            $data['date_update'] = $this->dateUtils->getNow();
+            $data['date_update'] = $dateUtils->getNow();
             $data['value'] = $configValue;
             DB::table('user_settings')->where(['id' => $exist->id, 'user_id' => $user->id])->update($data);
         } else {
             $data['user_id'] = $user->id;
-            $data['date_insert'] = $this->dateUtils->getNow();
-            $data['date_update'] = $this->dateUtils->getNow();
+            $data['date_insert'] = $dateUtils->getNow();
+            $data['date_update'] = $dateUtils->getNow();
             $data['name'] = $configName;
             $data['value'] = $configValue;
             DB::table('user_settings')->insert($data);
@@ -1251,7 +1332,7 @@ class User extends Authenticatable
     public function sendEmailRegister($user = null)
     {
         $typeEmail = 'EMAIL_REGISTER';
-
+        $emailMaker = new EmailMaker();
         if ($user) {
             $exist = DB::table('email_notification')
                 ->where(['user_id' => $user->id, 'type' => $typeEmail])
@@ -1280,16 +1361,43 @@ class User extends Authenticatable
 
             foreach ($list as $i) {
                 $name = explode(' ', $i->name);
-
                 $body = '<p>Oi ' . $name[0] . ' , tudo bem?</p>';
-                // Restante do corpo do e-mail...
+                $body .= '<p>Aqui é o Marcos da Manda Bem!<br>';
+                $body .= 'Eu queria agradecer seu interesse na nossa plataforma e informar que o seu cadastro foi aprovado e já está ativo!<br>';
+                $body .= 'Segue o link de um vídeo rápido e fácil explicando como gerar as primeiras etiquetas!';
+                $body .= '</p>';
 
-                Mail::send([], [], function ($message) use ($i, $body) {
-                    $message->to($i->email)
-                        ->subject('ÓTIMA NOTÍCIA! O SEU CADASTRO NA MANDA BEM FOI APROVADO! :)')
-                        ->setBody($body, 'text/html')
-                        ->from('marcos@mandabem.com.br', 'Marcos Castro');
-                });
+                $body .= '<p><a href="' . asset('dist/video-tutorial.mp4') . '">' . asset('dist/video-tutorial.mp4') . '</a></p>';
+
+
+                $body .= '<p>Segue o link para acessar o sistema:<br>
+                    <a href="' . asset('login') . '">' . asset('login') . '</a><br>'
+                        . '"O seu login é o e-mail cadastrado"';
+                $body .= '</p><br>';
+
+                $body .= '<p>Algumas dúvidas importantes que podem surgir:</p>';
+                $body .= '<p>CUSTOS<br>Não existe nenhuma mensalidade, você só paga pelas etiquetas que gerar. (Os nossos ganhos pela intermediação já estão embutidos no valor da etiqueta)</p>';
+
+                $body .= '<p>PAGAMENTO<br>
+O pagamento pode ser feito por cartão de crédito via Paypal, você ativa as cobranças na ABA ENVIOS ou então você pode gerar um saldo na plataforma através de PIX, Mercado Pago ou boleto bancário todas as informações você encontra na ABA PAGAMENTOS dentro do nosso sistema.</p>';
+                $body .= '<p>Para tirar qualquer outra dúvida entrar em contato com a gente pelo Whatsapp 21 97922 7345 (o link está disponível no canto inferior a direita dentro do sistema).<br>
+A gente terá muito prazer em te atender.</p>';
+                $body .= '<p>Muito obrigado!</p>';
+
+                $body .= '--<br>
+                    Marcos Andre Castro<br>
+                    <a href="https://www.mandabem.com.br">mandabem.com.br</a><br>
+                    21 97922-7345';
+                 
+                $emailMaker->msg(array(
+                    'server_send' => 'google',
+                    'to' => $i->email,
+                    'subject' => 'ÓTIMA NOTÍCIA! O SEU CADASTRO NA MANDA BEM FOI APROVADO! :)',
+                    'msg' => $body,
+                    'email_from' => 'marcos@mandabem.com.br',
+                    'name_from' => 'Marcos Castro',
+                    'credenciais' => array('user' => 'marcos@mandabem.com.br', 'pass' => 'Maquinabem17!')
+                ));
 
                 echo "Email enviado para " . $i->email . " OK\n\n";
 

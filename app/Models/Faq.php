@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 
 class Faq extends Model
@@ -28,7 +29,7 @@ class Faq extends Model
         return $this->find($id);
     }
 
-    public function get_list($param = [])
+    public function getList($param = [])
     {
         $query = DB::table('faq')
             ->join('faq_categories', 'faq.category_id', '=', 'faq_categories.id')
@@ -100,7 +101,7 @@ class Faq extends Model
         return true;
     }
 
-    public function get_categories()
+    public function getCategories()
     {
         $categories = DB::table('faq_categories')
             ->select('faq_categories.*', DB::raw('(SELECT COUNT(id) FROM faq WHERE faq.category_id = faq_categories.id) > 0 as can_delete'))
@@ -108,13 +109,13 @@ class Faq extends Model
 
         return $categories;
     }
-    public function get_error() {
+    public function getError() {
         return $this->error;
     }
 
-    public function save_category($data)
+    public function saveCategory($data)
     {
-        $data['faq_category_name'] = mb_ucfirst($data['faq_category_name']);
+        $data['faq_category_name'] = Str::ucfirst($data['faq_category_name']);
 
         $data_upd = [
             'name' => $data['faq_category_name'],
@@ -134,7 +135,7 @@ class Faq extends Model
         return true;
     }
 
-    public function delete_category($data)
+    public function deleteCategory($data)
     {
         if (!isset($data['id']) || !(int) $data['id']) {
             return false;

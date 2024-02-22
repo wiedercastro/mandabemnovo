@@ -8,7 +8,7 @@ use Exception;
 
 class Etiqueta extends Model
 {
-    protected $table = 'etiquetas_cache'; // Nome da tabela
+    protected $table = 'etiquetas_cache';  
 
     private $error;
 
@@ -45,8 +45,8 @@ class Etiqueta extends Model
         } else {
             $qtde = 100;
         }
-        //corrigir
-        $ambiente = get_credentials_etiqueta($user);
+        $user = array();
+        $ambiente = getCredentialsEtiqueta($user);
 
         $clientSoap = new SoapClient($ambiente['production']['link'], [
             'stream_context' => stream_context_create([

@@ -559,7 +559,7 @@ class Boleto extends Model
 
     public function getMesmoValorLiberado($boleto)
     {
-        $dateLimitLiberacao = now()->subSeconds(86400); // Utilize o helper 'now()' para obter a data atual no formato do Laravel
+        $dateLimitLiberacao = now()->subSeconds(86400); 
 
         $rows = DB::table('boletos')
             ->select('boletos.*', 'payment.date as date_liberacao')

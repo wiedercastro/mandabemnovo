@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Libraries\DateUtils;
+use App\Libraries\EmailMaker;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,6 +14,8 @@ use Illuminate\Notifications\Notifiable;
 // use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
+use app\Models\Envio;
+use PharIo\Manifest\Email;
 
 class Coleta extends Authenticatable
 {
@@ -54,6 +58,7 @@ class Coleta extends Authenticatable
     }
     public function getList($param = []) 
     {
+        $dateUtils = new DateUtils();
         if (true) {
             if (!isset($param['user_id']) && ($this->session->group_code != 'mandabem' && $this->session->group_code != 'franquia')) {
                 $this->error = "ID user nao fornecido";
@@ -121,7 +126,7 @@ class Coleta extends Authenticatable
             }
     
             if (isset($param['filter_date_postagem']) && strlen($param['filter_date_postagem'])) {
-                $_date_postagem = $this->dateUtils->toEn($param['filter_date_postagem']);
+                $_date_postagem = $dateUtils->toEn($param['filter_date_postagem']);
                 $query->whereIn('coletas.id', function ($subquery) use ($_date_postagem) {
                     $subquery->select('coleta_id')
                         ->from('envios')
@@ -130,7 +135,7 @@ class Coleta extends Authenticatable
             }
     
             if (isset($param['filter_date_create']) && strlen($param['filter_date_create'])) {
-                $_date_create = $this->date_utils->to_en($param['filter_date_create']);
+                $_date_create = $dateUtils->toEn($param['filter_date_create']);
                 $query->whereBetween('coletas.date_insert', [$_date_create . ' 00:00:00', $_date_create . ' 23:59:59']);
             }
 
@@ -283,12 +288,12 @@ class Coleta extends Authenticatable
         }
 
         if (isset($param['filter_date_postagem']) && strlen($param['filter_date_postagem'])) {
-            $_date_postagem = $this->date_utils->to_en($param['filter_date_postagem']);
+            $_date_postagem = $dateUtils->toEn($param['filter_date_postagem']);
             $query->orWhereRaw('coletas.id IN (SELECT coleta_id FROM envios WHERE envios.coleta_id = coletas.id AND envios.date_postagem >= ? AND envios.date_postagem <= ?)', [$_date_postagem . ' 00:00:00', $_date_postagem . ' 23:59:59']);
         }
 
         if (isset($param['filter_date_create']) && strlen($param['filter_date_create'])) {
-            $_date_create = $this->date_utils->to_en($param['filter_date_create']);
+            $_date_create = $dateUtils->toEn($param['filter_date_create']);
             $query->orWhereRaw('coletas.date_insert >= ? AND coletas.date_insert <= ?', [$_date_create . ' 00:00:00', $_date_create . ' 23:59:59']);
         }
 
@@ -366,6 +371,7 @@ class Coleta extends Authenticatable
     }
     public function getCreditosPagos($param = [])
     {
+        $dateUtils = new DateUtils();
         $query = DB::table('payment_credit_discount AS a')
             ->select(DB::raw('(a.value * -1) as value'), 'a.date', 'a.payment_id', DB::raw('(SELECT description FROM payment WHERE id = a.payment_id) as description'))
             ->where('a.coleta_id', $param['coleta_id']);
@@ -384,7 +390,7 @@ class Coleta extends Authenticatable
                 foreach ($envios as $e) {
                     if (!$c->divergencias_envios && $e->valor_divergente == $c->value) {
                         $c->description = 'Cobrança Divergente: ';
-                        $c->divergencias_envios = "CEP " . $e->CEP . " - " . $this->date_utils->to_br($e->date_insert, false);
+                        $c->divergencias_envios = "CEP " . $e->CEP . " - " . $dateUtils->toBr($e->date_insert, false);
                     }
                 }
             }
@@ -456,7 +462,7 @@ class Coleta extends Authenticatable
                 ->where('user_id', $userId)
                 ->update($updateData);
         } else {
-            $agenciaIdFecha = auth()->user()->id; // Supondo que a agência está associada ao usuário autenticado
+            $agenciaIdFecha = auth()->user()->id;  
             $updateData['agencia_id_fecha'] = $agenciaIdFecha;
             
             Coleta::where('id', $coletaId)
@@ -483,13 +489,14 @@ class Coleta extends Authenticatable
 
     protected function updateEnvios($dadosEnvios, $coletaId, $etiquetas)
     {
+        $dateUtils = new DateUtils();
         foreach ($dadosEnvios as $envio) {
             $envioId = $envio->id;
 
             $updateData = [
                 'coleta_id' => $coletaId,
                 'etiqueta_correios' => $etiquetas[$envio->index],
-                'date_update' => $this->date_utils->get_now(),
+                'date_update' => $dateUtils->getNow(),
             ];
 
             DB::table('envios')->where('id', $envioId)->where('user_id', $envio->user_id)->update($updateData);
@@ -498,7 +505,7 @@ class Coleta extends Authenticatable
             if (!$etiq) {
                 DB::table('etiqueta_status')->insert([
                     'envio_id' => $envioId,
-                    'date_insert' => $this->date_utils->get_now(),
+                    'date_insert' => $dateUtils->getNow(),
                 ]);
             }
         }
@@ -506,6 +513,9 @@ class Coleta extends Authenticatable
 
     public function updateEtiqueta($coleta, $info)
     {
+        $envioModel = new Envio();
+        $dateUtils = new DateUtils();
+        $emailMaker = new EmailMaker();
         $envio = DB::table('envios')->where('etiqueta_correios', $info['etiqueta'])->first();
 
         if ($envio) {
@@ -513,8 +523,8 @@ class Coleta extends Authenticatable
 
             if (!$rowStatus) {
                 // Se etiqueta_status não existir, inserir e enviar email
-                $this->load->library('email_maker');
-                $this->email_maker->msg([
+                 
+                $emailMaker->msg([
                     'to' => 'regygom@gmail.com',
                     'subject' => 'Atualizando TB etiqueta_status',
                     'msg' => "INFO:<br><pre>" . print_r($info, true) . '</pre>'
@@ -522,7 +532,7 @@ class Coleta extends Authenticatable
 
                 DB::table('etiqueta_status')->insert([
                     'envio_id' => $envio->id,
-                    'date_insert' => $this->date_utils->getNow()
+                    'date_insert' => $dateUtils->getNow()
                 ]);
             }
         }
@@ -542,7 +552,7 @@ class Coleta extends Authenticatable
                 $user = DB::table('users')->where('id', $envioPendente->user_id)->first();
 
                 // Verificando Divergencia de Valores
-                $taxaMandabem = $this->envio_model->getTaxaEnvio([
+                $taxaMandabem = $envioModel->getTaxaEnvio([
                     'valor_envio' => $info['valor'],
                     'forma_envio' => $envioPendente->forma_envio,
                     'grupo_taxa_pacmini' => $user->grupo_taxa_pacmini
@@ -595,7 +605,7 @@ class Coleta extends Authenticatable
     {
         if ($param['type'] == 'REVERSA') {
             if (false) {
-                // TODO: Adicione a lógica se necessário
+                
             } else {
                 $query = DB::table('coletas')
                     ->select('coletas.*')
@@ -671,7 +681,7 @@ class Coleta extends Authenticatable
 
         foreach ($_coletas as $c) {
             $valor_total = 0;
-            $envios = $this->getEnvios($c->id); // Certifique-se de que a função getEnvios esteja disponível
+            $envios = $this->getEnvios($c->id); 
             foreach ($envios as $e) {
                 $valor_total += $e->valor_total;
             }
