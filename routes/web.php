@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Etiquetas
   */
   Route::get('/etiquetas', [EtiquetasController::class, 'index'])->name('etiquetas');
+  Route::get('/etiquetas/{idEtiqueta}', [EtiquetasController::class, 'buscaDetalhesDasEtiquetas']);
   Route::get('/etiquetas/{id}', [EtiquetasController::class, 'show'])->name('etiqueta.show');
   Route::get('/teste', [EtiquetasController::class, 'teste']);
 

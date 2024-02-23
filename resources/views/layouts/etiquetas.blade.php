@@ -60,7 +60,7 @@
       <tbody>
         @foreach ($envios as $envio)
           <tr 
-            onclick="clicou({{$envio->id}})"
+            onclick="expandeDetalhesEtiquetas({{$envio->id}})"
             class="bg-white hover:bg-gray-100 border-b rounded-full font-light cursor-pointer" id="linha_{{ $envio->id }}">
             <th class="px-6 py-4 rounded-s-lg text-[#2d6984]" id="idenvio_{{ $envio->id }}">
               <button id="btnInfoCol" data-id ="{{ $envio->id }}">
@@ -76,7 +76,7 @@
             <td class="px-6 py-4">
               Credito
             </td>
-            <td class="px-6 py-4">
+            <td id="desconto" lass="px-6 py-4">
               R$ {{ $envio->desconto }}
             </td>
             <td id="valor" class="px-6 py-4 font-medium text-green-950">
@@ -120,100 +120,8 @@
               @endif
             </td>
           </tr>
-          <tr id="detalhes_{{ $envio->id }}" class="detalhes bg-gray-50 hover:bg-blue-50 border border-2" style="display: none;">
-            <td colspan="6">
-              <div class="p-4 flex space-x-28">
-                <div class="informacoes-adicionais">
-                  <div class="">
-                    <p class="font-bold text-[#25688B]">Etiqueta</p>
-                    <span class="">{{$envio->etiqueta_correios}}</span>
-                  </div>
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">Email</p>
-                    <span class="{{ isset($envio->email) ? '' : 'text-red-600' }}">
-                      {{ $envio->email ?? "Nenhum e-mail registrado" }}
-                   </span>
-                  </div>
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">AR</p>
-                    <span class="">{{$envio->ar}}</span>
-                  </div>
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">Seguro</p>
-                    <span class="">R$ {{$envio->seguro}}</span>
-                  </div>
-                </div>
 
-                <div class="informacoes-adicionais">
-                  <div class="">
-                    <p class="font-bold text-[#25688B]">Valor</p>
-                    <span class="">R$ {{$envio->total}}</span>
-                  </div>
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">Desconto</p>
-                    <span class="">R$ {{$envio->desconto}}</span>
-                  </div>
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">Pagamento</p>
-                    <span class=""></span>
-                  </div>
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">NF</p>
-                    <span class=""></span>
-                  </div>
-                </div>
-
-                <div class="informacoes-adicionais">
-                  <div class="">
-                    <p class="font-bold text-[#25688B]">Tipo de Envio</p>
-                    <span class="">{{$envio->forma_envio}}</span>
-                  </div>
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">Peso</p>
-                    <span class="">{{$envio->peso}}</span>
-                  </div>
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">Dimensões</p>
-                    <span class=""></span>
-                  </div>
-                </div>
-
-                <div class="informacoes-adicionais">
-                  <div class="">
-                    <p class="font-bold text-[#25688B]">Destino</p>
-                    <span class="">{{$envio->destinatario}}</span>
-                  </div>
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">Endereço</p>
-                    <span class="">{{"{$envio->logradouro} - {$envio->numero} - {$envio->estado} - {$envio->cep} {$envio->numero}"}}</span>
-                  </div>
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">Data</p>
-                    <span class="">{{$envio->date_postagem}}</span>
-                  </div>
-
-                  <div class="mt-4">
-                    <p class="font-bold text-[#25688B]">Prazo</p>
-                    <span class="">{{$envio->prazo}}</span>
-                  </div>
-                </div>
-              </div>
-              <div class="flex flex-row-reverse mr-4 pb-2">
-                <button
-                  class="bg-red-700 hover:bg-red-800 text-white text-xs font-bold px-2 py-1 rounded flex items-center text-sm">    
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                  </svg>                                                                                    
-                  <p class="ml-1">Cancelar envio</p>
-                </button>
-              </div>
-            </td>
-          </tr>
-          
-          <tr>
-            <td colspan="6">
-              <div id="detalhes_{{ $envio->id }}" style="display: none"></div>
-            </td>
+          <tr id="detalhes_{{ $envio->id }}" class="bg-gray-50 hover:bg-blue-50 border border-2">
           </tr>
         @endforeach
       </tbody>
@@ -257,38 +165,160 @@
 
 <script>
 
-const clicou = (idEtiqueta) => {
-  const linhaClicada = document.getElementById('detalhes_' + idEtiqueta);
+
+const expandeDetalhesEtiquetas = async (idEtiqueta) => {
+  const linhaClicada = document.getElementById(`detalhes_${idEtiqueta}`);
   const displayAtual = linhaClicada.style.display;
-
-  if (displayAtual === 'none' || displayAtual === '') {
-    linhaClicada.style.display = 'table-row';
-  } else {
-    linhaClicada.style.display = 'none';
-  }
-
-  const linhaPrincipalClicada = document.getElementById('linha_' + idEtiqueta);
-  linhaPrincipalClicada.classList.toggle('bg-[#154864]', linhaClicada.style.display === 'table-row');
-  linhaPrincipalClicada.classList.toggle('text-white', linhaClicada.style.display === 'table-row');
-  linhaPrincipalClicada.classList.toggle('hover:bg-[#154864]', linhaClicada.style.display === 'table-row');
-
-  const thClicado = linhaPrincipalClicada.querySelector('th');
-  thClicado.classList.toggle('text-white', linhaClicada.style.display === 'table-row');
-  thClicado.classList.toggle('font-bold', linhaClicada.style.display === 'table-row');
-
-  const tdValor = linhaPrincipalClicada.querySelector('#valor');
-  tdValor.classList.toggle('text-white', linhaClicada.style.display === 'table-row');
-  tdValor.classList.toggle('font-bold', linhaClicada.style.display === 'table-row');
-
-  const tdType1 = linhaPrincipalClicada.querySelector('.tdType1');
-  tdType1.classList.toggle('text-blue-400', linhaClicada.style.display === 'table-row');
-
-  const tdType2 = linhaPrincipalClicada.querySelector('.tdType2');
-  tdType2.classList.toggle('text-blue-400', linhaClicada.style.display === 'table-row');
-
+  const valorTotal = document.getElementById('valor').textContent;
+  const desconto = document.getElementById('desconto').textContent;
   
-}
 
+  const toggleClass = (element, className, condition) => {
+    element.classList.toggle(className, condition);
+  };
+
+  const toggleRowDisplay = (row, display) => {
+    row.style.display = display;
+
+    const linhaPrincipalClicada = document.getElementById(`linha_${idEtiqueta}`);
+    toggleClass(linhaPrincipalClicada, 'bg-[#154864]', display === 'table-row');
+    toggleClass(linhaPrincipalClicada, 'text-white', display === 'table-row');
+    toggleClass(linhaPrincipalClicada, 'hover:bg-[#154864]', display === 'table-row');
+
+    const thClicado = linhaPrincipalClicada.querySelector('th');
+    toggleClass(thClicado, 'text-white', display === 'table-row');
+    toggleClass(thClicado, 'font-bold', display === 'table-row');
+
+    const tdValor = linhaPrincipalClicada.querySelector('#valor');
+    toggleClass(tdValor, 'text-white', display === 'table-row');
+    toggleClass(tdValor, 'font-bold', display === 'table-row');
+
+    const tdType1 = linhaPrincipalClicada.querySelector('.tdType1');
+    toggleClass(tdType1, 'text-blue-400', display === 'table-row');
+
+    const tdType2 = linhaPrincipalClicada.querySelector('.tdType2');
+    toggleClass(tdType2, 'text-blue-400', display === 'table-row');
+  };
+
+  try {
+    if (displayAtual === 'none' || displayAtual === '') {
+      linhaClicada.innerHTML = '';
+      toggleRowDisplay(linhaClicada, 'table-row');
+
+      const response = await fetch(`http://localhost:8989/etiquetas/${idEtiqueta}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error('Erro ao fazer requisição');
+      }
+
+      let html = ''
+      const resJson = await response.json();
+
+      
+      for (const item of resJson.data) {
+
+        html = `
+          <td colspan="6">
+            <div class="p-4 flex space-x-28">
+              <div>
+                <div class="">
+                  <p class="font-bold text-[#25688B]">Etiqueta</p>
+                  <span>${item.etiqueta_correios}</span>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">Email</p>
+                  <span class="${!item.email ? 'text-red-600' : ''}" >${item.email ? item.email : 'Sem email registrado'}</span>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">AR</p>
+                  <span>${item.AR}</span>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">Seguro</p>
+                  <span>R$ ${item.seguro}</span>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <p class="font-bold text-[#25688B]">Valor</p>
+                  <span>R$ ${valorTotal}</span>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">Desconto</p>
+                  <span>R$ ${desconto}</span>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">Pagamento</p>
+                  <span>Crédito</span>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">NF</p>
+                  <span>${item.nota_fiscal}</span>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <p class="font-bold text-[#25688B]">Tipo de Envio</p>
+                  <span>${item.forma_envio}</span>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">Peso</p>
+                  <span>${item.peso}</span>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">Dimensões</p>
+                  <span></span>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <p class="font-bold text-[#25688B]">Destino</p>
+                  <span>${item.destino}</span>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">Endereço</p>
+                  <span>${item.logradouro} - ${item.numero} - ${item.estado} - ${item.CEP}</span>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">Data</p>
+                  <span>${item.date_postagem}</span>
+                </div>
+
+                <div class="mt-4">
+                  <p class="font-bold text-[#25688B]">Prazo</p>
+                  <span>${item.prazo} dias</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-row-reverse mr-4 pb-2">
+              <button class="bg-red-700 hover:bg-red-800 text-white text-xs font-bold px-2 py-1 rounded flex items-center text-sm">    
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>                                                                                    
+                <p class="ml-1">Cancelar envio</p>
+              </button>
+            </div>
+          </td>
+        `;
+
+      }
+      
+      document.getElementById(`detalhes_${idEtiqueta}`).innerHTML = html;
+    } else {
+      toggleRowDisplay(linhaClicada, 'none');
+    }
+  } catch (error) {
+    console.error('Erro ao expandir detalhes:', error.message);
+  }
+};
 
 
 

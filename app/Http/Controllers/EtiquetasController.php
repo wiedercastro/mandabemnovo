@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Envio;
+use App\Models\Etiqueta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
@@ -20,22 +21,7 @@ class EtiquetasController extends Controller
       ->select('coletas.id', DB::raw('Count(envios.id) as qte'), 
                              DB::raw('sum(envios.valor_total) as total'), 
                              DB::raw('sum(envios.valor_desconto) as desconto'),
-                              'coletas.type',
-                              'envios.email',
-                              'envios.forma_envio',
-                              'envios.logradouro',
-                              'envios.cep',
-                              'envios.numero',
-                              'envios.complemento',
-                              'envios.destinatario',
-                              'envios.cidade',
-                              'envios.estado',
-                              'envios.peso',
-                              'envios.seguro',
-                              'envios.ar',
-                              'envios.prazo',
-                              'envios.etiqueta_correios',
-                              'envios.date_postagem'
+                              'coletas.type'
                             )
       ->where("coletas.user_id","=",5)
       ->groupBy("coletas.id")
@@ -45,6 +31,45 @@ class EtiquetasController extends Controller
       
     return view('layouts.etiquetas',compact("envios"));
   }
+
+  public function buscaDetalhesDasEtiquetas(int $idEtiqueta)
+  {
+    $etiquetas = Envio::select(
+      'coleta_id',
+      'AR',
+      'CEP',
+      'CEP_origem',
+      'cpf_destinatario',
+      'type',
+      'logradouro',
+      'numero',
+      'complemento',
+      'bairro',
+      'cidade',
+      'estado',
+      'email',
+      'nota_fiscal',
+      'peso',
+      'email',
+      'date_postagem',
+      'forma_envio',
+      'destinatario',
+      'seguro',
+      'prazo',
+      'nota_fiscal',
+      'etiqueta_correios'
+    )
+    ->where('coleta_id', $idEtiqueta)
+    ->get();
+
+    if (! $etiquetas) {
+      abort(204);
+    }
+
+    return response()->json(['data' => $etiquetas]);
+  }
+
+
   public function edit(Request $request): View
   {
     return view('profile.edit', [
