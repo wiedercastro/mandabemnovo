@@ -121,6 +121,8 @@
             </td>
           </tr>
 
+          <div id="preloader"></div>
+
           <tr id="detalhes_{{ $envio->id }}" class="bg-gray-50 hover:bg-blue-50 border border-2">
           </tr>
         @endforeach
@@ -163,10 +165,11 @@
   </div>
 </x-app-layout>
 
+
 <script>
 
-
 const expandeDetalhesEtiquetas = async (idEtiqueta) => {
+
   const linhaClicada = document.getElementById(`detalhes_${idEtiqueta}`);
   const displayAtual = linhaClicada.style.display;
   const valorTotal = document.getElementById('valor').textContent;
@@ -202,6 +205,9 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
 
   try {
     if (displayAtual === 'none' || displayAtual === '') {
+
+      document.getElementById("preloader").innerHTML = '<div class="loader flex justify-center text-white font-bold items-center text-xs"><img src="images/spinner.svg" class="h-10 w-10"><p class="mt-6 ml-3">Carregando..</p></div>';
+      document.body.classList.add('loading');
       linhaClicada.innerHTML = '';
       toggleRowDisplay(linhaClicada, 'table-row');
 
@@ -217,9 +223,8 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
       }
 
       let html = ''
-      const resJson = await response.json();
 
-      
+      const resJson = await response.json();
       for (const item of resJson.data) {
 
         html = `
@@ -232,15 +237,15 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
                 </div>
                 <div class="mt-4">
                   <p class="font-bold text-[#25688B]">Email</p>
-                  <span class="${!item.email ? 'text-red-600' : ''}" >${item.email ? item.email : 'Sem email registrado'}</span>
+                  <span>${item.email ? item.email : ''}</span>
                 </div>
                 <div class="mt-4">
                   <p class="font-bold text-[#25688B]">AR</p>
-                  <span>${item.AR}</span>
+                  <span>${item.AR ? item.AR : ''}</span>
                 </div>
                 <div class="mt-4">
                   <p class="font-bold text-[#25688B]">Seguro</p>
-                  <span>R$ ${item.seguro}</span>
+                  <span>${item.seguro ? 'R$ ' + item.seguro : ''}</span>
                 </div>
               </div>
 
@@ -259,7 +264,7 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
                 </div>
                 <div class="mt-4">
                   <p class="font-bold text-[#25688B]">NF</p>
-                  <span>${item.nota_fiscal}</span>
+                  <span>${item.nota_fiscal ? item.nota_fiscal : ''}</span>
                 </div>
               </div>
 
@@ -281,7 +286,7 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
               <div>
                 <div>
                   <p class="font-bold text-[#25688B]">Destino</p>
-                  <span>${item.destino}</span>
+                  <span>${item.destinatario} ${item.cpf_destinatario ? ' - ' + item.cpf_destinatario : ''}</span>
                 </div>
                 <div class="mt-4">
                   <p class="font-bold text-[#25688B]">Endereço</p>
@@ -289,12 +294,12 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
                 </div>
                 <div class="mt-4">
                   <p class="font-bold text-[#25688B]">Data</p>
-                  <span>${item.date_postagem}</span>
+                  <span>${item.date_postagem ? item.date_postagem : ''}</span>
                 </div>
 
                 <div class="mt-4">
                   <p class="font-bold text-[#25688B]">Prazo</p>
-                  <span>${item.prazo} dias</span>
+                  <span>${item.prazo ? item.prazo : ''} dias</span>
                 </div>
               </div>
             </div>
@@ -317,6 +322,9 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
     }
   } catch (error) {
     console.error('Erro ao expandir detalhes:', error.message);
+  } finally {
+    document.body.classList.remove('loading');
+    document.getElementById("preloader").innerHTML = '';
   }
 };
 
@@ -337,4 +345,7 @@ $(document).on("click", "#btnInfoCol", function() {
     },
   });
 });
+
+
 </script>
+
