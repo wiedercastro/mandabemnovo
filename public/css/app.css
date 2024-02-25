@@ -1,3 +1,7 @@
+body.loading {
+  overflow: hidden;
+}
+
 .overlay {
   position: fixed;
   top: 0;
@@ -6,18 +10,14 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 9999;
-  opacity: 0; /* adiciona opacidade inicial 0 /
-  transition: opacity 0.3s ease-in-out; / adiciona transição de 0.3 segundos */
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
   display: none;
 }
 
-body.loading {
-  overflow: hidden;
-}
-  
-body.loading .overlay {
+.overlay.show {
   display: block;
-  opacity: 1; /* aumenta a opacidade para 1 quando a classe loading é adicionada ao body */
+  opacity: 1;
 }
 
 .loader {
@@ -27,7 +27,3 @@ body.loading .overlay {
   transform: translate(-50%, -50%);
   z-index: 10000;
 }
-
-
-
-  

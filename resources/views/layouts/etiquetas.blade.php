@@ -121,7 +121,13 @@
             </td>
           </tr>
 
-          <div id="preloader"></div>
+          <div id="preloader" class="overlay">
+            <div class="loader flex justify-center text-white font-bold items-center text-xs">
+              <img src="images/spinner.svg" class="h-10 w-10">
+              <p class="mt-6 ml-3">Carregando..</p>
+            </div>
+          </div>
+          
 
           <tr id="detalhes_{{ $envio->id }}" class="bg-gray-50 hover:bg-blue-50 border border-2">
           </tr>
@@ -206,8 +212,9 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
   try {
     if (displayAtual === 'none' || displayAtual === '') {
 
-      document.getElementById("preloader").innerHTML = '<div class="loader flex justify-center text-white font-bold items-center text-xs"><img src="images/spinner.svg" class="h-10 w-10"><p class="mt-6 ml-3">Carregando..</p></div>';
       document.body.classList.add('loading');
+      document.getElementById("preloader").classList.add('show');
+
       linhaClicada.innerHTML = '';
       toggleRowDisplay(linhaClicada, 'table-row');
 
@@ -227,7 +234,7 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
       const resJson = await response.json();
       for (const item of resJson.data) {
 
-        html = `
+        html += `
           <td colspan="6">
             <div class="p-4 flex space-x-28">
               <div>
@@ -317,6 +324,7 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
       }
       
       document.getElementById(`detalhes_${idEtiqueta}`).innerHTML = html;
+
     } else {
       toggleRowDisplay(linhaClicada, 'none');
     }
@@ -324,7 +332,7 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
     console.error('Erro ao expandir detalhes:', error.message);
   } finally {
     document.body.classList.remove('loading');
-    document.getElementById("preloader").innerHTML = '';
+    document.getElementById("preloader").classList.remove('show');
   }
 };
 
