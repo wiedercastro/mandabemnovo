@@ -81,7 +81,7 @@
                       </div>
                     </a>
                   </li>
-                  <li class="{{ request()->routeIs('pagamentos') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                  <li class="{{ request()->routeIs('pagamentos.index') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
                     <a href="{{route('pagamentos.index')}}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 grou">
                       <div class="flex items-center">
                         <x-pagamento-icone />
