@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Envio;
-use App\Models\Etiqueta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
@@ -27,8 +26,6 @@ class EtiquetasController extends Controller
       ->groupBy("coletas.id")
       ->paginate();
 
-     /*  dd($envios); */
-      
     return view('layouts.etiquetas',compact("envios"));
   }
 
