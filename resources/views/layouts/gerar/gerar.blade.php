@@ -461,18 +461,26 @@
                                   </svg>
                               </button>
 
-                              <button id="btnEditar" data-row-id="{{ $envio->id }}">
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                      stroke-width="1.5" stroke="currentColor"
-                                      class="w-4 h-4 sm:w-5 sm:h-6 stroke-yellow-600">
-                                      <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                  </svg>
-                              </button>
-                          </div>
-                      </td>
-                    </tr>
-                  @endforeach
+                                    <button id="btnEditar">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor"
+                                            class="w-4 h-4 sm:w-5 sm:h-6 stroke-yellow-600">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        {{--  <tr>
+                <td colspan="6">
+                    <div id="detalhes_{{ $envio->id }}" style="display: none">
+
+                    </div>
+                </td>
+            </tr> --}}
+                    @endforeach
                 </tbody>
               </table>
             </div>
@@ -715,52 +723,51 @@
     });
   
     $('#myForm').submit(function(event) {
-      event.preventDefault();
-      var formData = new FormData(document.getElementById('myForm'));
-  
-      $.ajax({
-          url: '{{ route('saveEnvio') }}',
-          method: 'POST',
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function(data) {
-              console.log(data);
-              Swal.fire({
-                  title: 'Envio incluído com sucesso!',
-                  text: '',
-                  icon: 'success',
-                  customClass: {
-                      confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
-                  },
-                  buttonsStyling: false,
-                  confirmButtonText: 'OK',
-              }).then(function() {
-                  // Recarrega a página após a confirmação do usuário
-                  location.reload();
-              });
-          },
-          error: function(xhr) {
-  
-              if (xhr.status == 500) {
-                  alert(xhr.responseJSON.error);
-              } else {
-                  var errors = xhr.responseJSON.errors;
-                  // Limpe os erros anteriores
-                  $('.error-message').remove();
-  
-                  // Exiba os novos erros no formulário
-                  $.each(errors, function(key, value) {
-                      var errorField = $('[name="' + key + '"]');
-                      errorField.addClass('is-invalid');
-                      errorField.after('<span class="text-sm text-red-500">' + value[0] +
-                          '</span>');
-                  });
-              }
-  
-  
-          }
-      });
+        event.preventDefault();
+        var formData = new FormData(document.getElementById('myForm'));
+
+        $.ajax({
+            url: '{{ route('saveEnvio') }}',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                console.log(data);
+                Swal.fire({
+                    title: 'Sucesso!',
+                    text: 'Envio incluído com sucesso.',
+                    icon: 'success',
+                    customClass: {
+                        confirmButton: 'bg-blue-500',
+                    },
+                    buttonsStyling: false,
+                    confirmButtonText: 'OK',
+                }).then(function() {
+                    // Recarrega a página após a confirmação do usuário
+                    location.reload();
+                });
+            },
+            error: function(xhr) {
+               
+                if(xhr.status==500){
+                    alert(xhr.responseJSON.error);
+                }else{
+                            var errors = xhr.responseJSON.errors;
+                        // Limpe os erros anteriores
+                        $('.error-message').remove();   
+
+                        // Exiba os novos erros no formulário
+                        $.each(errors, function(key, value) {
+                            var errorField = $('[name="' + key + '"]');
+                            errorField.addClass('is-invalid');
+                            errorField.after('<span class="text-sm text-red-500">' + value[0] + '</span>');
+                        });
+                }
+                
+            
+        }
+        });
     });
   
     async function carregarDadosSelectPeso() {
@@ -930,58 +937,36 @@
             });
         });
     });
-  
-    $(document).on("click", "#btnEditar", function() {
-        // Evento de clique no botão de edição
-        var envioId = $(this).data("row-id");
-  
-        $.ajax({
-            url: '/buscarEnvio/' + envioId,
-            type: 'GET',
-            success: function(response) {
-                $('#destinatario').val(response.destinatario);
-                $('#CEP').val(response.CEP);
-                $('#logradouro').val(response.logradouro);
-                $('#numero').val(response.numero);
-                $('#complemento').val(response.complemento);
-                $('#bairro').val(response.bairro);
-                $('#cidade').val(response.cidade);
-                $('#estado').val(response.estado);
-                $('#email').val(response.email);
-                $('#altura').val(response.altura);
-                $('#comprimento').val(response.comprimento);
-                $('#largura').val(response.largura);
-                $('#seguro').val(response.seguro);
-                $('#nota_fiscal').val(response.nota_fiscal);
-                $('#AR').val(response.AR);
-                $('#peso').val(response.peso);
-                $('#forma_envio').val(response.forma_envio);
-  
-  
-                $("#modal_incluir").attr("x-data", "{ open: true }");
-                $("#modal_incluir1").attr("x-data", "{ open: true }");
-  
-                $("#modal_incluir").show();
-                $("#modal_incluir1").show();
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
-    });
-  
-    $(document).on("click", "#btnFechar", function() {
-  
-        $("#modal_incluir").attr("x-data", "{ open: false }");
-        $("#modal_incluir1").attr("x-data", "{ open: false }");
-  
-        $("#modal_incluir").hide();
-        $("#modal_incluir1").hide();
-  
-    });
-  
-    // Chamar a função ao carregar a página
-    carregarDadosSelectPeso();
-    carregarDadosSelectEstado();
-  </script>
-  
+
+//     $(document).ready(function() {
+//     $('#destinatario').on('input', function() {
+//         var searchTerm = $(this).val();
+
+//         // Verifique se o campo de pesquisa não está vazio
+//         if (searchTerm !== '') {
+//             // Faça uma solicitação AJAX para a rota no servidor
+//             $.ajax({
+//                 url: 'buscarDestinatiro', // Substitua 'sua_rota.php' pela sua rota real
+//                 method: 'POST',
+//                 data: { searchTerm: searchTerm },
+//                 headers: {
+//                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//                },
+//                 success: function(data) {
+//                     // Atualize o valor do input com os resultados da busca
+//                     $('#destinatario').val(data);
+//                 }
+//             });
+//         } else {
+//             // Limpe o valor do input se o campo estiver vazio
+//             $('#destinatario').val('');
+//         }
+//     });
+// });
+
+        // Chamar a função ao carregar a página
+        carregarDadosSelectPeso();
+        carregarDadosSelectEstado();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
