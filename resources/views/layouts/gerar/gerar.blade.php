@@ -59,7 +59,7 @@
                     </button>
                 </div>
                 <!-- O modal -->
-                <div x-show="open" @click.away="open = false"
+                <div x-show="open" @click.away="open = false" id="modal_incluir"
                     class="w-full fixed inset-0 overflow-y-auto animate__animated animate__fadeIn">
                     <div
                         class="w-full flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 bg-gray-800 bg-opacity-75 transition-opacity">
@@ -68,7 +68,7 @@
                         </div>
                         <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
                             aria-hidden="true">&#8203;</span>
-                        <div x-show="open"
+                        <div x-show="open" id="modal_incluir1"
                             class="ml-56 inline-block align-bottom bg-white 
               rounded-lg text-left overflow-hidden shadow-xl 
               transform transition-all sm:my-8 sm:align-middle sm:w-1/2">
@@ -299,7 +299,7 @@
                                                         </svg>
                                                         <p class="ml-1">Salvar envio</p>
                                                     </button>
-                                                    <button @click="open = false"
+                                                    <button type="button" @click="open = false" id="btnFechar"
                                                         class="bg-red-500 hover:bg-red-700 text-white font-bold px-2 py-1 rounded flex items-center ml-1">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke-width="1.5"
@@ -396,7 +396,7 @@
                                         </svg>
                                     </button>
 
-                                    <button id="btnEditar">
+                                    <button id="btnEditar" data-row-id="{{ $envio->id }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor"
                                             class="w-4 h-4 sm:w-5 sm:h-6 stroke-yellow-600">
@@ -513,7 +513,7 @@
                     text: 'Envio incluído com sucesso.',
                     icon: 'success',
                     customClass: {
-                        confirmButton: 'bg-blue-500',
+                        confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
                     },
                     buttonsStyling: false,
                     confirmButtonText: 'OK',
@@ -688,6 +688,61 @@
             });
         });
     });
+
+    $(document).on("click", "#btnEditar", function() {
+        // Evento de clique no botão de edição
+        var envioId = $(this).data("row-id");
+        
+        $.ajax({
+                url: '/buscarEnvio/' + envioId,
+                type: 'GET',
+                success: function(response) {
+                    
+                    $('#destinatario').val(response.destinatario);
+                    $('#CEP').val(response.CEP);
+                    $('#logradouro').val(response.logradouro); 
+                    $('#numero').val(response.numero);
+                    $('#complemento').val(response.complemento); 
+                    $('#bairro').val(response.bairro);
+                    $('#cidade').val(response.cidade); 
+                    $('#estado').val(response.estado);
+                    $('#email').val(response.email); 
+                    $('#altura').val(response.altura); 
+                    $('#comprimento').val(response.comprimento);  
+                    $('#largura').val(response.largura); 
+                    $('#seguro').val(response.seguro);
+                    $('#nota_fiscal').val(response.nota_fiscal);
+                    $('#AR').val(response.AR);
+                    $('#peso').val(response.peso); 
+                    $('#forma_envio').val(response.forma_envio); 
+
+
+                    $("#modal_incluir").attr("x-data", "{ open: true }");
+                    $("#modal_incluir1").attr("x-data", "{ open: true }");
+                    
+                    $("#modal_incluir").show();
+                    $("#modal_incluir1").show();
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+           
+           
+            
+        });
+
+        $(document).on("click", "#btnFechar", function() {
+        
+            $("#modal_incluir").attr("x-data", "{ open: false }");
+            $("#modal_incluir1").attr("x-data", "{ open: false }");
+            
+            $("#modal_incluir").hide();
+            $("#modal_incluir1").hide();
+            
+        });
+
+    
 
 //     $(document).ready(function() {
 //     $('#destinatario').on('input', function() {

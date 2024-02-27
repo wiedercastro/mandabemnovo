@@ -114,4 +114,16 @@ class GerarEnvioController extends Controller
       return "Envio não encontrado.";
     }
   }
+
+  public function buscarEnvio($id)
+  { 
+    $result = Envio::find($id);
+    // dd($result->peso);
+    if($result->peso!="0.300"){
+      $result->peso =str_replace(['0', '.'], '', $result->peso);
+    }
+    
+    // dd($result->peso);
+    return $result;
+  } 
 }
