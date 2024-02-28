@@ -1,14 +1,19 @@
 <?php
 
-use App\Http\Controllers\ColetasController;
-use App\Http\Controllers\EnderecoController;
-use App\Http\Controllers\EtiquetasController;
-use App\Http\Controllers\GerarEnvioController;
-use App\Http\Controllers\PagamentoController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ReversaController;
+use App\Http\Controllers\{
+    AcompanhamentoController,
+    ColetasController,
+    EnderecoController,
+    EtiquetasController,
+    GerarEnvioController,
+    PagamentoController,
+    ProfileController,
+    CotacaoController,
+    ReversaController,
+    SoapController
+};
+
 use App\Http\Controllers\Site\SiteController;
-use App\Http\Controllers\SoapController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [SiteController::class, 'index']);
@@ -34,7 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   /*
   Coletas
   */
-  Route::get('coleta/{id}',[ColetasController::class, 'getlistItens'])->name('coleta.show');
+  Route::get('/coleta/{id}',[ColetasController::class, 'getlistItens'])->name('coleta.show');
 
    /*
   Coletas
@@ -46,17 +51,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
   /*
   Reversa
   */
-  Route::get('reversa',[ReversaController::class, 'index'])->name('reversa');
+  Route::get('/reversa',[ReversaController::class, 'index'])->name('reversa');
 
   /*
   Declaracoes
   */
-  Route::get('declaracoes',[ReversaController::class, 'index'])->name('declaracoes');
+  Route::get('/declaracoes',[ReversaController::class, 'index'])->name('declaracoes');
 
   /*
   Pagamentos
   */
-  Route::get('pagamentos',[PagamentoController::class, 'index'])->name('pagamentos.index');
+  Route::get('/pagamentos',[PagamentoController::class, 'index'])->name('pagamentos.index');
+
+  /*
+  Cotação
+  */
+  Route::get('/cotacao',[CotacaoController::class, 'index'])->name('cotacao');
+
+  /*
+  Acompanhamento
+  */
+  Route::get('/acompanhamento',[AcompanhamentoController::class, 'index'])->name('acompanhamento');
+  Route::get('/acomp_email/{id}',[AcompanhamentoController::class, 'busca_acomp_email']);
+  Route::post('/acomp_email',[AcompanhamentoController::class, 'atualiza_acomp_email']);
+  
   
   /*
   Profile

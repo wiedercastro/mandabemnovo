@@ -89,16 +89,14 @@
                       </div>
                     </a>
                   </li>
-
-                  <li class="opcion-con-desplegable">
-                    <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
+                  <li class="{{ request()->routeIs('acompanhamento') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                    <a href="{{route('acompanhamento')}}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
                       <div class="flex items-center">
                         <x-acompanhamento-icone />
                         <span>Acompanhamento</span>
                       </div>
                     </a>
                   </li>
-
                   <li class="opcion-con-desplegable">
                     <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
                       <div class="flex items-center">
@@ -107,9 +105,8 @@
                       </div>
                     </a>
                   </li>
-
-                  <li class="opcion-con-desplegable">
-                    <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
+                  <li class="{{ request()->routeIs('cotacao') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                    <a href="{{route('cotacao')}}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
                       <div class="flex items-center">
                           <x-cotacao-icone />
                           <span>Cotações</span>
@@ -136,7 +133,6 @@
             <div class="flex justify-center mt-6">
               <p class="text-xs font-bold text-gray-800">2021 © Todos os direitos Reservados.</p>
             </div>
-            
         </aside>
       </div>
 
