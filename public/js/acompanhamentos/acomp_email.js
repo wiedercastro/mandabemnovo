@@ -1,8 +1,18 @@
 
 let modal_container = document.getElementById('modal-container');
+let modal_info_acompanhamentos = document.getElementById('modal-info-acompanhamentos');
 
 const fechaModal = () => {
   modal_container.classList.add('hidden');
+}
+
+const exibiModalComInformacoes = () => {
+  modal_info_acompanhamentos.classList.remove('hidden'); 
+  modal_info_acompanhamentos.classList.add('flex');
+}
+
+const fechaModalComInformacoes = () => {
+  modal_info_acompanhamentos.classList.add('hidden');
 }
 
 const abreModal = (id) => {
@@ -75,3 +85,5 @@ enviaFormulario.addEventListener('submit', (e) => {
     console.error('Erro:', error);
   });
 });
+
+
