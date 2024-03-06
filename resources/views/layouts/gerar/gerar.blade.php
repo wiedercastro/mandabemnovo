@@ -621,33 +621,48 @@
     $(document).on("click", "#btnExcluir", function() {
         // Adicione aqui a lógica para excluir o item desejado
         var rowId = $(this).data("row-id"); // Obtém o ID da linha clicada
-        $.ajax({
-                url: '/excluirEnvio/' + rowId,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    // Preencha os campos restantes com as informações obtidas
-                    if(data){
-                        Swal.fire({
-                            title: 'Sucesso!',
-                            text: 'Envio deletado com sucesso.',
-                            icon: 'success',
-                            customClass: {
-                                confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
-                            },
-                            buttonsStyling: false,
-                            confirmButtonText: 'OK',
-                        }).then(function() {
-                            // Recarrega a página após a confirmação do usuário
-                            location.reload();
+                Swal.fire({
+                    title: 'Tem certeza?',
+                    text: 'Você realmente deseja excluir este envio?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sim, excluir!',
+                    cancelButtonText: 'Cancelar'
+                }).then(function(result) {
+                    
+                    if (result.value) {
+                       
+                        $.ajax({
+                                url: '/excluirEnvio/' + rowId,
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function(data) {
+                                    // Preencha os campos restantes com as informações obtidas
+                                    if(data){
+                                        Swal.fire({
+                                            title: 'Sucesso!',
+                                            text: 'Envio deletado com sucesso.',
+                                            icon: 'success',
+                                            customClass: {
+                                                confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
+                                            },
+                                            buttonsStyling: false,
+                                            confirmButtonText: 'OK',
+                                        }).then(function() {
+                                            // Recarrega a página após a confirmação do usuário
+                                            location.reload();
+                                        });
+                                    }
+                                },
+                                error: function(error) {
+                                    console.error('Erro a excluir o Envio:', error);
+                                }
                         });
                     }
-                },
-                error: function(error) {
-                    console.error('Erro a excluir o Envio:', error);
-                }
+                });
             });
-    });
 
     $(document).ready(function() {
         $("#btnExcluirSelecionados").on("click", function() {
@@ -657,35 +672,48 @@
             $("#id_envio:checked").each(function() {
                 idsSelecionados.push($(this).data("id"));
             });
-
+            Swal.fire({
+                    title: 'Tem certeza?',
+                    text: 'Você realmente deseja excluir este envio?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sim, excluir!',
+                    cancelButtonText: 'Cancelar'
+                }).then(function(result) {
+                    
+                    if (result.value) {
             //Enviar IDs para o servidor para exclusão
-            $.ajax({
-                type: "POST",
-                url: '{{ route('excluirEnviosSelecionados') }}',
-                data: { ids: idsSelecionados },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-               },
-                success: function(data) {
-                    // Lidar com a resposta do servidor
-                    console.log(data);
-                    if(data){
-                        Swal.fire({
-                            title: 'Sucesso!',
-                            text: 'Envio deletado com sucesso.',
-                            icon: 'success',
-                            customClass: {
-                                confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
-                            },
-                            buttonsStyling: false,
-                            confirmButtonText: 'OK',
-                        }).then(function() {
-                            // Recarrega a página após a confirmação do usuário
-                            location.reload();
+                        $.ajax({
+                            type: "POST",
+                            url: '{{ route('excluirEnviosSelecionados') }}',
+                            data: { ids: idsSelecionados },
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                            success: function(data) {
+                                // Lidar com a resposta do servidor
+                                console.log(data);
+                                if(data){
+                                    Swal.fire({
+                                        title: 'Sucesso!',
+                                        text: 'Envio deletado com sucesso.',
+                                        icon: 'success',
+                                        customClass: {
+                                            confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
+                                        },
+                                        buttonsStyling: false,
+                                        confirmButtonText: 'OK',
+                                    }).then(function() {
+                                        // Recarrega a página após a confirmação do usuário
+                                        location.reload();
+                                    });
+                                }
+                            }
                         });
                     }
-                }
-            });
+                });
         });
     });
 
