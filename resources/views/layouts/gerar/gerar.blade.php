@@ -476,22 +476,132 @@
 </x-app-layout>
 
 <script>
-    $(document).on("click", "#btnInfoCol", function() {
-        var info = $(this).attr('data-id');
-        var rota = "{{ route('coleta.show', ['id' => ':idenvio']) }}"
-        rota = rota.replace(":idenvio", info);
-        $.ajax({
-            url: rota,
+  let modal_gerar = document.getElementById('modal_gerar');
 
-            success: function(data) {
-                $('#linha_' + info).css("background", "#2d6984");
-                $('#linha_' + info).css("color", "white");
-                $('#idenvio_' + info).css("color", "white");
-                $('#detalhes_' + info).show();
-                $('#detalhes_' + info).append(data.html);
-            },
-        });
-    });
+  const fechaModal = () => {
+    modal_gerar.classList.add('hidden');
+  }
+
+  const calculaTotalDasEtiquetas = () => {
+  let total = 0;
+  dadosSelecionados.forEach(item => {
+    total += parseFloat(item.total); 
+  });
+  return total;
+}
+
+
+  const abreModal = () => {
+    modal_gerar.classList.remove('hidden'); 
+    modal_gerar.classList.add('flex');
+
+    let html = '';
+
+    dadosSelecionados.forEach(item => {
+      console.log(item)
+      html += `
+      <div class="flex space-x-8 font-light justify-between items-center text-sm mt-4 px-8">
+        <div class="flex items-center w-1/3">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 stroke-green-600 font-bold">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+          </svg>                    
+          <p class="ml-1">${item.destinatario}</p>
+        </div>
+
+        <div class="flex w-1/4">
+          <span>${item.id}</span>
+        </div>
+
+        <div class="flex w-1/3">
+          <span class="font-bold text-gray-600">${item.envio}</span>
+        </div>
+
+        <div class="flex">
+          <span>R$</span>
+          <p class="ml-1">${item.total}</p>
+        </div>
+      </div>
+      <hr class="mx-4 border-gray-400 border-dashed mt-1">`;
+    })
+    html += `
+    <div class="px-8 py-2">
+      <p class="text-xl font-bold text-gray-700">Total: R$ ${calculaTotalDasEtiquetas()}</p>
+
+      <div id="alertaCobranca" class="hidden mt-2 flex items-center p-2 mb-4 text-xs text-red-800 rounded-lg bg-red-100" role="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 inline w-5 h-5 me-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+        </svg>                
+        <span class="sr-only">Info</span>
+        <div>
+          <span class="font-medium">ATENÇÃO!</span>
+          Cobranças estão INATIVAS. <a href="" class="text-blue-500">Clique aqui</a> para ativar e tente novamente.
+        </div>
+      </div>
+    </div>
+    `
+    document.getElementById('content').innerHTML = html
+  }
+
+  let dadosSelecionados = [];
+
+  function adicionarEtiquetaAoArray(envio) {
+      dadosSelecionados.push(envio);
+  }
+
+  function removerEtiquetaDoArray(envio) {
+      const index = dadosSelecionados.findIndex(item => item.id === envio.id);
+      if (index !== -1) {
+          dadosSelecionados.splice(index, 1);
+      }
+  }
+
+  const enviosTable = document.getElementById('enviosTable');
+  const checkboxes = document.querySelectorAll('input[name="aceito_termos"]');
+  const envios = JSON.parse(enviosTable.dataset.envios);
+
+  checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+          const envioId = this.getAttribute('data-id');
+          const envio = envios.data.find(item => item.id === parseInt(envioId));
+
+          if (this.checked) {
+              adicionarEtiquetaAoArray(envio);
+          } else {
+              removerEtiquetaDoArray(envio);
+          }
+      });
+  });
+
+  const gerarEtiquetas = async () => {
+    try {
+      const res = await fetch('/gerar-etiquetas', {
+        method: "POST",
+        body: dadosSelecionados
+      });
+      
+      console.log(res)
+    } catch (error) {
+      
+    } finally {
+      
+    }
+  }
+
+  $(document).on("click", "#btnInfoCol", function() {
+      var info = $(this).attr('data-id');
+      var rota = "{{ route('coleta.show', ['id' => ':idenvio']) }}"
+      rota = rota.replace(":idenvio", info);
+      $.ajax({
+          url: rota,
+          success: function(data) {
+              $('#linha_' + info).css("background", "#2d6984");
+              $('#linha_' + info).css("color", "white");
+              $('#idenvio_' + info).css("color", "white");
+              $('#detalhes_' + info).show();
+              $('#detalhes_' + info).append(data.html);
+          },
+      });
+  });
 
     $('#myForm').submit(function(event) {
         event.preventDefault();
