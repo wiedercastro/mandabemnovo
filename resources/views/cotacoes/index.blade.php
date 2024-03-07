@@ -145,6 +145,68 @@
         </div>
 
       </form>
+      <hr class="mt-4">
+      <div class="mt-6">
+        <table
+          class="min-w-full table-auto ml-auto bg-white font-normal rounded
+          text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
+          <thead class="text-xs text-gray-700 border uppercase bg-gray-200">
+            <tr>
+              <th scope="col" class="px-6 py-3">
+                CEP ORIGEM
+              </th>
+              <th scope="col" class="px-6 py-3">
+                CEP DESTINO
+              </th>
+              <th scope="col" class="px-6 py-3">
+                PESO
+              </th>
+              <th scope="col" class="px-1 py-3">
+                FORMA ENVIO
+              </th>
+              <th scope="col" class="px-1 py-3">
+                PRAZO
+              </th>
+              <th scope="col" class="px-1 py-3">
+                BALCÃO
+              </th>
+              <th scope="col" class="px-1 py-3">
+                DESCONTO
+              </th>
+              <th scope="col" class="px-1 py-3">
+                TOTAL
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-white hover:bg-gray-100 border rounded-full font-light">
+              <td class="px-6 py-2">
+                39480000
+              </td>
+              <td class="px-6 py-4">
+                07940140
+              </td>
+              <td class="px-2 py-2">
+                De 300g a 1Kg
+              </td>
+              <td dir="rtl" class="py-2 rounded-s-lg">
+                SEDEX
+              </td>
+              <td dir="rtl" class="py-2 rounded-s-lg">
+                4 Dia(s)
+              </td>
+              <td dir="rtl" class="py-2 rounded-s-lg">
+                R$ 58,4
+              </td>
+              <td dir="rtl" class="py-2 rounded-s-lg">
+                R$ 12,12
+              </td>
+              <td dir="rtl" class="py-2 rounded-s-lg">
+                R$ 46,28
+              </td>
+            </tr>
+          </tbody>
+      </div>
     </div>
   </div>
 </x-app-layout>
