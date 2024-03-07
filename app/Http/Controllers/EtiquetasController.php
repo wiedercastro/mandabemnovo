@@ -73,4 +73,9 @@ class EtiquetasController extends Controller
     $request->session()->regenerateToken();
     return Redirect::to('/');
   }
+
+  public function gerarEtiquetas(Request $request)
+  {
+    dd($request->all());
+  }
 }
