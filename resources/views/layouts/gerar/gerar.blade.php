@@ -620,9 +620,15 @@
 
   const gerarEtiquetas = async () => {
     try {
+
+      const formData = {
+        data  : dadosSelecionados
+        _token: document.getElementById('_token').value,
+      }
+
       const res = await fetch('/gerar-etiquetas', {
         method: "POST",
-        body: dadosSelecionados
+        body: JSON.stringify(formData)
       });
       
       console.log(res)
