@@ -19,13 +19,54 @@ class EtiquetasController extends Controller
       ->join('envios','coletas.id','=','envios.coleta_id')
       ->select('coletas.id', DB::raw('Count(envios.id) as qte'), 
                              DB::raw('sum(envios.valor_total) as total'), 
-                             DB::raw('sum(envios.valor_desconto) as desconto'),'coletas.type')
+                             DB::raw('sum(envios.valor_desconto) as desconto'),
+                              'coletas.type'
+                            )
       ->where("coletas.user_id","=",5)
       ->groupBy("coletas.id")
       ->paginate();
-      
+
     return view('layouts.etiquetas',compact("envios"));
   }
+
+  public function buscaDetalhesDasEtiquetas(int $idEtiqueta)
+  {
+    $etiquetas = Envio::select(
+      'coleta_id',
+      'AR',
+      'CEP',
+      'CEP_origem',
+      'cpf_destinatario',
+      'type',
+      'logradouro',
+      'numero',
+      'complemento',
+      'bairro',
+      'cidade',
+      'estado',
+      'email',
+      'nota_fiscal',
+      'peso',
+      'email',
+      'date_postagem',
+      'forma_envio',
+      'destinatario',
+      'seguro',
+      'prazo',
+      'nota_fiscal',
+      'etiqueta_correios'
+    )
+    ->where('coleta_id', $idEtiqueta)
+    ->get();
+
+    if (! $etiquetas) {
+      abort(204);
+    }
+
+    return response()->json(['data' => $etiquetas]);
+  }
+
+
   public function edit(Request $request): View
   {
     return view('profile.edit', [

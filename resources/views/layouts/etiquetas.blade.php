@@ -1,614 +1,172 @@
 <x-app-layout>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <style>
-        /* Nws Add */
-
-        body {
-            background-color: #F0F1F3;
-        }
-
-        #sidebarMenu {
-            /*border-radius: 20px;*/
-            /*border-top-left-radius: 20px;*/
-            /*border-bottom-left-radius: 20px;*/
-
-            border-top-right-radius: 20px;
-            border-bottom-right-radius: 20px;
-            height: 1000px;
-            position: relative;
-        }
-
-        #sidebarMenu a {
-            color: #728189;
-            font-weight: bold;
-        }
-
-        .container-menu-lateral {
-            padding-left: 2px;
-        }
-
-
-
-        .nav-link.selected {
-            color: #25688B !important;
-        }
-
-        .navbar-toggler {
-            padding: 0px;
-        }
-
-        .btn-expand-top-menu {
-            width: 45px;
-            height: 40px;
-            border-color: transparent;
-            background-color: #FFF;
-            border-radius: 10px;
-            float: left;
-        }
-
-        .btn-expand-top-menu .line {
-            width: 100%;
-            float: left;
-            height: 2px;
-            background-color: #728189;
-            margin-bottom: 4px;
-        }
-
-        .logo-cli-xs {
-            /*float: left;*/
-            /*margin-left: 50%;*/
-            /*width: 80%;*/
-            /*text-align: center;*/
-            /*border: solid 1px;*/
-        }
-
-        .borda-redonda {
-            border-radius: 10px;
-            display: block;
-            background-color: #fff;
-            color: #728189;
-            height: 380px;
-            width: 100%;
-            padding: 15px;
-            margin-left: -15px;
-        }
-
-        .borda-redonda-pagamentos {
-            border-radius: 10px;
-            background-color: #fff;
-            color: #728189;
-            height: 180px;
-            width: 100%;
-            padding: 10px;
-            margin-left: -15px;
-        }
-
-        .logo-cli-xs img {
-            width: 120px;
-        }
-
-        .btn-tamanho-img img {
-            width: 20px;
-        }
-
-        .clear-both {
-            clear: both;
-        }
-
-        .menu-user-xs {
-            float: right;
-            /*border: solid 1px;*/
-        }
-
-        .menu-user-xs img {
-            width: 20px;
-            margin-top: 10px;
-        }
-
-        .icon-menu {
-            width: 22px;
-            float: left;
-        }
-
-        .title-page {
-            color: #142D3A;
-        }
-
-        .content-main {
-            float: left;
-            margin-top: 10px;
-            /*margin-left: 265px;*/
-            /*width: max-content;*/
-        }
-
-        .content-left {
-            margin-left: 265px;
-
-        }
-
-        .main-content {
-            height: 2000px;
-        }
-
-        .red-box {
-            margin-top: 10px;
-            /*width: 400px;*/
-            /*position: relative;*/
-            padding: 5px;
-        }
-
-        table {
-            display: table;
-            border-collapse: separate;
-            box-sizing: border-box;
-            text-indent: initial;
-            border-spacing: 2px;
-            border-color: gray;
-        }
-
-        .table-red {
-            background-color: #A01E26;
-            text-decoration-color: white;
-            border-radius: 15px;
-            /*display: block;*/
-            width: 100%;
-            /*text-align: center;*/
-            /*margin:  30px;*/
-            /*margin-left: 0px;*/
-            padding: 10px;
-            margin-top: 0px;
-            /*margin-top: -25px;*/
-            vertical-align: middle;
-
-        }
-
-        .table-red tbody {
-
-            padding: 5px;
-        }
-
-        .table-red td {
-            border: none;
-            line-height: 20px;
-        }
-
-        .btn-search-top,
-        .btn-search-top:hover,
-        .btn-show-itens,
-        .btn-show-itens:hover {
-            background-color: #25688B;
-            font-weight: bold;
-        }
-
-        .line-table-color {
-            background-color: #25688B !important;
-            color: #fff !important;
-        }
-
-        .btn-color-danger {
-            background-color: #A01E26;
-            font-size: 13px;
-            line-height: 15px;
-
-        }
-
-        .text-table-color {
-            color: #25688B;
-        }
-
-        .text-color-gray {
-            color: #728189;
-        }
-
-        .text-color-blue {
-            color: #25688B;
-        }
-
-        .badge-danger {
-            background-color: #f0e289;
-            color: #25688B;
-            line-height: 30px;
-            font-size: 13px;
-        }
-
-        .filtro-top.shadow-sm {
-            border-radius: 30px !important;
-        }
-
-        .filtro-top input[type=text],
-        .filtro-top select {
-            background-color: #F0F1F3;
-        }
-
-        .div-table-general {
-            border-radius: 10px;
-            background-color: #FFF;
-        }
-
-        .table-general thead th {
-            font-weight: normal;
-            color: #728189 !important;
-            font-weight: bold;
-        }
-
-        .form-control input {
-            line-height: 2;
-            border: 0px !important;
-
-        }
-
-        .form-control select {
-            line-height: 2;
-            border: 0px !important;
-        }
-
-        .form-control textarea {
-            line-height: 2;
-            border: 0px !important;
-        }
-
-
-        .menu-consulta-user {
-            border-radius: 15px;
-            color: #728189 !important;
-            padding: 10px;
-            margin-top: 0px;
-            vertical-align: middle;
-        }
-
-        @media screen and (max-width: 1000px) {
-            .div-web {
-                display: none;
-            }
-
-            #sidebarMenu {
-                display: none !important;
-            }
-
-            .hide-mobile {
-                display: none;
-            }
-
-            .content-main {
-                margin-left: 0px;
-            }
-
-            .content-left {
-                margin-left: 0px;
-            }
-        }
-
-        @media screen and (min-width: 1000px) {
-            .div-mobile {
-                display: none;
-            }
-
-            .d-md-block {
-                display: block !important;
-            }
-
-            .navbar-expand-md,
-            .navbar-toggler {
-                display: none !important;
-            }
-
-        }
-
-        body {
-            padding-top: 0px !important;
-        }
-
-        .total-data {
-
-            padding: 20px 5px !important;
-
-        }
-
-        .table-total {
-            margin-bottom: 0px !important;
-        }
-
-        .table-total td {
-            border: none !important;
-            border-left: solid 1px #eee !important;
-            padding: 2px !important;
-        }
-
-        .title-form-header {
-            border-bottom: solid 1px #ddd;
-            font-weight: bold;
-            padding-bottom: 5px;
-        }
-
-        .btn-round {
-            border-radius: 20px;
-        }
-
-        .sup_required {
-            color: red;
-        }
-
-        .table-date {
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .table-id {
-            font-weight: bold;
-            color: blue;
-        }
-
-        .table-blue {
-            background-color: #008adb !important;
-            color: #fff;
-        }
-
-        .table-white {
-            background-color: #fff !important;
-            color: #008adb !important;
-        }
-
-        .destination-name {
-            font-weight: bold;
-            color: #fff;
-        }
-
-        .envios-box,
-        .envios-box a {
-            color: #fff;
-        }
-
-        .pagination {
-            margin: 2px 0px;
-        }
-
-        .box-radius {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .clear {
-            clear: both;
-        }
-
-        .valor-final-coletas {
-            font-weight: bold;
-        }
-
-        .total-data small {
-            color: #fff;
-        }
-
-        .filtro-top.shadow-sm {
-            border-radius: 30px !important;
-        }
-
-        .filtro-top input[type=text],
-        .filtro-top select {
-            background-color: #F0F1F3;
-        }
-    </style>
-         
-        <div class="w-5/6 ml-auto lg:px-12" style="border: 0px solid red;">
-            <div class="text-4xl" style="margin-top:-25px">
-                <h1 style="color:#728189"><b>Etiquetas</b></h1>
-            </div>
-            <br>
-            <div class=" w-full dark:bg-gray-800" style="border: 1px solid black;">
-                <div class="w-full text-gray-900 dark:text-gray-100">
-                    {{-- <table class="table table-red" style="width:500px !important;">
-                        <tr style="color:white;">
-                            <td colspan="2">
-                                <small class="d-inline-block" tabindex="0" data-toggle="tooltip"
-                                    style="font-size: 12px;"> Você economizou até agora com a Manda Bem</small>
-                                <br>
-                                <strong>
-                                    <?php
-                                    $total_economia = 28;
-                                    ?>
-                                    R$ 28,00
-                                </strong>
-                            </td>
-                        </tr>
-
-                        <tr style="color:white;">
-                            <td>
-                                <strong>
-                                    <small style="font-size: 30px;">
-                                        Total
-                                    </small>
-                                </strong>
-                                <br>
-                                <small class="" tabindex="0" style="font-size: 12px;">
-
-                                </small>
-                            </td>
-                            <td class="bar">
-
-
-                                <span class="valor-final-coletas">
-                                    R$ 100,00
-                                </span>
-
-                            </td>
-
-
-
-                        </tr>
-                        <tr style="color:white;">
-                            <td><strong> Economia do Mês </strong></td>
-                            <td class="bar text-right">
-                                <span class="valor-final-coletas">
-
-                                    <span title="Teste">
-                                        R$ 10,00
-                                    </span>
-
-
-                                </span>
-                            </td>
-                        </tr>
-                        <tr style="color:white;">
-                            <td><strong> Saldo</strong></td>
-                            <td class="bar text-right"> R$ 152,00</td>
-                        </tr>
-                        <tr style="color:white;">
-                            <td><strong> Divergências</strong></td>
-                            <td class="bar text-right"> R$ 00,00 </td>
-                        </tr>
-                    </table>
-                    <br> --}}
-                    {{-- <div class="text-4xl" style="margin-left: 5px;">
-                        <h2 style="color:#728189"><b>Buscar</b></h2>
-                    </div> --}}
-                    <div class="w-full m-auto h-20 bg-white shadow-xl" style="border: 0px solid red">
-                        <div class="w-11/12 flex m-auto" style="border:0px solid red">
-                            <div class="w-full mt-3.5 pr-4">
-                                <input
-                                    class="w-full m-auto pl-10 text-base placeholder-gray-500 border rounded-full focus:shadow-outline"
-                                    type="search" placeholder="Buscar por Nome, Destinatário, Etiqueta...">
-                            </div>
-                            <div class="w-full mt-3.5 pr-4">
-                                <input
-                                    class="w-11/12 m-auto pl-10 text-base placeholder-gray-500 border rounded-full focus:shadow-outline"
-                                    type="search" placeholder="Buscar...">
-
-                            </div>
-                            <div class="w-3/12 mt-3.5">
-                                <button class="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4"
-                                    style="background-color: #2d6984;">
-                                    <i class="fa fa-search" aria-hidden="true" style="border:0px solid red"></i>
-                                    Buscar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+  <div class="w-5/6 ml-auto lg:px-12">
+    <x-card-pagamentos/>
+    <div class="flex justify-between mt-6">
+      <div class="text-4xl mt-6">
+        <h1 class="text-gray-500 font-bold text-4xl text">Etiquetas</h1>
+      </div>
+      <div class="flex flex-row-reverse">
+        <form action="#" class="mt-1 flex space-x-1 p-4 items-end border rounded bg-white">
+          <div class="flex flex-col">
+            <input type="text" class="px-1 py-1 w-72 border outline-none rounded bg-white border-gray-200 text-sm" placeholder="Buscar por Nome, Destinatário, Etiqueta...">
+          </div>
+
+          <div class="flex flex-col">
+            <select 
+              required
+              class="px-1 py-1 w-40 border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+              <option value="" disabled selected class="text-sm">Situação Postagem</option>
+              <option value="postados">Postados</option>
+              <option value="pendentes">Pendentes</option>
+            </select>
+          </div>
+
+          <button 
+            type="submit"
+            class="text-white font-bold text-xs
+            hover:bg-gray-700 rounded border 
+            border-gray-500 bg-gray-500 px-2 py-1.5">
+            Buscar
+          </button>
+        </form>
+      </div>
+    </div>
+    <table
+      class="mt-2 min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
+      text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+        <tr>
+            <th scope="col" class="px-6 py-3">
+                Id
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Pagto
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Desconto
+            </th>
+            <th scope="col" class="px-6 py-3">
+                Valor
+            </th>
+            <th scope="col" class="px-1 py-3">
+                Impressão
+            </th>
+            <th scope="col" class="px-1 py-3">
+              {{-- Itens --}}
+            </th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($envios as $envio)
+          <tr 
+            onclick="expandeDetalhesEtiquetas({{$envio->id}})"
+            class="bg-white hover:bg-gray-100 border-b rounded-full font-light cursor-pointer" id="linha_{{ $envio->id }}">
+            <th class="px-6 py-4 rounded-s-lg text-[#2d6984]" id="idenvio_{{ $envio->id }}">
+              <button id="btnInfoCol" data-id ="{{ $envio->id }}">
+                <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 mr-1">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                  <p class="text-xs">24/12/2023</p>
                 </div>
+                MB{{ $envio->id }}
+              </button>
+            </th>
+            <td class="px-6 py-4">
+              Credito
+            </td>
+            <td id="desconto" lass="px-6 py-4">
+              R$ {{ $envio->desconto }}
+            </td>
+            <td id="valor" class="px-6 py-4 font-medium text-green-950">
+              R$ {{ $envio->total }}
+            </td>
+            <td class="px-2 py-2">
+              @if ($envio->type == 'REVERSA')
+                Aut. Postagem<br>
+              @else
+                <a href="#" class="tdType1 font-medium text-blue-600 hover:underline flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
+                  </svg>
+                  4x4
+                </a>
                 <br>
-                {{-- <div class="text-4xl" style="margin-left: 5px;">
-                    <h1 style="color:#728189"><b>Etiquetas</b></h1>
-                </div> --}}
+                <a href="#" class="tdType2 font-medium text-blue-600 hover:underline flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
+                  </svg>
+                  <p>Declaração</p>
+                </a>
+              @endif
+            </td>
+            <td class="px-2 py-2">
+              @if ($envio->type == 'REVERSA')
+                <button type="button" class="bg-yellow-700 text-xs hover:bg-yellow-800 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 mr-1">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3" />
+                  </svg>
+                  Reversa                  
+                </button>
+              @else
+                <button type="button" class="bg-cyan-700 text-xs hover:bg-cyan-800 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">{{ $envio->qte }}
+                  @if ($envio->qte > 1)
+                      Itens
+                  @else
+                      Item
+                  @endif
+                </button>
+              @endif
+            </td>
+          </tr>
 
-                <div  class="mx-auto overflow-x-auto">
-                <table
-                    class="min-w-full table-auto ml-auto bg-white text-sm text-left text-gray-500 dark:text-gray-400 border-collapse">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Id
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Pagto
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Desconto
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Valor
-                            </th>
-                            <th scope="col" class="px-1 py-3">
-                                Impressão
-                            </th>
-                            <th scope="col" class="px-1 py-3">
-                                <span class="sr-only">Itens</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($envios as $envio)
-                            <tr class="bg-white border-b dark:bg-blue-800 dark:border-gray-700 hover:bg-blue-100 dark:hover:bg-blue-100 rounded-full"
-                                id="linha_{{ $envio->id }}">
-
-                                <th class="px-6 py-4 rounded-s-lg" style="color:#2d6984"
-                                    id="idenvio_{{ $envio->id }}">
-                                    <button id="btnInfoCol" data-id ="{{ $envio->id }}">
-                                        <i class="fa fa-clock-ow" aria-hidden="true"></i> 24/12/2023 <br>
-                                        MB{{ $envio->id }}
-                                    </button>
-                                </th>
-                                <td class="px-6 py-4">
-                                    Credito
-                                </td>
-                                <td class="px-6 py-4">
-                                    R$ {{ $envio->desconto }}
-                                </td>
-                                <td class="px-6 py-4 font-medium text-green-950">
-                                    R$ {{ $envio->total }}
-                                </td>
-                                <td class="px-2 py-2">
-                                    @if ($envio->type=='REVERSA') 
-                                        Aut. Postagem<br>
-                                        
-                                    @else
-                                    <a href="#"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline"><i class="fa fa-print"></i> 4x4</a><br>
-                                        <a href="#"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline"><i class="fa fa-print"></i> Declaração</a>
-                                    @endif
-                                </td>
-                                <td dir="rtl" class="px-2 py-2 text-right rounded-s-lg">
-                                    @if ($envio->type=='REVERSA') 
-                                    <button dir="ltr" type="button" class="w-1/2 text-neutral-950 hover:text-white bg-amber-200 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-amber-600 dark:hover:bg-amber-700 focus:outline-none dark:focus:ring-amber-800">Reversa </button>
-                                    @else
-                                        
-                                        {{-- <button dir="auto" href="#"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline"> <span>{{ $envio->qte }}</span> Itens</button> --}}
-                                        
-                                        <button dir="ltr" type="button" class="w-1/2 text-white bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-cyan-600 dark:hover:bg-cyan-700 focus:outline-none dark:focus:ring-cyan-800">{{ $envio->qte }} 
-                                            @if ($envio->qte>1) 
-                                                Itens
-                                            @else
-                                                Item
-                                            @endif
-                                    </button>
-                                    @endif
-                                    
-                                </td>
-
-                            </tr>
-
-                            <tr>
-                                <td colspan="6">
-                                    <div id="detalhes_{{ $envio->id }}" style="display: none">
-
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="w-full m-auto py-4">
-                    {{ $envios->links() }}
-                </div>
+          <div id="preloader" class="overlay">
+            <div class="loader flex justify-center text-white font-bold items-center text-xs">
+              <img src="images/spinner.svg" class="h-10 w-10">
+              <p class="mt-6 ml-3">Carregando..</p>
             </div>
+          </div>
+          
 
-
-            </div>
-        </div>
-    
+          <tr id="detalhes_{{ $envio->id }}" class="bg-gray-50 hover:bg-blue-50 border border-2">
+          </tr>
+        @endforeach
+      </tbody>
+    </table>
+    <nav class="mt-2 pb-10">
+      <ul class="inline-flex -space-x-px mt-2 text-xs">
+        @if ($envios->currentPage() > 1)
+          <li>
+            <a href="?page={{ $envios->currentPage() - 1 }}" 
+              class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white 
+                rounded-l-lg border border-gray-300 hover:bg-gray-100 
+                hover:text-gray-700">
+              Anterior
+            </a>
+          </li>
+        @endif
+        @for ($i = 1; $i <= $envios->lastPage(); $i++)
+          <li>
+            <a href="?page={{ $i }}" 
+                class="py-2 px-3 {{ $envios->currentPage() == $i ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white' }}
+                border border-gray-300 hover:bg-gray-100 
+                hover:text-gray-700">
+                {{ $i }}
+            </a>
+          </li>
+        @endfor
+        @if ($envios->currentPage() < $envios->lastPage())
+          <li>
+            <a href="?page={{ $envios->currentPage() + 1 }}" 
+              class="py-2 px-3 leading-tight text-gray-500 bg-white
+              rounded-r-lg border border-gray-300 hover:bg-gray-100 
+              hover:text-gray-700">
+              Próxima
+            </a>
+          </li>
+        @endif
+      </ul>
+    </nav>
+  </div>
 </x-app-layout>
-
-<script>
-    $(document).on("click", "#btnInfoCol", function() {
-        var info = $(this).attr('data-id');
-        var rota = "{{ route('coleta.show', ['id' => ':idenvio']) }}"
-        rota = rota.replace(":idenvio", info);
-        $.ajax({
-            url: rota,
-
-            success: function(data) {
-                $('#linha_' + info).css("background", "#2d6984");
-                $('#linha_' + info).css("color", "white");
-                $('#idenvio_' + info).css("color", "white");
-                $('#detalhes_' + info).show();
-                $('#detalhes_' + info).append(data.html);
-            },
-        });
-
-
-    });
-</script>

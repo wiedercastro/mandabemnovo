@@ -1,8 +1,4 @@
 <x-app-layout>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-
     <div class="w-5/6 ml-auto lg:px-12" style="border: 0px solid red;">
         <div class="text-4xl" style="margin-top:-25px">
             <h1 style="color:#728189"><b>Declarações</b></h1>

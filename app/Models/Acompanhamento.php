@@ -19,6 +19,11 @@ class Acompanhamento extends Model
 {
     private $fieldsEmail = [];
     private $error;
+    public $table = 'acomp_email_default';
+
+    protected $fillable = ['id', 'name', 'subject', 'body', 'message_code', 'date_insert', 'date_update'];
+
+    public $timestamps = false;
 
     public function __construct()
     {
