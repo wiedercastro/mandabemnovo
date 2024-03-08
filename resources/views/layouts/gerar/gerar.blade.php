@@ -49,6 +49,7 @@
                   <p>Cancelar</p>
                 </button>
                 <button
+                  id="buttonGerarEtiquetas"
                   onclick="gerarEtiquetas()"
                   class="text-sm bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -523,28 +524,42 @@
 
 <script>
   let modal_gerar = document.getElementById('modal_gerar');
+  let buttonGerarEtiquetas = document.getElementById('buttonGerarEtiquetas')
+  let dadosSelecionados = [];
 
   const fechaModal = () => {
     modal_gerar.classList.add('hidden');
   }
 
   const calculaTotalDasEtiquetas = () => {
-  let total = 0;
-  dadosSelecionados.forEach(item => {
-    total += parseFloat(item.total); 
-  });
-  return total;
-}
-
+    let total = 0;
+    dadosSelecionados.forEach(item => {
+      total += parseFloat(item.total);
+    });
+    return total;
+  }
 
   const abreModal = () => {
-    modal_gerar.classList.remove('hidden'); 
+    if (dadosSelecionados.length === 0) {
+      Swal.fire({
+        title: 'Alerta!',
+        text: 'Nenhuma etiqueta selecionada.',
+        icon: 'warning',
+        customClass: {
+          confirmButton: 'bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-yellow active:bg-yellow-800',
+        },
+        buttonsStyling: false,
+        confirmButtonText: 'OK',
+      })
+      return;
+    }
+
+    modal_gerar.classList.remove('hidden');
     modal_gerar.classList.add('flex');
 
     let html = '';
 
     dadosSelecionados.forEach(item => {
-      console.log(item)
       html += `
       <div class="flex space-x-8 font-light justify-between items-center text-sm mt-4 px-8">
         <div class="flex items-center w-1/3">
@@ -588,52 +603,84 @@
     document.getElementById('content').innerHTML = html
   }
 
-  let dadosSelecionados = [];
-
   function adicionarEtiquetaAoArray(envio) {
-      dadosSelecionados.push(envio);
+    dadosSelecionados.push(envio);
   }
 
   function removerEtiquetaDoArray(envio) {
-      const index = dadosSelecionados.findIndex(item => item.id === envio.id);
-      if (index !== -1) {
-          dadosSelecionados.splice(index, 1);
-      }
+    const index = dadosSelecionados.findIndex(item => item.id === envio.id);
+    if (index !== -1) {
+      dadosSelecionados.splice(index, 1);
+    }
   }
 
   const enviosTable = document.getElementById('enviosTable');
   const checkboxes = document.querySelectorAll('input[name="aceito_termos"]');
   const envios = JSON.parse(enviosTable.dataset.envios);
 
-  checkboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', function() {
-          const envioId = this.getAttribute('data-id');
-          const envio = envios.data.find(item => item.id === parseInt(envioId));
+  // Função para lidar com o checkbox "Selecionar Todos"
+  function selecionaTodosCheckBox(event) {
+    const isChecked = event.target.checked;
 
-          if (this.checked) {
-              adicionarEtiquetaAoArray(envio);
-          } else {
-              removerEtiquetaDoArray(envio);
-          }
-      });
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = isChecked;
+
+      const envioId = checkbox.getAttribute('data-id');
+      const envio = envios.data.find(item => item.id === parseInt(envioId));
+      if (isChecked) {
+        adicionarEtiquetaAoArray(envio);
+      } else {
+        removerEtiquetaDoArray(envio);
+      }
+    });
+  }
+
+  // Obter o elemento checkbox "Selecionar Todos"
+  const selectAllCheckbox = document.getElementById('seleciona_todos');
+  selectAllCheckbox.addEventListener('change', selecionaTodosCheckBox);
+
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function () {
+      const envioId = this.getAttribute('data-id');
+      const envio = envios.data.find(item => item.id === parseInt(envioId));
+
+      if (this.checked) {
+        adicionarEtiquetaAoArray(envio);
+      } else {
+        removerEtiquetaDoArray(envio);
+      }
+    });
   });
 
-  const gerarEtiquetas = () => {
 
-    $.ajax({
-        url: '/gerar-etiquetas',
+  const gerarEtiquetas = async () => {
+    buttonGerarEtiquetas.innerHTML = 'Gerando...'
+    buttonGerarEtiquetas.disabled = true;
+
+    try {
+      const response = await fetch('/gerar-etiquetas', {
         method: 'POST',
-        data: dadosSelecionados,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-          console.log(data);
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': '{{ csrf_token() }}' 
         },
-        error: function(xhr) {
-        }
-    });
-
+        body: JSON.stringify(dadosSelecionados)
+      });
+        
+      if (!response.ok) {
+        throw new Error('Erro ao gerar etiquetas: ' + response.statusText);
+      }
+        
+      const res = await response.json();
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      buttonGerarEtiquetas.innerHTML = 'Gerar'
+      buttonGerarEtiquetas.disabled = false;
+    }
   }
+
 
   $(document).on("click", "#btnInfoCol", function() {
       var info = $(this).attr('data-id');
