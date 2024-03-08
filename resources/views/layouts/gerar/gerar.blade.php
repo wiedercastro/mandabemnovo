@@ -5,97 +5,97 @@
             <h1 class="text-gray-500 font-bold">Envios Pendentes</h1>
         </div>
 
-        <div class="w-full">
-            <div x-data="{ open: false }" class="flex flex-row-reverse">
-                <!-- Botão para abrir o modal -->
-                <div class="flex text-xs mt-12">
-                    <button @click="open = true"
-                        class="bg-red-700 hover:bg-red-800 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                        </svg>
-                        <p class="ml-1">Importar loja integrada</p>
-                    </button>
-                    <button @click="open = true"
-                        class="bg-green-600 hover:bg-green-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                        </svg>
-                        <p class="ml-1">Importar bling</p>
-                    </button>
-                    <button @click="open = true"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
-                        </svg>
-                        <p class="ml-1">Importar nuvem</p>
-                    </button>
-                    <button @click="open = true"
-                        class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                        </svg>
-                        <p class="ml-1">Importar csv</p>
-                    </button>
-                    <button @click="open = true"
-                        class="bg-gray-500 hover:bg-gray-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-4 h-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                        </svg>
-                        <p class="ml-1">Incluir envio</p>
-                    </button>
-                </div>
-                <!-- O modal -->
-                <div x-show="open" @click.away="open = false" id="modal_incluir"
-                    class="w-full fixed inset-0 overflow-y-auto animate__animated animate__fadeIn">
-                    <div
-                        class="w-full flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 bg-gray-800 bg-opacity-75 transition-opacity">
-                        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                            <div class="absolute inset-0 opacity-75"></div>
-                        </div>
-                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
-                            aria-hidden="true">&#8203;</span>
-                        <div x-show="open" id="modal_incluir1"
-                            class="ml-56 inline-block align-bottom bg-white 
-              rounded-lg text-left overflow-hidden shadow-xl 
-              transform transition-all sm:my-8 sm:align-middle sm:w-1/2">
-                            <!-- Conteúdo do modal aqui -->
-                            <div class=" px-4 pt-5 pb-4 sm:p-6 sm:pb-4 bg-white">
-                                <div class="sm:flex sm:items-start">
-                                    <!-- Título do modal -->
-                                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                        <div class="flex justify-between">
-                                            <h2 class="text-2xl mb-6 text-gray-500">Incluir envio</h2>
-                                            <svg @click="open = false" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                class="w-6 h-6 cursor-pointer">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M6 18 18 6M6 6l12 12" />
-                                            </svg>
-                                        </div>
-                                        <div class="w-full mx-auto bg-white p-8 rounded-md mt-8 border">
-                                            <h4 class="text-2xl mb-6 text-gray-600">Dados do envio</h4>
-                                            <form id="myForm" action="" method="POST">
-                                                @csrf
+      <div class="w-full">
+          <div x-data="{ open: false }" class="flex flex-row-reverse">
+              <!-- Botão para abrir o modal -->
+              <div class="flex text-xs mt-12">
+                  <button @click="open = true"
+                      class="bg-red-700 hover:bg-red-800 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                          stroke="currentColor" class="w-4 h-4">
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                      </svg>
+                      <p class="ml-1">Importar loja integrada</p>
+                  </button>
+                  <button @click="open = true"
+                      class="bg-green-600 hover:bg-green-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                          stroke="currentColor" class="w-4 h-4">
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                      </svg>
+                      <p class="ml-1">Importar bling</p>
+                  </button>
+                  <button @click="open = true"
+                      class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                          stroke="currentColor" class="w-4 h-4">
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+                      </svg>
+                      <p class="ml-1">Importar nuvem</p>
+                  </button>
+                  <button @click="open = true"
+                      class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                          stroke="currentColor" class="w-4 h-4">
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                      </svg>
+                      <p class="ml-1">Importar csv</p>
+                  </button>
+                  <button @click="open = true"
+                      class="bg-gray-500 hover:bg-gray-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                          stroke="currentColor" class="w-4 h-4">
+                          <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m6.75 12-3-3m0 0-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                      </svg>
+                      <p class="ml-1">Incluir envio</p>
+                  </button>
+              </div>
+              <!-- O modal -->
+              <div x-show="open" @click.away="open = false" id="modal_incluir"
+                  class="w-full fixed inset-0 overflow-y-auto animate__animated animate__fadeIn">
+                  <div
+                      class="w-full flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0 bg-gray-800 bg-opacity-75 transition-opacity">
+                      <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                          <div class="absolute inset-0 opacity-75"></div>
+                      </div>
+                      <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
+                          aria-hidden="true">&#8203;</span>
+                      <div x-show="open" id="modal_incluir1"
+                          class="ml-56 inline-block align-bottom bg-white 
+            rounded-lg text-left overflow-hidden shadow-xl 
+            transform transition-all sm:my-8 sm:align-middle sm:w-1/2">
+                          <!-- Conteúdo do modal aqui -->
+                          <div class=" px-4 pt-5 pb-4 sm:p-6 sm:pb-4 bg-white">
+                              <div class="sm:flex sm:items-start">
+                                  <!-- Título do modal -->
+                                  <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                      <div class="flex justify-between">
+                                          <h2 class="text-2xl mb-6 text-gray-500">Incluir envio</h2>
+                                          <svg @click="open = false" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                              class="w-6 h-6 cursor-pointer">
+                                              <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M6 18 18 6M6 6l12 12" />
+                                          </svg>
+                                      </div>
+                                      <div class="w-full mx-auto bg-white p-8 rounded-md mt-8 border">
+                                          <h4 class="text-2xl mb-6 text-gray-600">Dados do envio</h4>
+                                          <form id="myForm" action="" method="POST">
+                                              @csrf
 
-                                                <div class="flex w-full">
-                                                    <div class="w-full mb-4 mr-4">
-                                                        <label for="remetente"
-                                                            class="block text-gray-700 text-sm font-bold mb-2">Remetente</label>
-                                                        <input type="text" name="remetente" id="remetente"
-                                                            class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500"
-                                                            value="Principal">
-                                                    </div>
+                                              <div class="flex w-full">
+                                                  <div class="w-full mb-4 mr-4">
+                                                      <label for="remetente"
+                                                          class="block text-gray-700 text-sm font-bold mb-2">Remetente</label>
+                                                      <input type="text" name="remetente" id="remetente"
+                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500"
+                                                          value="Principal">
+                                                  </div>
 
                                                     <div class="w-full mb-4 mr-4">
                                                         <label for="destinatario"
@@ -574,9 +574,15 @@
 
   const gerarEtiquetas = async () => {
     try {
+
+      const formData = {
+        data  : dadosSelecionados
+        _token: document.getElementById('_token').value,
+      }
+
       const res = await fetch('/gerar-etiquetas', {
         method: "POST",
-        body: dadosSelecionados
+        body: JSON.stringify(formData)
       });
       
       console.log(res)
@@ -603,53 +609,54 @@
       });
   });
 
-    $('#myForm').submit(function(event) {
-        event.preventDefault();
-        var formData = new FormData(document.getElementById('myForm'));
+  $('#myForm').submit(function(event) {
+      event.preventDefault();
+      var formData = new FormData(document.getElementById('myForm'));
 
-        $.ajax({
-            url: '{{ route('saveEnvio') }}',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                console.log(data);
-                Swal.fire({
-                    title: 'Sucesso!',
-                    text: 'Envio incluído com sucesso.',
-                    icon: 'success',
-                    customClass: {
-                        confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
-                    },
-                    buttonsStyling: false,
-                    confirmButtonText: 'OK',
-                }).then(function() {
-                    // Recarrega a página após a confirmação do usuário
-                    location.reload();
-                });
-            },
-            error: function(xhr) {
-               
-                if(xhr.status==500){
-                    alert(xhr.responseJSON.error);
-                }else{
-                            var errors = xhr.responseJSON.errors;
-                        // Limpe os erros anteriores
-                        $('.error-message').remove();   
+      $.ajax({
+          url: '{{ route('saveEnvio') }}',
+          method: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(data) {
+              console.log(data);
+              Swal.fire({
+                  title: 'Sucesso!',
+                  text: 'Envio incluído com sucesso.',
+                  icon: 'success',
+                  customClass: {
+                      confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
+                  },
+                  buttonsStyling: false,
+                  confirmButtonText: 'OK',
+              }).then(function() {
+                  // Recarrega a página após a confirmação do usuário
+                  location.reload();
+              });
+          },
+          error: function(xhr) {
 
-                        // Exiba os novos erros no formulário
-                        $.each(errors, function(key, value) {
-                            var errorField = $('[name="' + key + '"]');
-                            errorField.addClass('is-invalid');
-                            errorField.after('<span class="text-sm text-red-500">' + value[0] + '</span>');
-                        });
-                }
-                
-            
-        }
-        });
-    });
+              if (xhr.status == 500) {
+                  alert(xhr.responseJSON.error);
+              } else {
+                  var errors = xhr.responseJSON.errors;
+                  // Limpe os erros anteriores
+                  $('.error-message').remove();
+
+                  // Exiba os novos erros no formulário
+                  $.each(errors, function(key, value) {
+                      var errorField = $('[name="' + key + '"]');
+                      errorField.addClass('is-invalid');
+                      errorField.after('<span class="text-sm text-red-500">' + value[0] +
+                          '</span>');
+                  });
+              }
+
+
+          }
+      });
+  });
 
     async function carregarDadosSelectPeso() {
         
