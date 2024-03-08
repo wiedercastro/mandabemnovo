@@ -145,7 +145,7 @@
                                           <h4 class="text-2xl mb-6 text-gray-600">Dados do envio</h4>
                                           <form id="myForm" action="" method="POST">
                                               @csrf
-
+                                              <input type="hidden" name="_token" value="{{ csrf_token() }}" id="_token">
                                               <div class="flex w-full">
                                                   <div class="w-full mb-4 mr-4">
                                                       <label for="remetente"
@@ -618,25 +618,21 @@
       });
   });
 
-  const gerarEtiquetas = async () => {
-    try {
+  const gerarEtiquetas = () => {
 
-      const formData = {
-        data  : dadosSelecionados
-        _token: document.getElementById('_token').value,
-      }
+    $.ajax({
+        url: '/gerar-etiquetas',
+        method: 'POST',
+        data: dadosSelecionados,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+          console.log(data);
+        },
+        error: function(xhr) {
+        }
+    });
 
-      const res = await fetch('/gerar-etiquetas', {
-        method: "POST",
-        body: JSON.stringify(formData)
-      });
-      
-      console.log(res)
-    } catch (error) {
-      
-    } finally {
-      
-    }
   }
 
   $(document).on("click", "#btnInfoCol", function() {
@@ -656,52 +652,52 @@
   });
 
   $('#myForm').submit(function(event) {
-      event.preventDefault();
-      var formData = new FormData(document.getElementById('myForm'));
+    event.preventDefault();
+    var formData = new FormData(document.getElementById('myForm'));
 
-      $.ajax({
-          url: '{{ route('saveEnvio') }}',
-          method: 'POST',
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function(data) {
-              console.log(data);
-              Swal.fire({
-                  title: 'Sucesso!',
-                  text: 'Envio incluído com sucesso.',
-                  icon: 'success',
-                  customClass: {
-                      confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
-                  },
-                  buttonsStyling: false,
-                  confirmButtonText: 'OK',
-              }).then(function() {
-                  // Recarrega a página após a confirmação do usuário
-                  location.reload();
-              });
-          },
-          error: function(xhr) {
+    $.ajax({
+        url: '{{ route('saveEnvio') }}',
+        method: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            console.log(data);
+            Swal.fire({
+                title: 'Sucesso!',
+                text: 'Envio incluído com sucesso.',
+                icon: 'success',
+                customClass: {
+                    confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
+                },
+                buttonsStyling: false,
+                confirmButtonText: 'OK',
+            }).then(function() {
+                // Recarrega a página após a confirmação do usuário
+                location.reload();
+            });
+        },
+        error: function(xhr) {
 
-              if (xhr.status == 500) {
-                  alert(xhr.responseJSON.error);
-              } else {
-                  var errors = xhr.responseJSON.errors;
-                  // Limpe os erros anteriores
-                  $('.error-message').remove();
+            if (xhr.status == 500) {
+                alert(xhr.responseJSON.error);
+            } else {
+                var errors = xhr.responseJSON.errors;
+                // Limpe os erros anteriores
+                $('.error-message').remove();
 
-                  // Exiba os novos erros no formulário
-                  $.each(errors, function(key, value) {
-                      var errorField = $('[name="' + key + '"]');
-                      errorField.addClass('is-invalid');
-                      errorField.after('<span class="text-sm text-red-500">' + value[0] +
-                          '</span>');
-                  });
-              }
+                // Exiba os novos erros no formulário
+                $.each(errors, function(key, value) {
+                    var errorField = $('[name="' + key + '"]');
+                    errorField.addClass('is-invalid');
+                    errorField.after('<span class="text-sm text-red-500">' + value[0] +
+                        '</span>');
+                });
+            }
 
 
-          }
-      });
+        }
+    });
   });
 
   async function carregarDadosSelectPeso() {
