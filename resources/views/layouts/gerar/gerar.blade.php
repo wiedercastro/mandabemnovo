@@ -430,11 +430,11 @@
                               R$ {{ $envio->balcao }}
                           </td>
                           <td dir="rtl" class=" py-2 rounded-s-lg">
-                              R$ {{ $envio->total }}
+                              R$ {{ $envio->desconto }}
 
                           </td>
                           <td dir="rtl" class="py-2 rounded-s-lg">
-                              R$ {{ $envio->desconto }}
+                              R$ {{ $envio->total }}
                           </td>
 
                           <td dir="rtl" class="px-2 py-2 rounded-s-lg ml-2">
@@ -820,6 +820,7 @@
   });
 
   $(document).on("click", "#btnExcluir", function() {
+    
       var rowId = $(this).data("row-id"); // Obtém o ID da linha clicada
       Swal.fire({
           title: 'Tem certeza?',
