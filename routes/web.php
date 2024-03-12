@@ -34,7 +34,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/etiquetas', [EtiquetasController::class, 'index'])->name('etiquetas');
   Route::get('/etiquetas/{idEtiqueta}', [EtiquetasController::class, 'buscaDetalhesDasEtiquetas']);
   Route::get('/etiquetas/{id}', [EtiquetasController::class, 'show'])->name('etiqueta.show');
+  Route::get('/etiquetas/pdf/{envioId}', [EtiquetasController::class, 'printEtiqueta'])->name('etiqueta.pdf');
   Route::get('/teste', [EtiquetasController::class, 'teste']);
+  
 
   /*
   Coletas
