@@ -672,6 +672,21 @@
       }
         
       const res = await response.json();
+        if(res.status==1){
+            Swal.fire({
+                title: 'Sucesso!',
+                text: 'Etiqueta gerada com sucesso.',
+                icon: 'success',
+                customClass: {
+                    confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
+                },
+                buttonsStyling: false,
+                confirmButtonText: 'OK',
+            }).then(function() {
+                // Recarrega a página após a confirmação do usuário
+                location.reload();
+            });
+        }
       console.log(res);
     } catch (error) {
       console.error(error);

@@ -417,12 +417,12 @@ class Payment extends Authenticatable
         $infoSaldoDivergencia = $data['info_saldo_divergencia'];
         $coletaId = $data['coleta_id'];
         $userId = $data['user_id'];
-
+        
         if ($infoSaldoColeta) {
             foreach ($infoSaldoColeta['itens'] as $paymentId => $info) {
                 if ($info['baixar']) {
                     DB::table('payment')
-                        ->where('id', $paymentId)
+                        ->where('id','=', $paymentId)
                         ->whereNull('status')
                         ->update(['status' => 'FINALIZED']);
                 }
@@ -431,7 +431,7 @@ class Payment extends Authenticatable
                     'payment_id' => $paymentId,
                     'coleta_id' => $coletaId,
                     'value' => -$info['valor_descontar'],
-                    'date' => now(),
+                    'date' => date('Y-m-d H:i:s'),
                 ]);
             }
         }
@@ -439,7 +439,7 @@ class Payment extends Authenticatable
         if ($infoSaldoDivergencia) {
             foreach ($infoSaldoDivergencia['divergencias'] as $divergencia) {
                 // Obtemos saldo atual a cada interação
-                $saldo = $this->payment_model->get_credito_saldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
+                $saldo = $this->payment_model->getCreditoSaldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
 
                 // Nao ha mais saldo
                 if (!$saldo) {
@@ -454,7 +454,7 @@ class Payment extends Authenticatable
                 foreach ($saldo['itens'] as $paymentId => $info) {
                     if ($info['baixar']) {
                         DB::table('payment')
-                            ->where('id', $paymentId)
+                            ->where('id','=', $paymentId)
                             ->whereNull('status')
                             ->update(['status' => 'FINALIZED']);
                     }
@@ -464,7 +464,7 @@ class Payment extends Authenticatable
                         'coleta_id' => $divergencia['coleta_id'],
                         'ref_coleta_id' => $coletaId,
                         'value' => -$info['valor_descontar'],
-                        'date' => now(),
+                        'date' =>date('Y-m-d H:i:s'),
                     ]);
                     $enviotaModel = app(Envio::class);
                     $enviotaModel->update_indo_pagto_divergencia(['id' => $paymentId], [['id' => $divergencia['id']]]);
@@ -499,7 +499,7 @@ class Payment extends Authenticatable
             if ($infoDivergencia) {
                 foreach ($infoDivergencia as $divergencia) {
                     // Obtemos saldo atual a cada interação
-                    $saldo = $this->payment_model->get_credito_saldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
+                    $saldo = $this->payment_model->getCreditoSaldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
 
                     // Nao ha mais saldo
                     if (!$saldo) {
@@ -540,7 +540,7 @@ class Payment extends Authenticatable
                 // Verificar cada divergência
                 foreach ($infoAddDivergencia as $divergencia) {
                     // Obtemos saldo atual a cada interação
-                    $saldo = $this->payment_model->get_credito_saldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
+                    $saldo = $this->payment_model->getCreditoSaldo(['user_id' => $userId, 'valor_total' => $divergencia['valor_divergente']]);
 
                     // Nao ha mais saldo
                     if (!$saldo) {
@@ -813,7 +813,7 @@ class Payment extends Authenticatable
 
             $valor_cobrar = number_format(preg_replace('/,/', '.', $post['value']), '2', '.', '');
 
-            $BA_ = $this->get_authorization(['user_id' => $post['user_id']]);
+            $BA_ = $this->getAuthorization(['user_id' => $post['user_id']]);
             if (!$BA_) {
                 $this->error = "TOKEN do Acordo Cobrança para o cliente " . $user->name . " invalido.";
                 return false;

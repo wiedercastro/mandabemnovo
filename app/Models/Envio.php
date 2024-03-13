@@ -33,9 +33,11 @@ class Envio extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'coleta_id',
         'user_id',
         'date_postagem',
+        'date_update'
     ];
     private $CalPrazoFrete;
 
