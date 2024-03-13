@@ -815,6 +815,9 @@
               url: '/buscaCep/' + cep,
               type: 'GET',
               dataType: 'json',
+              headers: {
+                          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                      },
               success: function(data) {
                   // Preencha os campos restantes com as informações obtidas
                   $('#logradouro').val(data.logradouro);
