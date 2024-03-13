@@ -1,6 +1,5 @@
 <x-app-layout>
   <div class="w-5/6 ml-auto lg:px-12 sm:ml-0 lg:ml-80">
-  {{--  w-5/6 lg:px-12 sm:ml-6 lg:ml-80 --}}
       <div class="flex sm:hidden ml-20 sm:ml-0">
         <img src="{{asset('images/logo_mandabem_az.png')}}" alt="" class="w-32"/>
       </div>
@@ -676,11 +675,18 @@
       }
 
       const res = await response.json();
+<<<<<<< HEAD
      
         if(res.status==1){
             Swal.fire({
                 title: 'Etiqueta gerada com sucesso!',
                 text: '',
+=======
+        if(res.status==1){
+            Swal.fire({
+                title: 'Sucesso!',
+                text: 'Etiqueta gerada com sucesso.',
+>>>>>>> a038fe8 (correcao para gerar etiquetas)
                 icon: 'success',
                 customClass: {
                     confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
@@ -691,10 +697,14 @@
                 // Recarrega a página após a confirmação do usuário
                 location.reload();
             });
+<<<<<<< HEAD
         }else{
               document.getElementById('alertMensa').classList.remove('hidden');
               document.getElementById('mensagem').innerHTML = res.error;
        }
+=======
+        }
+>>>>>>> a038fe8 (correcao para gerar etiquetas)
       console.log(res);
     } catch (error) {
       console.log(error);
