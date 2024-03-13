@@ -1,12 +1,17 @@
 <x-app-layout>
 
-  <div class="w-5/6 ml-auto lg:px-12">
-    <div class="text-4xl">
+  <div class="w-5/6 ml-auto lg:px-12 sm:mr-0 mr-8">
+
+    <div class="flex sm:hidden ml-24 sm:ml-0">
+      <img src="{{asset('images/logo_mandabem_az.png')}}" alt="" class="w-32"/>
+    </div>
+
+    <div class="text-4xl mt-12 sm:mt:0">
       <h1 class="text-gray-500 font-bold">Reversa</h1>
     </div>
-    <div class="w-full mt-6 ">
+    <div class="w-full mt-6 pb-10">
       <div class="w-full text-gray-900">
-        <div class="flex w-full m-auto p-4 bg-white rounded shadow-xl ">
+        <div class="flex sm:flex-row flex-col w-full m-auto p-4 bg-white rounded shadow-xl">
           <div class="w-11/12 flex ml-3.5 flex items-center">
             <div class="w-80">
               <label for="category_id" class="block text-sm font-bold text-gray-500">
@@ -19,9 +24,10 @@
               </select>
             </div>
           </div>
+          <hr class="mt-4 sm:hidden flex">
 
-          <div class="w-3/12 flex text-blue-700 items-center">
-              <label for="category_id" class="font-bold text-[#25688B] text-xl font-bold">
+          <div class="w-full sm:w-3/12 flex sm:flex-row flex-row-reverse text-blue-700 items-center">
+              <label for="category_id" class="font-bold text-[#25688B] text-sm sm:text-xl font-bold">
                 Como funciona essa aba
               </label>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="cursor-pointer w-8 h-8">
@@ -31,11 +37,11 @@
         </div>
       </div>
 
-      <div class="w-full mx-auto bg-white p-8 rounded-md mt-8 shadow">
-        <div class="w-5/6 mx-auto bg-white p-12 border shadow rounded-md mt-8">
+      <div class="mx-auto bg-white sm:p-8 rounded-md mt-8 shadow sm:p-0 md:p-8 lg:p-8 xl:p-8">
+        <div class="w-5/6 mx-auto bg-white sm:p-12 sm:p-0 md:p-12 lg:p-12 xl:p-12 sm:border sm:shadow rounded-md mt-8">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
             <!-- Coluna 1 -->
-            <div class="mr-8">
+            <div class="sm:mr-8 mr-0">
               <h2 class="text-2xl font-semibold mb-6 text-[#25688B]">Dados da Reversa</h2>
 
               <div class="w-full mb-4 mr-4">
@@ -98,7 +104,7 @@
             </div>
 
             <!-- Coluna 2 -->
-            <div class="ml-8">
+            <div class="sm:ml-8 ml-0">
               <h2 class="text-2xl font-semibold mb-6 text-[#25688B]">Campos Opcionais</h2>
               <div class="w-full mb-4 mr-4">
                 <label for="title" class="block text-gray-500 font-bold text-sm">E-mail</label>
