@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\AlturaEnum;
+use App\Enums\ComprimentoEnum;
+use App\Enums\LarguraEnum;
 use App\Http\Requests\GerarEnvioControllerRequest;
 use App\Models\Envio;
 use Illuminate\Http\Request;
@@ -13,7 +16,11 @@ class GerarEnvioController extends Controller
 {
   public function index()
   {
-    $id = session('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+    $id = auth()->id();
+   
+    $comprimentoEnum = ComprimentoEnum::cases();
+    $largurasEnum    = LarguraEnum::cases();
+    $alturaEnum      = AlturaEnum::cases();
 
     $envios = DB::table('envios')
       ->select(
@@ -29,10 +36,14 @@ class GerarEnvioController extends Controller
       ->whereNull("coleta_id")
       ->paginate();
 
-    // $envios = DB::table('envios')->where("user_id", "=", 35699)->groupBy("id")->paginate();
+    $data = [
+      'envios' => $envios,
+      'comprimentos' => $comprimentoEnum,
+      'larguras' => $largurasEnum,
+      'alturas' => $alturaEnum,
+  ];
 
-    // dd($envios);
-    return view('layouts.gerar.gerar', compact("envios"));
+  return view('layouts.gerar.gerar', $data);
   }
   public function saveEnvio(GerarEnvioControllerRequest $request)
   {
@@ -41,10 +52,22 @@ class GerarEnvioController extends Controller
 
       $data = $request->all();
 
-      $data['user_id'] = session('login_web_59ba36addc2b2f9401580f014c7f58ea4e30989d');
+      $data['user_id'] = auth()->id();
       $data['type'] = 'NORMAL'; //fazer verificação se é reversa
-      //$data['nota_fiscal'] = '';
-      // dd($data);
+      if( $data['largura']!=null){
+        $largura = explode(' cm', $data['largura']);
+        $data['largura'] = trim($largura[0]);
+      }
+
+      if( $data['altura']!=null){
+        $altura = explode(' cm', $data['altura']);
+        $data['altura'] = trim($altura[0]);
+      }
+
+      if( $data['comprimento']!=null){
+        $comprimento = explode(' cm', $data['comprimento']);
+        $data['comprimento'] = trim($comprimento[0]);
+      }
 
       return $envio = Envio::saveEnvio($data);
     } catch (\Exception $e) {

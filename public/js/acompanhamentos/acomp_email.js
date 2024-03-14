@@ -2,7 +2,7 @@
 let modal_container = document.getElementById('modal-container');
 let modal_info_acompanhamentos = document.getElementById('modal-info-acompanhamentos');
 
-const fechaModal = () => {
+const fechaModalAcompanhamento = () => {
   modal_container.classList.add('hidden');
 }
 
@@ -15,7 +15,7 @@ const fechaModalComInformacoes = () => {
   modal_info_acompanhamentos.classList.add('hidden');
 }
 
-const abreModal = (id) => {
+const abreModalAcompanhamento = (id) => {
   fetch(`http://localhost:8989/acomp_email/${id}`, {
     method: 'GET',
     headers: {

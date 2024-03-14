@@ -295,6 +295,14 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
+                                                <div class="mt-4">
+                                                    <p class="text-sm text-gray-500 font-bold">Medidas</p>
+                                                    <p class="text-xs text-gray-500">(Só preencha se a soma da altura, largura e comprimento do seu pacote for maior que 90 cm)</p>
+                                                    <p class="text-sm text-red-500">* Atenção: Não é permitido o envio de caixas em formato cilíndrico.</p>
+                                                    <p class="text-sm text-red-500">** Atenção: Nenhuma medida sozinha pode ultrapassar 70cm.</p>
+                                                </div>
+                                                <hr>
   
                                                 <div class="flex w-full">
                                                     <div class="w-full mb-4 mr-4">
@@ -302,9 +310,10 @@
                                                             class="block text-gray-700 text-sm font-bold mb-2">Altura</label>
                                                         <select name="altura" id="altura"
                                                             class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                            {{-- @foreach ($categories as $category) --}}
                                                             <option value="">Selecione</option>
-                                                            {{-- @endforeach --}}
+                                                            @foreach ($alturas as $altura)
+                                                                <option value="{{ $altura->value }}">{{ $altura->value }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
   
@@ -313,9 +322,10 @@
                                                             class="block text-gray-700 text-sm font-bold mb-2">Comprimento</label>
                                                         <select name="comprimento" id="comprimento"
                                                             class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                            {{-- @foreach ($categories as $category) --}}
                                                             <option value="">Selecione</option>
-                                                            {{-- @endforeach --}}
+                                                            @foreach ($comprimentos as $comprimento)
+                                                                <option value="{{ $comprimento->value }}">{{ $comprimento->value }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -326,9 +336,10 @@
                                                             class="block text-gray-700 text-sm font-bold mb-2">Largura</label>
                                                         <select name="largura" id="largura"
                                                             class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                            {{-- @foreach ($categories as $category) --}}
                                                             <option value="">Selecione</option>
-                                                            {{-- @endforeach --}}
+                                                            @foreach ($larguras as $largura)
+                                                                <option value="{{ $largura->value }}">{{ $largura->value }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
   
