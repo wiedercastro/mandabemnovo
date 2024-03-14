@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     PagamentoController,
     ProfileController,
     CotacaoController,
+    DeclaracoesController,
     ReversaController,
     SoapController
 };
@@ -58,7 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   /*
   Declaracoes
   */
-  Route::get('/declaracoes',[ReversaController::class, 'index'])->name('declaracoes');
+  Route::get('/declaracoes',[DeclaracoesController::class, 'index'])->name('declaracoes');
 
   /*
   Pagamentos

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,7 +23,12 @@ class Declaracao extends Authenticatable
         'date_insert',
     ];
 
-    public function getList($id)
+    public function getDateInsertAttribute($value)
+    {
+      return Carbon::parse($value)->format('d/m/Y H:i');
+    }    
+
+    public function getList()
     {
         if (!isset($param['user_id'])) {
             $this->error = "ID de usuário não fornecido";
