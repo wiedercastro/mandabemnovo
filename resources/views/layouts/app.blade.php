@@ -41,5 +41,6 @@
         <script src="{{ url('js/acompanhamentos/acomp_email.js') }}"></script>
         <script src="{{ url('js/etiquetas/expande_itens_etiquetas.js') }}"></script>
         <script src="{{ url('js/declaracoes/como_funciona_modal_detalhes.js') }}"></script>
+        <script src="{{ url('js/gerar/importar_bling.js') }}"></script>
     </body>
 </html>

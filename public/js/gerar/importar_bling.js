@@ -1,0 +1,3 @@
+const abreModalBling = () => {
+  alert("IOPA")
+}
