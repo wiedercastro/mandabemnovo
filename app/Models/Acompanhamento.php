@@ -8,14 +8,22 @@ use App\Models\User;
 use App\Models\Envio;
 use App\Models\Log;
 use App\Models\Webservice;
-//corrigir quando houver a librarie
-use App\Services\Correio\Correio;
+use App\Libraries\Correios\Correio;
+use App\Libraries\EmailMaker;
+use App\Http\Controllers\ApiNuvemShopController;
+use App\Libraries\DateUtils;
+use Illuminate\Support\Facades\Http;
 
 
 class Acompanhamento extends Model
 {
     private $fieldsEmail = [];
     private $error;
+    public $table = 'acomp_email_default';
+
+    protected $fillable = ['id', 'name', 'subject', 'body', 'message_code', 'date_insert', 'date_update'];
+
+    public $timestamps = false;
 
     public function __construct()
     {
@@ -34,6 +42,8 @@ class Acompanhamento extends Model
         //alterar quando houver as libraries
         $envioModel = new Envio();  
         $emailMaker = new EmailMaker();  
+        $apiNuvemShopController = new ApiNuvemShopController();
+        $dateUtils = new DateUtils();
 
         $envioId = $data['envio_id'];
         $etiqueta = isset($data['etiqueta']) ? $data['etiqueta'] : null;
@@ -204,7 +214,7 @@ class Acompanhamento extends Model
                             echo "Iniciando WP\n";
                         }
         
-                        $webserviceModel = new Webservice(); // Certifique-se de ajustar o namespace conforme necessário
+                        $webserviceModel = new Webservice(); 
         
                         $informar = $webserviceModel->sendTrackNumber([
                             'integracao' => 'wordpress',
@@ -242,9 +252,9 @@ class Acompanhamento extends Model
                             "shipping_tracking_url" => "https://www2.correios.com.br/sistemas/rastreamento/",
                             "notify_customer" => true
                         ]);
-                        //corrigir depois com a librarie
-                        $endpoint = Modules::run('mandabem/api_nuvem_shop/get_url_base') . $api->store_id . '/orders/' . $envio->ref_id_api_source . '/fulfill';
-                        //corrigir depois com a librarie
+                        
+                        $endpoint = $apiNuvemShopController->getBaseUrl() . $api->store_id . '/orders/' . $envio->ref_id_api_source . '/fulfillments';
+
                         $response = Http::withHeaders([
                             'Content-Type' => 'application/json',
                             'Authorization' => 'Bearer ' . $api->token,
@@ -316,7 +326,7 @@ class Acompanhamento extends Model
                                     'type' => $data['type'],
                                     'integration' => $envio->integration,
                                     'status' => 'OK',
-                                    'date' => now() // Ou utilize o método adequado para obter a data atual
+                                    'date' => now() 
                                 ];
                                 $ins = DB::table('envios_notify')->insert($dataInsert);
             
@@ -341,7 +351,7 @@ class Acompanhamento extends Model
                                     'Content-Type' => 'application/x-www-form-urlencoded',
                                 ])->post($endpointBlingPost2, $postEvento);
             
-                                $this->log_model->log([
+                                $logModel->log([
                                     'text' => "Retorno para envio de evento:\n" . $responseEvento->body(),
                                     'type' => "BLING_API_EVENT",
                                     'user_id' => $envio->user_id
@@ -356,11 +366,11 @@ class Acompanhamento extends Model
                     if (strtolower($envio->integration) == 'tiny' || $notifyTiny) {
 
                         if (!$error) {
-                            $previsaoEntrega = $this->date_utils->DiasUteisFromInit(substr($envio->date_postagem, 0, 10), $envio->prazo);
+                            $previsaoEntrega = $dateUtils->DiasUteisFromInit(substr($envio->date_postagem, 0, 10), $envio->prazo);
                             $urlRastreamento = urlencode("http://www2.correios.com.br/sistemas/rastreamento/default.cfm?code=" . $envio->etiqueta_correios);
                             $endpointTiny = 'cadastrar.codigo.rastreamento.pedido.php?token=' . $api->api_key . '&id=' . $envio->ref_id_api_source . '&urlRastreamento=' . $urlRastreamento . '&dataPrevista=' . $previsaoEntrega . '&codigoRastreamento=' . $envio->etiqueta_correios . 'BR&formaEnvio=C&formato=JSON';
                     
-                            $responseTiny = Http::get($endpointTiny); // Usando HTTP Client do Laravel
+                            $responseTiny = Http::get($endpointTiny); 
                             $infoResp = $responseTiny->json();
 
                             $infoResp1 = json_decode($infoResp->body(), true);
@@ -386,13 +396,13 @@ class Acompanhamento extends Model
                                     'type' => $data['type'],
                                     'integration' => $envio->integration,
                                     'status' => 'OK',
-                                    'date' => now() // Ou utilize o método adequado para obter a data atual
+                                    'date' => now() 
                                 ];
                                 DB::table('envios_notify')->insert($dataInsert);
                     
                                 // Add evento
                     
-                                $this->log_model->log([
+                                $logModel->log([
                                     'text' => "Retorno para envio de evento:\n" . $infoResp1,
                                     'type' => "TINY_API_EVENT",
                                     'user_id' => $envio->user_id
@@ -466,21 +476,21 @@ class Acompanhamento extends Model
                             'city' => $envio->cidade,
                             'province' => $envio->estado,
                             'country' => 'BR',
-                            'happened_at' => $this->date_utils->get_now(false) . 'T' . $this->date_utils->get_hour() . '-03:00',
+                            'happened_at' => $dateUtils->getNow(false) . 'T' . $dateUtils->getHour() . '-03:00',
                             'estimated_delivery_at' => substr($envio->date_entregue, 0, 10) . 'T' . substr($envio->date_entregue, 11) . '-03:00',
                         ];
 
                         $post = json_encode($data_post);
+ 
+                        $endpoint = $apiNuvemShopController->getBaseUrl() . $api->store_id . '/orders/' . $envio->ref_id_api_source . '/fulfillments';
 
-                        $endpoint = Modules::run('mandabem/api_nuvem_shop/get_url_base') . $api->store_id . '/orders/' . $envio->ref_id_api_source . '/fulfillments';
-
-                        $resp = Modules::run('mandabem/api_nuvem_shop/request', [
+                        $response = Http::post('mandabem/api_nuvem_shop/request', [
                             'show_header' => false,
                             'post' => $post,
                             'token' => $api->token,
                             'endpoint' => $endpoint
-                        ]);
-
+                        ])->json();
+                        $resp = $response->json();
                         $json = json_decode($resp, true);
 
                         if (isset($json['id'])) {
@@ -490,7 +500,7 @@ class Acompanhamento extends Model
                                 'type' => $data['type'],
                                 'integration' => $envio->integration,
                                 'status' => 'OK',
-                                'date' => $this->date_utils->get_now()
+                                'date' => $dateUtils->getNow()
                             ];
 
                             $ins = DB::table('envios_notify')->insert($data_insert);
@@ -501,9 +511,9 @@ class Acompanhamento extends Model
                         } else {
                             $error[] = "Notify envio nuvem shop ($envio->id) Fail\nData: " . print_r($data, true) . "\nResp: $resp \n";
                         }
-
+                        $userModel = new User();
                         if ($envio->user_id == '42823') {
-                            $api_tiny_ = $this->user_model->get_api_tiny($envio->user_id);
+                            $api_tiny_ = $userModel->getApiTiny($envio->user_id);
                             if ($api_tiny_) {
                                 $api = DB::table('api_tiny')->where('user_id', $user->id)->first();
                                 $notify_tiny = true;
@@ -517,20 +527,18 @@ class Acompanhamento extends Model
                             'apikey' => $apiB->api_key,
                             'xml' => '<evento>
                                         <id_servico>' . $idServico . '</id_servico>
-                                        <data_evento>' . $this->date_utils->to_br($envio->date_entregue, true, true) . '</data_evento>
+                                        <data_evento>' . $dateUtils->toBr($envio->date_entregue, true, true) . '</data_evento>
                                         <codigo_situacao>3</codigo_situacao>
                                         <url><![CDATA[https://www2.correios.com.br/sistemas/rastreamento/]]></url>
                                     </evento>'
                         ];
-                    
-                        print_r($post_evento);
-                    
-                        $json_evento = Modules::run('mandabem/api_bling/request', [
+                     
+                        $json_evento = Http::post('mandabem/api_bling/request', [
                             'show_header' => false,
                             'post' => $post_evento,
                             'type' => 'informar_data_entregue',
                             'endpoint' => 'logistica/evento/' . $envio->etiqueta_correios . 'BR/json/'
-                        ]);
+                        ])->json();
                     
                         $info_resp = json_decode($json_evento, true);
                     
@@ -547,7 +555,7 @@ class Acompanhamento extends Model
                                 'type' => $data['type'],
                                 'integration' => $envio->integration,
                                 'status' => 'OK',
-                                'date' => $this->date_utils->get_now()
+                                'date' => $dateUtils->getNow()
                             ];
                     
                             $ins = DB::table('envios_notify')->insert($data_insert);
@@ -561,10 +569,10 @@ class Acompanhamento extends Model
                     if ($envio->integration == 'Tiny' || $notify_tiny) {
                         $endpoint_tiny = 'pedido.alterar.situacao?token=' . $api->api_key . '&id=' . $envio->ref_id_api_source . '&situacao=entregue&formato=JSON';
                     
-                        $resp = Modules::run('mandabem/api_tiny/request', [
+                        $json_evento = Http::post('mandabem/api_tiny/request', [
                             'endpoint' => $endpoint_tiny
-                        ]);
-                    
+                        ])->json();
+
                         $info_resp = json_decode($resp, true);
                     
                         if ($info_resp['retorno']['status'] != 'OK') {
@@ -576,7 +584,7 @@ class Acompanhamento extends Model
                                 'type' => $data['type'],
                                 'integration' => $envio->integration,
                                 'status' => 'OK',
-                                'date' => $this->date_utils->get_now()
+                                'date' => $dateUtils->getNow()
                             ];
                     
                             $ins = DB::table('envios_notify')->insert($data_insert);
@@ -591,10 +599,8 @@ class Acompanhamento extends Model
                         if (isset($data['is_test'])) {
                             echo "Iniciando WP Data Entrega\n";
                         }
-                    
-                        $this->load->model('webservice_model');
-                    
-                        $informar = $this->webservice_model->send_track_number([
+                        $webserviceModel = new Webservice();
+                        $informar = $webserviceModel->sendTrackNumber([
                             'integracao' => 'wordpress',
                             'user_id' => $api->user_id,
                             'ref_id' => $envio->ref_id,
@@ -605,11 +611,11 @@ class Acompanhamento extends Model
                         if ($informar) {
                             $data_insert = [
                                 'envio_id' => $envio->id,
-                                'id_return' => $this->date_utils->get_time(),
+                                'id_return' => $dateUtils->getTime(),
                                 'type' => $data['type'],
                                 'integration' => $envio->integration,
                                 'status' => 'OK',
-                                'date' => $this->date_utils->get_now()
+                                'date' => $dateUtils->getNow()
                             ];
                     
                             $ins = DB::table('envios_notify')->insert($data_insert);
@@ -773,7 +779,6 @@ class Acompanhamento extends Model
     private function insertEmailDefault()
     {
         $this->load->database();
-        $this->load->library('date_utils');
         $emailsDefault = [];
         foreach ($emailsDefault as $e) {
             DB::table('acomp_email_default')->insert([
@@ -993,7 +998,7 @@ class Acompanhamento extends Model
 
     public function sendEmailNotification($param = [], $returnMsg = false)
     {
-
+        $emailMaker = new EmailMaker();
         $messageCode = '';
         if (($param['status_number'] == '01' || $param['status_number'] == '00') && preg_match('/Objeto saiu para entrega ao destinat/i', $param['status_desc'])) {
             $messageCode = 'OBJ_SAIU_ENTREGA';
@@ -1019,12 +1024,8 @@ class Acompanhamento extends Model
                 'msg' => "<pre>XX Params:<br>" . print_r($param, true) . "</pre>\n",
                 'to' => 'regygom@gmail.com'
             ];
-            $paramMsg['unique'] = true;
-            //corrigir quando houver a librarie mail 
-            Mail::raw($paramMsg['msg'], function ($message) use ($paramMsg) {
-                $message->to($paramMsg['to'])
-                        ->subject($paramMsg['subject']);
-            });
+            $paramMsg['unique'] = true; 
+            $send = $emailMaker->sendAmazon($paramMsg);
 
             return false;
         } elseif (!$messageCode) {
@@ -1128,29 +1129,16 @@ class Acompanhamento extends Model
             if (isset($param['email_replicate'])) {
                 $paramMsg['email_replicate'] = $param['email_replicate'];
             }
-
-            try {
-                //corrigir quando houver a librarie mail 
-                Mail::send([], [], function ($message) use ($paramMsg) {
-                    $message->to($paramMsg['to'])
-                            ->from($paramMsg['email_from'], $paramMsg['name_from'])
-                            ->subject($paramMsg['subject'])
-                            ->setBody($paramMsg['msg'], 'text/html');
-                });
-
-                $status = 'SENT';
-            } catch (\Exception $e) {
+            $send =  $emailMaker->sendAmazon($paramMsg);
+            $status = 'SENT';
+            if (!$send) {
                 $status = 'ERROR';
-                $msgLog = 'Falha envio de email' . "\n";
-                $msgLog .= "Envio:\n" . print_r([$envio->id, $envio->etiqueta_correios], true) . "\n";
-                $msgLog .= "Mensagem:\n" . print_r($message, true) . "\n";
-                $msgLog .= "Error:\n" . $e->getMessage() . "\n";
-                //corrigir quando houver a librarie mail 
-                Mail::raw($msgLog, function ($message) {
-                    $message->to('regygom@gmail.com')
-                            ->subject('Error: Falha no envio de e-mail');
-                });
-            }
+                $msg_log = 'Falha envio de email' . "\n";
+                $msg_log .= "Envio:\n" . print_r([$envio->id, $envio->etiqueta_correios], true) . "\n";
+                $msg_log .= "Mensagem:\n" . print_r($message, true) . "\n";
+                $msg_log .= "Error:\n" . $emailMaker->getError() . "\n";
+                $send = $emailMaker->sendAmazon(array('msg' => $msg_log, 'to' => 'regygom@gmail.com', 'unique' => true));
+            } 
         }
 
         $exist = DB::table('acomp_email_notification')
@@ -1179,10 +1167,9 @@ class Acompanhamento extends Model
 
     public function rawUpdateObjeto($envio)
     {
-        //corrigir quando houver a librarie
-        $correio = app(Correio::class);
-        $userModel = app(User::class);
-        $envioModel = app(Envio::class);
+        $correio = new Correio();
+        $userModel = new User();
+        $envioModel = new Envio();
 
         $user = $userModel->find($envio->user_id);
 
@@ -1223,7 +1210,7 @@ class Acompanhamento extends Model
 
             if (!$error) {
                 $envioModel->updateEventsEnvio([
-                    'evento' => object_to_array($evento),
+                    'evento' => $evento->toArray(),
                     'envio_id' => $envio->id,
                 ]);
             }

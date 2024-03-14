@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Libraries\FormBuilder;
 
 class GrupoTaxa extends Model
 {
@@ -66,12 +67,12 @@ class GrupoTaxa extends Model
         if (isset($post['type_error_return'])) {
             $typeErrorReturn = $post['type_error_return'];
         }
-        //corrigir
-        $validator = Validator::make($post, $this->fields, [], []);
+        $formBuilder = new FormBuilder();
+        $validator = $formBuilder->validadeData($post, $this->fields, [], []);
 
-        if ($validator->fails()) {
-            $this->error = implode('<br>', $validator->errors()->all());
-            return false;
+        if (!$validator) {
+            $this->error = $formBuilder->getErrorValidation();
+            return FALSE;
         } else {
             try {
                 DB::beginTransaction();

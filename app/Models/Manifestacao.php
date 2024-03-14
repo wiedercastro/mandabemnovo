@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use App\Libraries\DateUtils;
+use App\Libraries\EmailMaker;
+use App\Libraries\Validation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use DOMDocument;
+use DeathByCaptcha_HttpClient;
 use App\Models\Log;
+use Illuminate\Auth\Events\Validated;
 
 class Manifestacao extends Model
 {
@@ -387,14 +392,15 @@ class Manifestacao extends Model
 
     public function isEntregaAtrasada($envio)
     {
+        $dateUtils = new DateUtils();
         if (!$envio->date_postagem || $envio->date_entregue) {
             return false;
         }
 
-        $dataInicial = now()->modify($this->dateUtils->toBr($envio->date_postagem, false))->startOfDay();
+        $dataInicial = now()->modify($dateUtils->toBr($envio->date_postagem, false))->startOfDay();
         $dataFinal = now()->endOfDay();
 
-        $diasUteis = $this->dateUtils->diasUteis($dataInicial, $dataFinal);
+        $diasUteis = $dateUtils->diasUteis($dataInicial, $dataFinal);
 
         return $diasUteis > $envio->prazo;
     }
@@ -543,7 +549,7 @@ class Manifestacao extends Model
 
     public function updateIndenizacao()
     {
-        $this->load->library('validation');
+        $dateUtils = new DateUtils();
 
         if (false) {
             $mes = 'marco_2021';
@@ -588,7 +594,7 @@ class Manifestacao extends Model
 
                 if ($desc == '27347642000118') {
                     $numeroFatura = $i[8];
-                    $datePgtoFatura = $this->date_utils->to_en($i[10]);
+                    $datePgtoFatura = $dateUtils->toEn($i[10]);
                 }
 
                 if (!preg_match('/CREDITO - IND/', $desc)) {
@@ -601,8 +607,8 @@ class Manifestacao extends Model
                     echo "Numero da Fatura Nao encotrado.\n";
                     return;
                 }
-
-                if (!$datePgtoFatura || !$this->validation->val_date($datePgtoFatura, 'en')) {
+                $validation = new Validation();
+                if (!$datePgtoFatura || !$validation->valDate($datePgtoFatura, 'en')) {
                     echo "Data de Pagto Obtido da Fatura invalida ($datePgtoFatura).\n";
                     return;
                 }
@@ -734,10 +740,10 @@ class Manifestacao extends Model
     private function resolveRecaptcha($param)
     {
         require_once base_path('path/to/deathbycaptcha.php');
-
+        $emailMaker = new EmailMaker();
         // Use the 'storage' disk to store captcha images and responses
         $path = storage_path('captcha');
-        $this->load->library('email_maker');
+         
 
         // Put your DBC username & password here.
         $username = "marcosgazza";
@@ -749,7 +755,7 @@ class Manifestacao extends Model
         echo "DeathBYCaptcha: your balance is {$client->balance} US cents<br>\n";
 
         if ($client->balance < 20) {
-            $this->email_maker->msg([
+            $emailMaker->msg([
                 'to' => 'regygom@gmail.com',
                 'subject' => 'Saldo - Recaptcha DeathByCaptcha',
                 'msg' => 'DeathByCaptcha saldo abaixo de 20 Centavos: ' . $client->balance . " US Cents"

@@ -14,13 +14,10 @@ class Transferencia extends Model
     public function __construct()
     {
         parent::__construct();
-        $this->load->database();
-        $this->load->library('date_utils');
     }
 
     public function getPixDeleteAuto($param = [])
     {
-        $dataHoje = $this->date_utils->getNow();
         $seteDias = now()->subDays(7)->startOfDay();
 
         $idUsuario = $param['filter_cliente'];

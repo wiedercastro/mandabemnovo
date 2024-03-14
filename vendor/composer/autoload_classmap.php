@@ -6,19 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'App\\Adapters\\ApiAdapter' => $baseDir . '/app/Adapters/ApiAdapter.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
-    'App\\DTO\\Replies\\CreateReplyDTO' => $baseDir . '/app/DTO/Replies/CreateReplyDTO.php',
-    'App\\DTO\\Supports\\CreateSupportDTO' => $baseDir . '/app/DTO/Supports/CreateSupportDTO.php',
-    'App\\DTO\\Supports\\UpdateSupportDTO' => $baseDir . '/app/DTO/Supports/UpdateSupportDTO.php',
-    'App\\Enums\\SupportStatus' => $baseDir . '/app/Enums/SupportStatus.php',
     'App\\Events\\SupportReplied' => $baseDir . '/app/Events/SupportReplied.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
-    'App\\Http\\Controllers\\Admin\\ReplySupportController' => $baseDir . '/app/Http/Controllers/Admin/ReplySupportController.php',
-    'App\\Http\\Controllers\\Admin\\SupportController' => $baseDir . '/app/Http/Controllers/Admin/SupportController.php',
-    'App\\Http\\Controllers\\Api\\Auth\\AuthController' => $baseDir . '/app/Http/Controllers/Api/Auth/AuthController.php',
-    'App\\Http\\Controllers\\Api\\ReplySupportApiController' => $baseDir . '/app/Http/Controllers/Api/ReplySupportApiController.php',
-    'App\\Http\\Controllers\\Api\\SupportController' => $baseDir . '/app/Http/Controllers/Api/SupportController.php',
     'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => $baseDir . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
     'App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController' => $baseDir . '/app/Http/Controllers/Auth/EmailVerificationNotificationController.php',

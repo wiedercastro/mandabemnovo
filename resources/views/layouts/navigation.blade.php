@@ -1,42 +1,34 @@
-<script src="https://cdn.tailwindcss.com"></script>
 <nav x-data="{ open: false }" class="h-full border-b border-gray-100">
     <!-- Primary Navigation Menu -->
   <div class="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-20">
       <div class="flex">
         <aside
-            class="fixed top-0 left-0 z-40 w-72 h-screen transition-transform -translate-x-full sm:translate-x-0"
-            style="border:1px radius rgb(226 232 240); background-color: rgb(255 255 255);">
-            <div style="border: 0px solid red;" class="ml-3.5 mr-3.5">
+            class="bg-white fixed top-0 left-0 z-40 w-72 h-screen transition-transform -translate-x-full sm:translate-x-0"
+            >
+            <div class="ml-3.5 mr-3.5">
               <div class="shrink-10 flex items-center ml-3.5">
                 <a href="{{ route('etiquetas') }}">
                   <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                 </a>
               </div>
 
-              <nav style="margin-top: 30px;">
+              <nav class="mt-12">
                 <ul class="space-y-2">
-                  <li
-                    class="{{ request()->routeIs('gerar') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
-                    <a href="{{ route('gerar') }}"
-                        class="flex items-center justify-between p-2 rounded-lg group">
-                        <div class="flex items-center">
-
-                            <x-gerar-icone />
-
-                            <span>Gerar</span>
-                        </div>
+                  <li class="{{ request()->routeIs('gerar') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                    <a href="{{ route('gerar') }}" class="flex items-center justify-between p-2 rounded-lg group">
+                      <div class="flex items-center">
+                        <x-gerar-icone />
+                        <span>Gerar</span>
+                      </div>
                     </a>
                   </li>
-                  <li
-                    class="{{ request()->routeIs('etiquetas') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
-                    <a href="{{ route('etiquetas') }}"
-                        class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
-                        <div class="flex items-center">
-                            <x-etiqueta-icone />
-                            <span>Etiquetas</span>
-                        </div>
-
+                  <li class="{{ request()->routeIs('etiquetas') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                    <a href="{{ route('etiquetas') }}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
+                      <div class="flex items-center">
+                        <x-etiqueta-icone />
+                        <span>Etiquetas</span>
+                      </div>
                     </a>
                       <!-- <ul class="desplegable ml-4 hidden">
                         <li>
@@ -59,16 +51,13 @@
                         </li>
                     </ul> -->
                   </li>
-                  <li
-                      class="{{ request()->routeIs('reversa') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
-                      <a href="{{ route('reversa') }}"
-                          class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
-                          <div class="flex items-center">
-                              <x-reversa-icone />
-                              <span>Reversa</span>
-                          </div>
-
-                      </a>
+                  <li class="{{ request()->routeIs('reversa') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                    <a href="{{ route('reversa') }}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
+                      <div class="flex items-center">
+                        <x-reversa-icone />
+                        <span>Reversa</span>
+                      </div>
+                    </a>
                       <!-- <ul class="desplegable ml-4 hidden">
                           <li>
                               <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
@@ -84,133 +73,65 @@
                           </li>
                       </ul> -->
                   </li>
-                  <li
-                      class="{{ request()->routeIs('declaracoes') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
-                      <a href="{{ route('declaracoes') }}"
-                          class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 grou">
-                          <div class="flex items-center">
-                              <x-declaracoes-icone />
-                              <span>Declarações</span>
-                          </div>
-
-                      </a>
-                      <!-- <ul class="desplegable ml-4 hidden">
-                        <li>
-                            <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                Firmas pendientes
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                Documentos
-                            </a>
-                        </li>
-                    </ul> -->
+                  <li class="{{ request()->routeIs('declaracoes') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                    <a href="{{ route('declaracoes') }}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 grou">
+                      <div class="flex items-center">
+                        <x-declaracoes-icone />
+                        <span>Declarações</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="{{ request()->routeIs('pagamentos.index') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                    <a href="{{route('pagamentos.index')}}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 grou">
+                      <div class="flex items-center">
+                        <x-pagamento-icone />
+                        <span>Pagamentos</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="{{ request()->routeIs('acompanhamento') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                    <a href="{{route('acompanhamento')}}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
+                      <div class="flex items-center">
+                        <x-acompanhamento-icone />
+                        <span>Acompanhamento</span>
+                      </div>
+                    </a>
                   </li>
                   <li class="opcion-con-desplegable">
-                      <a href="#"
-                          class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 grou">
-                          <div class="flex items-center">
-                              <x-pagamento-icone />
-                              <span>Pagamentos</span>
-                          </div>
-
-                      </a>
-                      <!-- <ul class="desplegable ml-4 hidden">
-                            <li>
-                                <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                    <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                    Firmas pendientes
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                    <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                    Documentos
-                                </a>
-                            </li>
-                        </ul> -->
+                    <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
+                      <div class="flex items-center">
+                        <x-estatistica-icone />
+                        <span>Estatistica</span>
+                      </div>
+                    </a>
                   </li>
-
-                  <li class="opcion-con-desplegable">
-                      <a href="#"
-                          class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
-                          <div class="flex items-center">
-                              <x-acompanhamento-icone />
-                              <span>Acompanhamento</span>
-                          </div>
-
-                      </a>
-                      <!-- <ul class="desplegable ml-4 hidden">
-                          <li>
-                              <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                  <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                  Firmas pendientes
-                              </a>
-                          </li>
-                          <li>
-                              <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                  <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                  Documentos
-                              </a>
-                          </li>
-                        </ul> -->
+                  <li class="{{ request()->routeIs('cotacao') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                    <a href="{{route('cotacao')}}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
+                      <div class="flex items-center">
+                          <x-cotacao-icone />
+                          <span>Cotações</span>
+                      </div>
+                    </a>
                   </li>
-
-                  <li class="opcion-con-desplegable">
-                      <a href="#"
-                          class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
-                          <div class="flex items-center">
-                              <x-estatistica-icone />
-                              <span>Estatistica</span>
-                          </div>
-
-                      </a>
-                      <!-- <ul class="desplegable ml-4 hidden">
-                          <li>
-                              <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                  <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                  Firmas pendientes
-                              </a>
-                          </li>
-                          <li>
-                              <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                  <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                  Documentos
-                              </a>
-                          </li>
-                      </ul> -->
-                  </li>
-
-                  <li class="opcion-con-desplegable">
-                      <a href="#"
-                          class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
-                          <div class="flex items-center">
-                              <x-cotacao-icone />
-                              <span>Cotações</span>
-                          </div>
-
-                      </a>
-                              <!-- <ul class="desplegable ml-4 hidden">
-                          <li>
-                              <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                  <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                  Firmas pendientes
-                              </a>
-                          </li>
-                          <li>
-                              <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                  <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                  Documentos
-                              </a>
-                          </li>
-                      </ul> -->
-                  </li>
-                    <!-- Agrega más enlaces para la navegación lateral -->
                 </ul>
               </nav>
+            </div>
+
+            <hr class="w-full mt-4">
+            <ul class="p-6 list-disc text-xs ml-8 font-bold text-gray-800">
+              <a href="https://site.mandabem.com.br">
+                <li>Políticas de Privacidade</li>
+              </a>
+              <a href="https://site.mandabem.com.br">
+                <li class="mt-4">Termos de uso</li>
+              </a>
+              <a href="https://site.mandabem.com.br">
+                <li class="mt-4">Novidades</li>
+              </a>
+            </ul>
+            <hr class="w-full mt-4">
+            <div class="flex justify-center mt-6">
+              <p class="text-xs font-bold text-gray-800">2021 © Todos os direitos Reservados.</p>
             </div>
         </aside>
       </div>

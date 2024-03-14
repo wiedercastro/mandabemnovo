@@ -7,7 +7,7 @@
 
         <title>Manda Bem</title>
 
-        <!-- Fonts -->
+        <link rel="stylesheet" href="{{url('css/app.css')}}">
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <script src="https://cdn.tailwindcss.com"></script>
@@ -22,6 +22,8 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
+        <div class="overlay"></div>
+
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
 
@@ -39,5 +41,10 @@
                 {{ $slot }}
             </main>
         </div>
+
+
+        <!-- ARQUIVOS JS -->
+        <script src="{{ url('js/acompanhamentos/acomp_email.js') }}"></script>
+        <script src="{{ url('js/etiquetas/expande_itens_etiquetas.js') }}"></script>
     </body>
 </html>

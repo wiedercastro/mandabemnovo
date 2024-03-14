@@ -522,19 +522,9 @@ class ComposerStaticIniteda1b72967c28f84988d5374d8de43d0
     );
 
     public static $classMap = array (
-        'App\\Adapters\\ApiAdapter' => __DIR__ . '/../..' . '/app/Adapters/ApiAdapter.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
-        'App\\DTO\\Replies\\CreateReplyDTO' => __DIR__ . '/../..' . '/app/DTO/Replies/CreateReplyDTO.php',
-        'App\\DTO\\Supports\\CreateSupportDTO' => __DIR__ . '/../..' . '/app/DTO/Supports/CreateSupportDTO.php',
-        'App\\DTO\\Supports\\UpdateSupportDTO' => __DIR__ . '/../..' . '/app/DTO/Supports/UpdateSupportDTO.php',
-        'App\\Enums\\SupportStatus' => __DIR__ . '/../..' . '/app/Enums/SupportStatus.php',
         'App\\Events\\SupportReplied' => __DIR__ . '/../..' . '/app/Events/SupportReplied.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
-        'App\\Http\\Controllers\\Admin\\ReplySupportController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ReplySupportController.php',
-        'App\\Http\\Controllers\\Admin\\SupportController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SupportController.php',
-        'App\\Http\\Controllers\\Api\\Auth\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/Auth/AuthController.php',
-        'App\\Http\\Controllers\\Api\\ReplySupportApiController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/ReplySupportApiController.php',
-        'App\\Http\\Controllers\\Api\\SupportController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/SupportController.php',
         'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
         'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
         'App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/EmailVerificationNotificationController.php',
