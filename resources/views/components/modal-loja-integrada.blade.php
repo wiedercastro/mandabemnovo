@@ -1,4 +1,4 @@
-<div class="justify-center items-center hidden" id="modal_bling">
+<div class="justify-center items-center hidden" id="modal_loja_integrada">
   <div>
     <!-- Open modal button -->
     <!-- Modal Overlay -->
@@ -10,18 +10,18 @@
       <div
         class="bg-white rounded-md shadow-xl overflow-hidden max-w-xl w-full sm:w-full md:w-2/3 lg:w-3/4 xl:w-2/3 z-50 mt-16">
         <!-- Modal Header -->
-        <div class="bg-green-500 text-white px-4 py-4 flex justify-between">
+        <div class="bg-red-500 text-white px-4 py-4 flex justify-between">
           <div class="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 stroke-white">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
             </svg>      
             
-            <h2 class="text-2xl ml-2 font-bold">
-              Importar Pedidos Bling
+            <h2 class="text-2xl font-bold ml-2">
+              Importar Pedidos Loja Integrada
             </h2>
           </div>
           <svg
-            onclick="fechaModalBling()"
+            onclick="fechaModalLojaIntegrada()"
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-8 h-8 stroke-white cursor-pointer">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -52,14 +52,15 @@
               <label for="status_pedido" class="block text-gray-600 text-sm font-bold">Status do pedido</label>
               <select name="status_pedido" id="status_pedido" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
                 <option value="todos">Todos</option>
-                <option value="autorizado">Autorizado</option>
-                <option value="pendente">Pendente</option>
-                <option value="pago">Pago</option>
-                <option value="parcialmente_pago">Parcialmente Pago</option>
-                <option value="cancelado">Cancelado</option>
-                <option value="reembolsado">Reembolsado</option>
-                <option value="parcialmente_reembolsado">Parcialmente Reembolsado</option>
-                <option value="nao_pago">Não pago</option>
+                <option value="pago">Pedido pago</option>
+                <option value="aguardando_pagamento">Aguardando Pagamento</option>
+                <option value="producao">Em Produção</option>
+                <option value="producao">Pagamento em Análise</option>
+                <option value="pedido_efetuado">Pedido Efetuado</option>
+                <option value="pedido_separacao">Pedido em Separação</option>
+                <option value="pedido_entregue">Pedido Entregue</option>
+                <option value="pedido_enviado">Pedido Enviado</option>
+                <option value="pedido_para_retirada">Pedido pronto para Retirada</option>
               </select>
             </div>
             <button 
@@ -77,7 +78,7 @@
 
         <div class="flex flex-row-reverse mt-8 p-2">
           <button
-            onclick="fechaModalBling()"
+            onclick="fechaModalLojaIntegrada()"
             class="text-sm bg-red-500 hover:bg-red-600 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />

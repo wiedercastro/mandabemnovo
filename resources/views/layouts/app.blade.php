@@ -42,5 +42,11 @@
         <script src="{{ url('js/etiquetas/expande_itens_etiquetas.js') }}"></script>
         <script src="{{ url('js/declaracoes/como_funciona_modal_detalhes.js') }}"></script>
         <script src="{{ url('js/gerar/importar_bling.js') }}"></script>
+        <script src="{{ url('js/gerar/importar_loja_integrada.js') }}"></script>
+        <script src="{{ url('js/gerar/importar_nuvem.js') }}"></script>
+        <script src="{{ url('js/gerar/importar_pedidos_tiny.js') }}"></script>
+        <script src="{{ url('js/gerar/importar_yampi.js') }}"></script>
+        <script src="{{ url('js/gerar/importar_shopify.js') }}"></script>
+        <script src="{{ url('js/gerar/importar_fastCommerce.js') }}"></script>
     </body>
 </html>
