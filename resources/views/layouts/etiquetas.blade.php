@@ -129,11 +129,11 @@
           </div>
           
 
-          <tr >
-            <td colspan="6" >
+          <tr>
+            <td colspan="6">
               <table class="mt-2 min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
-              text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
-                <tbody id="detalhes_{{ $envio->id }}" class="bg-gray-50 hover:bg-blue-50 border border-2">
+                text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
+                <tbody id="detalhes_{{ $envio->id }}" class="border border-1">
                 </tbody>
               </table>
             </td>
