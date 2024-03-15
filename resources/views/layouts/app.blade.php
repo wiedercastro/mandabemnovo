@@ -39,6 +39,6 @@
 
         <!-- ARQUIVOS JS -->
         <script src="{{ url('js/acompanhamentos/acomp_email.js') }}"></script>
-        <script src="{{ url('js/etiquetas/expande_itens_etiquetas.js') }}"></script>
+        <script src="{{ url('js/etiquetas/expande_itens_etiquetas.js?v=1') }}"></script>
     </body>
 </html>
