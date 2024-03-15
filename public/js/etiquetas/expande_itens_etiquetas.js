@@ -1,5 +1,5 @@
 const expandeDetalhesEtiquetas = async (idEtiqueta) => {
-
+  
   const linhaClicada = document.getElementById(`detalhes_${idEtiqueta}`);
   const displayAtual = linhaClicada.style.display;
   const valorTotal = document.getElementById('valor').textContent;
@@ -57,9 +57,11 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
 
       const resJson = await response.json();
       for (const item of resJson.data) {
-
+       
         html += `
-          <td colspan="6">
+        <div style="width: 103em;" class="border border-2">
+        <tr>  
+        <td>
             <div class="p-4 flex space-x-28">
               <div>
                 <div class="">
@@ -143,6 +145,8 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
               </button>
             </div>
           </td>
+          </tr>
+          <div>  
         `;
 
       }
@@ -162,7 +166,7 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
 
 
 
-$(document).on("click", "#btnInfoCol", function() {
+$(document).on("click", "#btnInfoColEtiquetas", function() {
   var info = $(this).attr('data-id');
   var rota = "{{ route('coleta.show', ['id' => ':idenvio']) }}"
   rota = rota.replace(":idenvio", info);
@@ -174,6 +178,7 @@ $(document).on("click", "#btnInfoCol", function() {
       $('#idenvio_' + info).css("color", "white");
       $('#detalhes_' + info).show();
       $('#detalhes_' + info).append(data.html);
+      $('#detalhes_' + info).css("color", "white");
     },
   });
 });
