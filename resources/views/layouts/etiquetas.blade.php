@@ -2,6 +2,9 @@
 
   <div class="w-5/6 ml-auto lg:px-12">
     <x-card-pagamentos/>
+    <x-modal-busca-status-postagem/>
+    
+
     <div class="flex justify-between mt-6">
       <div class="text-4xl mt-6">
         <h1 class="text-gray-500 font-bold text-4xl text">Etiquetas</h1>
@@ -131,9 +134,9 @@
 
           <tr>
             <td colspan="6">
-              <table class="mt-2 min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
-                text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
-                <tbody id="detalhes_{{ $envio->id }}" class="border border-1">
+              <table class="mt-2 min-w-full table-auto ml-auto bg-gray-50 font-normal rounded shadow-lg
+                text-sm text-left text-gray-500 border-collapse overflow-x-auto">
+                <tbody id="detalhes_{{ $envio->id }}" class="">
                 </tbody>
               </table>
             </td>
