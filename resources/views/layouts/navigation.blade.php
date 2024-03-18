@@ -97,8 +97,8 @@
                       </div>
                     </a>
                   </li>
-                  <li class="opcion-con-desplegable">
-                    <a href="#" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
+                  <li class="{{ request()->routeIs('estatisticas') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                    <a href="{{route('estatisticas')}}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
                       <div class="flex items-center">
                         <x-estatistica-icone />
                         <span>Estatistica</span>

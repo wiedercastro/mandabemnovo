@@ -40,5 +40,7 @@
         <!-- ARQUIVOS JS -->
         <script src="{{ url('js/acompanhamentos/acomp_email.js') }}"></script>
         <script src="{{ url('js/etiquetas/expande_itens_etiquetas.js?v=1') }}"></script>
+        <script src="{{ url('js/estatisticas/aba_modal_como_funciona.js') }}"></script>
+        <script src="{{ url('js/estatisticas/exibe_input_customizavel.js') }}"></script>
     </body>
 </html>

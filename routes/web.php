@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     PagamentoController,
     ProfileController,
     CotacaoController,
+    EstatisticaController,
     ReversaController,
     SoapController
 };
@@ -41,7 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   */
   Route::get('/coleta/{id}',[ColetasController::class, 'getlistItens'])->name('coleta.show');
 
-   /*
+  /*
   Coletas
   */
   Route::get('/buscacep',[EnderecoController::class, 'getCEp'])->name('endereco.show');
@@ -74,6 +75,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/acompanhamento',[AcompanhamentoController::class, 'index'])->name('acompanhamento');
   Route::get('/acomp_email/{id}',[AcompanhamentoController::class, 'busca_acomp_email']);
   Route::post('/acomp_email',[AcompanhamentoController::class, 'atualiza_acomp_email']);
+
+  /*
+  Coletas
+  */
+  Route::get('/estatisticas',[EstatisticaController::class, 'index'])->name('estatisticas');
   
   
   /*
