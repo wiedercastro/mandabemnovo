@@ -2,9 +2,9 @@
 
 namespace App\Libraries\Correios;
 
-use App\Libraries\EmailMaker;
 use App\Libraries\DateUtils;
 use App\Models\Log;
+use EmailMaker;
 use Illuminate\Support\Facades\DB;
 
 class CorreioRest 
@@ -18,6 +18,7 @@ class CorreioRest
     private $pass;
     private $cartao_postagem = '0073996360';
     private $dir_base = '/home/sysuser/files/token_correios/';
+    //private $dir_base = '/home/wieder/Documentos/MandaBem/Migracao/mandabemnovo/Files/';
 
     public function __construct() 
     {
@@ -133,9 +134,9 @@ class CorreioRest
     public function consultaCep($param) 
     {
 
-        //$token = 'eyJhbGciOiJSUzUxMiJ9.eyJhbWJpZW50ZSI6IkhPTU9MT0dBQ0FPIiwiaWQiOiIyNzM0NzY0MjAwMDExOCIsInBmbCI6IlBKIiwiY25waiI6IjI3MzQ3NjQyMDAwMTE4IiwiY2FydGFvLXBvc3RhZ2VtIjp7Im51bWVybyI6IjAwNzM5OTYzNjAiLCJjb250cmF0byI6Ijk5MTI0Mzc2OTEiLCJkciI6NTAsImFwaSI6WzQxLDM3LDgwLDkzLDc2LDM0LDM2LDM1LDU3LDg3LDgzLDI2XX0sImlwIjoiMTc3LjI1LjIxMC4xMDgsMTc3LjI1LjIxMC4xMDgiLCJpYXQiOjE2NTc1NTE1MzQsImlzcyI6InRva2VuLXNlcnZpY2UiLCJleHAiOjE2NTc2Mzc5MzQsImp0aSI6ImQ4YTIyZjQ5LWIzY2MtNGViYi04NzEyLTM0ZTM1YmE0MWIwMCJ9.Gu7HeQ_Mcabou2FVFJqkvG1cEiKHM0sJKZEp3Xlh0G8OQrgGegtuSlbs-YSub6jIT4bAWGZbesulIHDZjE150Zw5SLOdEDgnIT9PKfH-uVSLCY8vycWFZKn3w4q3rEvn2-RyRn3TEI9VCD-FcJEEMGzmcZU5NgZONl9Ykkglh0U-mBGD9FEyNLFHamgmtitqqBRaciTqG9DScPfppXz-WoPxocCq-KbfxO6Q2SjPMDqFfl9qa3drcudGpAkU0IhPyCKaCBY0wVeIZUfC7DH-uSv6y084Ai6ThL7dXqOCJkwjhqAOKSiA4HgJcoTJpzjC_7u5wCw4ZHYjyQAEZg4wTQ';
+        $token = "eyJhbGciOiJSUzUxMiJ9.eyJhbWJpZW50ZSI6IlBST0RVQ0FPIiwiaWQiOiJtYXF1aW5hbXFuIiwicGZsIjoiUEoiLCJjbnBqIjoiMjczNDc2NDIwMDAxMTgiLCJhcGkiOls1NzddLCJjYXJ0YW8tcG9zdGFnZW0iOnsibnVtZXJvIjoiMDA3Mzk5NjM2MCIsImNvbnRyYXRvIjoiOTkxMjQzNzY5MSIsImRyIjo1MCwiYXBpIjpbMjcsMzQsMzUsMzYsMzcsNDEsNzYsNzgsODAsODMsODcsOTMsNTM0LDU2Niw1ODddfSwiaXAiOiIxOC4yMzAuNzQuNDYsIDE5Mi4xNjguMS4xMzEiLCJpYXQiOjE3MTAzODUyMDYsImlzcyI6InRva2VuLXNlcnZpY2UiLCJleHAiOjE3MTA0NzE2MDYsImp0aSI6ImNkM2RiYzkwLTc2MmQtNDk5MC1hNWVhLTkxYTM0OTMyNDY5MCJ9.pcqEhcZRbYbrFe1GDzeEiCxP0lqXSKjfBZlbZWOs9Cyu6OGNjoy3gdgJjXJULFp166FpIsN5uQ-IQWtYL5h6MFKALfWvStgXvCpLpHLdP6-YR0K3rIgDYEqZ7xXJE4EZ6EHadClBvNzKfuf82ZbO3OmzwOkBlPSuZsSDQXOO6bHyfnETK80HtiETGRXnsafSzjjmPaE-CjzCu48wUEABTXM8lfwVL-k--C3tFZa0AWAcxpIYfqpglqff6BLYygCG_kJVZa5iXyj9vwVi0D48Ai8Szp203Qv0yzN-O7-aOw4IVDGeVn85mq7oB0_908ruiF1a_kmurRCStEKOkI36sA";
 
-        $token = $this->generateToken(( isset($param['renew_token']) ? $param['renew_token'] : false));
+        // $token = $this->generateToken(( isset($param['renew_token']) ? $param['renew_token'] : false));
 
         $data = $this->request([
             'token' => $token,
@@ -154,9 +155,13 @@ class CorreioRest
 
     public function consultaPrecoPrazo($param) 
     {
+        
         $dateUtils = new DateUtils();
-        $token = $this->generateToken(( isset($param['renew_token']) ? $param['renew_token'] : false));
-
+        
+        //$token = $this->generateToken(( isset($param['renew_token']) ? $param['renew_token'] : false));
+        //excluir esse token depois 
+        $token = "eyJhbGciOiJSUzUxMiJ9.eyJhbWJpZW50ZSI6IlBST0RVQ0FPIiwiaWQiOiJtYXF1aW5hbXFuIiwicGZsIjoiUEoiLCJjbnBqIjoiMjczNDc2NDIwMDAxMTgiLCJhcGkiOls1NzddLCJjYXJ0YW8tcG9zdGFnZW0iOnsibnVtZXJvIjoiMDA3Mzk5NjM2MCIsImNvbnRyYXRvIjoiOTkxMjQzNzY5MSIsImRyIjo1MCwiYXBpIjpbMjcsMzQsMzUsMzYsMzcsNDEsNzYsNzgsODAsODMsODcsOTMsNTM0LDU2Niw1ODddfSwiaXAiOiIxOC4yMzAuNzQuNDYsIDE5Mi4xNjguMS4xMzEiLCJpYXQiOjE3MTAzODUyMDYsImlzcyI6InRva2VuLXNlcnZpY2UiLCJleHAiOjE3MTA0NzE2MDYsImp0aSI6ImNkM2RiYzkwLTc2MmQtNDk5MC1hNWVhLTkxYTM0OTMyNDY5MCJ9.pcqEhcZRbYbrFe1GDzeEiCxP0lqXSKjfBZlbZWOs9Cyu6OGNjoy3gdgJjXJULFp166FpIsN5uQ-IQWtYL5h6MFKALfWvStgXvCpLpHLdP6-YR0K3rIgDYEqZ7xXJE4EZ6EHadClBvNzKfuf82ZbO3OmzwOkBlPSuZsSDQXOO6bHyfnETK80HtiETGRXnsafSzjjmPaE-CjzCu48wUEABTXM8lfwVL-k--C3tFZa0AWAcxpIYfqpglqff6BLYygCG_kJVZa5iXyj9vwVi0D48Ai8Szp203Qv0yzN-O7-aOw4IVDGeVn85mq7oB0_908ruiF1a_kmurRCStEKOkI36sA";
+        
         if(isset($param['cod_servico'])){
             $id_servico = $param['cod_servico'];
         } else {
@@ -175,16 +180,16 @@ class CorreioRest
                 ]
             ]
         ];
- 
+        
         $data_prazo = $this->request([
             'token' => $token,
             'url' => $this->base_url . 'prazo/v1/nacional',
             'json' => $json,
             'show_header' => false
         ]);
-  
-        $emailMaker = new EmailMaker();
-
+        
+        //$emailMaker = new EmailMaker();
+        
         if (!$data_prazo) {
             
             $string = $this->error;
@@ -209,7 +214,7 @@ class CorreioRest
             $emailMaker->msg(array(
                 'subject' => 'FAIL CONSULTA PRAZO REST',
                 'msg' => "<pre>ERR: (".  $this->error  .")\nParametros: " . print_r($param,true) . "\nDados:\n" . print_r($data_prazo, true)."\n</pre>",
-                'to' => 'reginaldo@mandabem.com.br,clayton@mandabem.com.br,wieder@mandabem.com.br'
+                'to' => 'wieder@mandabem.com.br'
             ));
 
             return false;
@@ -284,7 +289,7 @@ class CorreioRest
             'json_raw' => $json_preco,
             'show_header' => false
         ]);
-
+       
         if (!$data_preco) {
             
             $string = $this->error;
@@ -348,7 +353,7 @@ class CorreioRest
     {
         $dateUtils = new DateUtils();
         $filename = $this->dir_base . 'token_' . $dateUtils->getNow(false) . '.txt';
-
+       
         if (is_file($filename)) {
             if ($renew) {
                 unlink($filename);
@@ -356,13 +361,13 @@ class CorreioRest
                 return file_get_contents($filename);
             }
         }
-
+        
         $data = $this->request([
             'basic_auth' => true,
             'url' => $this->base_url . 'token/v1/autentica/cartaopostagem',
             'json' => ["numero" => $this->cartao_postagem],
         ]);
-
+        
         if (!$data) {
             echo "FALHA: " . $this->error . "\n";
             return;

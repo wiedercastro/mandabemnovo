@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
 use App\Libraries\Correios\Correio;
+use App\Libraries\Correios\CorreioRest;
 
 class EnderecoController extends Controller
 {
@@ -21,24 +22,18 @@ class EnderecoController extends Controller
     ]);
   }
 
-  public function getCep()
+  public function getCep($cep)
   {
-    // $envios = Envio::where("coleta_id", $id)->paginate();
-    //return view('layouts.dashboard',compact('envios'));
-
-    // $coletas = DB::table('coletas')->join('envios','coletas.id','=','envios.coleta_id')->select('coletas.id',DB::raw('sum(envios.valor_total) as total'),DB::raw('sum(envios.valor_desconto) as desconto'))->where("coletas.id","=",$id)->groupBy("coletas.id")->get();
-    $cep = "39406148";
-    $correios = new Correio();
-
-    $teste = $correios->teste($cep);
+    $cep = $cep = str_replace('-', '',$cep);
     
-    //print_r($correios);exit;
-    // return response()->json(['html' => view('layouts.coleta.detalhesColeta', compact('envios'))->render()]);
-  }
+    $correios = new CorreioRest();
 
-  public function teste()
-  {
-    return true;
+    $param['cep'] = $cep;
+
+
+    return $correios->consultaCep($param);
+ 
+
   }
 
   public function update(ProfileUpdateRequest $request): RedirectResponse

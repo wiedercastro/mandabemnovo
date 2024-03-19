@@ -456,13 +456,15 @@ class Coleta extends Authenticatable
         $userId = $param['user']['id'];
 
         $updateData = ['plp' => $plp];
-
+        
         if (!isset($param['is_industrial'])) {
-            Coleta::where('id', $coletaId)
-                ->where('user_id', $userId)
+            $teste = Coleta::where('id', '=',$coletaId)
+                ->where('user_id','=', $userId)
                 ->update($updateData);
+            // dd($teste);
         } else {
-            $agenciaIdFecha = auth()->user()->id;  
+            
+            $agenciaIdFecha = auth()->user()->id; // Supondo que a agência está associada ao usuário autenticado
             $updateData['agencia_id_fecha'] = $agenciaIdFecha;
             
             Coleta::where('id', $coletaId)
@@ -471,7 +473,7 @@ class Coleta extends Authenticatable
 
         // SEDEX
         $this->updateEnvios($param['dados_sedex'], $coletaId, $param['etiquetas']['sedex']);
-
+        
         // SEDEX HOJE
         $this->updateEnvios($param['dados_sedex_hj'], $coletaId, $param['etiquetas']['sedex_hj']);
 
@@ -483,7 +485,7 @@ class Coleta extends Authenticatable
 
         // PAC MINI
         $this->updateEnvios($param['dados_pacmini'], $coletaId, $param['etiquetas']['pacmini']);
-
+       
         return true;
     }
 
@@ -492,20 +494,20 @@ class Coleta extends Authenticatable
         $dateUtils = new DateUtils();
         foreach ($dadosEnvios as $envio) {
             $envioId = $envio->id;
-
+           
             $updateData = [
                 'coleta_id' => $coletaId,
                 'etiqueta_correios' => $etiquetas[$envio->index],
-                'date_update' => $dateUtils->getNow(),
+                'date_update' => date('Y-m-d H:i:s'),//$this->date_utils->get_now(),
             ];
+            
+            $teste = DB::table('envios')->where('id', '=' ,$envioId)->where('user_id', '=' ,$envio->user_id)->update($updateData);
 
-            DB::table('envios')->where('id', $envioId)->where('user_id', $envio->user_id)->update($updateData);
-
-            $etiq = DB::table('etiqueta_status')->where('envio_id', $envioId)->first();
+            $etiq = DB::table('etiqueta_status')->where('envio_id', '=' ,$envioId)->first();
             if (!$etiq) {
                 DB::table('etiqueta_status')->insert([
                     'envio_id' => $envioId,
-                    'date_insert' => $dateUtils->getNow(),
+                    'date_insert' => date('Y-m-d H:i:s'),//$this->date_utils->get_now(),
                 ]);
             }
         }
@@ -513,13 +515,10 @@ class Coleta extends Authenticatable
 
     public function updateEtiqueta($coleta, $info)
     {
-        $envioModel = new Envio();
-        $dateUtils = new DateUtils();
-        $emailMaker = new EmailMaker();
-        $envio = DB::table('envios')->where('etiqueta_correios', $info['etiqueta'])->first();
+        $envio = DB::table('envios')->where('etiqueta_correios', '=' ,$info['etiqueta'])->first();
 
         if ($envio) {
-            $rowStatus = DB::table('etiqueta_status')->where('envio_id', $envio->id)->first();
+            $rowStatus = DB::table('etiqueta_status')->where('envio_id', '=' ,$envio->id)->first();
 
             if (!$rowStatus) {
                 // Se etiqueta_status não existir, inserir e enviar email

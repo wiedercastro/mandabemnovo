@@ -380,12 +380,14 @@ class Correio {
     //corrigir ao fazer instalacao do SoapClient
     public function solicitarEtiquetas($param = array()) 
     {
+        
         ini_set("default_socket_timeout", 20);
-         
-        $settingModel = new Setting();
+        
+        // $settingModel = new Setting();
         $dateUtils = new DateUtils();
-        $ambiente = getCredentialsEtiqueta($param['user'])[$param['user']['environment']];
-
+        
+        $ambiente = $this->getCredentialsEtiqueta($param['user'])[$param['user']['environment']];
+      
         $clientSoap = new SoapClient($ambiente['link'], array(
             'stream_context' => stream_context_create(
                     array('http' =>
@@ -398,7 +400,7 @@ class Correio {
             )
                 )
         );
-
+       
         $etiquetas_sedex = array();
         $etiquetas_pac = array();
         $etiquetas_pacmini = array();
@@ -415,7 +417,7 @@ class Correio {
             $id_servico_pac_ = '162026';
             $id_servico_pac_mini_ = '159982';
         }
-
+        
         // Usando IDs servico referente à postagem industrial
         if (isset($param['is_industrial']) && $param['is_industrial']) {
             $id_servico_sedex_ = '162025';
@@ -443,8 +445,8 @@ class Correio {
                 $id_servico_sedex_ = $param['user']['id_servico_sedex'];
             }
         }
-
-
+        
+        
         if ($param['total_sedex'] > 0) {
 
             $solicitaEtiquetas = array(
@@ -803,6 +805,57 @@ class Correio {
 
         return $lista_retorno;
     }
+
+    function getCredentialsEtiqueta($user = array()) 
+{
+    $conexao = array(
+        'production' => array(
+            'link' => 'https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl',
+            'cnpj' => '27347642000118',
+            'usuario' => 'MAQUINAMQN',
+            'senha' => 'urbju5',
+            'cod_adm' => '18086160',
+            'contrato' => '9912437691',
+            'cod_serv' => '000',
+            'cartao' => '0073996360',
+            'num_diretoria' => '50',
+            'ws_login' => 'maquinamqn', // para abertura de Manifestacao
+            'ws_password' => 'manda2020' // para abertura de Manifestacao
+        ),
+        'test' => array(
+            'link' => 'https://apphom.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl',
+            'cnpj' => '34028316000103',
+            'usuario' => 'sigep',
+            'senha' => 'n5f9t8',
+            'cod_adm' => '17000190',
+            'contrato' => '9992157880',
+            'cod_serv' => '000',
+            'cartao' => '0067599079',
+            'num_diretoria' => '10',
+        ),
+    );
+
+    if ($user) {
+
+        // Caso GRUPO de usuario seja contrato usar informações de contrato do próprio
+        if ($user['group_code'] == 'cliente_contrato') {
+            if (strlen($user['cartao_correios'])) {
+                $conexao['production']['cartao'] = $user['cartao_correios'];
+            } else {
+                $conexao['production']['cartao'] = '';
+            }
+            $conexao['production']['contrato'] = $user['contrato_correios'];
+            $conexao['production']['num_diretoria'] = getNumDiretoria($user['uf'], $user['cidade']);
+            $conexao['production']['cod_adm'] = $user['codigo_adm_correios'];
+
+            $conexao['production']['usuario'] = $user['user_correios'];
+            $conexao['production']['senha'] = $user['senha_correios'];
+            $conexao['production']['cnpj'] = $user['cnpj'];
+        }
+    }
+
+    return $conexao;
+}
     //corrigir ao fazer instalacao do SoapClient
     public function gerarPlp($param = array()) 
     {
@@ -810,8 +863,8 @@ class Correio {
 
         $userModel = new User();
 
-        $ambiente = getCredentialsEtiqueta($param['user'])[$param['user']['environment']];
-
+        $ambiente = $this->getCredentialsEtiqueta($param['user'])[$param['user']['environment']];
+       
         $clientSoap = new SoapClient($ambiente['link'], array(
             'stream_context' => stream_context_create(
                     array('http' =>
@@ -824,7 +877,7 @@ class Correio {
             )
                 )
         );
-
+       
         try {
 
             $xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>";
@@ -847,6 +900,8 @@ class Correio {
 
             $fax_cliente = '';
 
+            
+
             if (isset($param['other_remetente']) && $param['other_remetente']) {
 
                 $xml .= "<nome_remetente><![CDATA[{$param['other_remetente']['nome']}]]></nome_remetente>";
@@ -861,10 +916,10 @@ class Correio {
             } else {
 
 
-                foreach ($param['user'] as $k => $v) {
-                    $param['user'][$k] = Str::e($v);
-                }
-
+                // foreach ($param['user'] as $k => $v) {
+                //     $param['user'][$k] = Str::e($v);
+                // }
+                
                 $xml .= "<nome_remetente><![CDATA[{$param['user']['razao_social']}]]></nome_remetente>";
                 $xml .= "<logradouro_remetente><![CDATA[{$param['user']['logradouro']}]]></logradouro_remetente>";
                 $xml .= "<numero_remetente>" . substr(trim($param['user']['numero']), 0, 5) . "</numero_remetente>";
@@ -874,7 +929,7 @@ class Correio {
                 $xml .= "<cidade_remetente><![CDATA[{$param['user']['cidade']}]]></cidade_remetente>";
                 $xml .= "<uf_remetente>{$param['user']['uf']}</uf_remetente>";
             }
-
+            
                            //$xml .= "<telefone_remetente><![CDATA[" . preg_replace('/[^0-9]/', '', $param['user']['telefone']) . "]]></telefone_remetente>";
             $xml .= "<telefone_remetente><![CDATA[" . substr(preg_replace('/[^0-9]/', '', $param['user']['telefone']), 0, 11) . "]]></telefone_remetente>";
 
@@ -927,26 +982,27 @@ class Correio {
             if (isset($param['is_industrial']) && $param['is_industrial']) {
                 $codido_serv_sedex = '03280';
             }
-
-
-            // DESTINATÁRIO SEDEX
+            
+           
+            // DESTINATÁRIO SEDEX O COUNT JÁ É FEITO ANTERIOR
             for ($j = 0; $j < count($param['etiquetas']['sedex']); $j++) {
+                // foreach ($param['etiquetas']['sedex'] as $){
                 #124849   (04162 - SEDEX)
                 #124884   (04669 - PAC)
-
+            //    dd($param['etiquetas']['sedex'][$j]);
                 $param_plp_sedex = array(
-                    'numero_etiqueta' => $param['etiquetas']['sedex'][$j] . 'BR',
+                    'numero_etiqueta' => $param['etiquetas']['sedex'][$j]. 'BR', // $param['etiquetas']['sedex'][$j]
                            //        'codigo_servico_postagem' => $param['user']['group_code'] == 'cliente_contrato' ? $param['user']['codigo_servico_sedex'] : '04162',
                     'codigo_servico_postagem' => $param['user']['group_code'] == 'cliente_contrato' ? $param['user']['codigo_servico_sedex'] : $codido_serv_sedex,
-                    'destinatario' => Str::e($param['dados_sedex'][$j]->destinatario),
+                    'destinatario' => $param['dados_sedex'][$j]->destinatario,
                            //        'email' => $param['dados_sedex'][$j]->email,
                     'email' => '',
-                    'logradouro' => Str::e($param['dados_sedex'][$j]->logradouro),
-                    'complemento' => Str::e($param['dados_sedex'][$j]->complemento),
-                    'numero' => Str::e($param['dados_sedex'][$j]->numero),
-                    'bairro' => Str::e($param['dados_sedex'][$j]->bairro),
-                    'cidade' => Str::e($param['dados_sedex'][$j]->cidade),
-                    'estado' => Str::e($param['dados_sedex'][$j]->estado),
+                    'logradouro' => $param['dados_sedex'][$j]->logradouro,
+                    'complemento' => $param['dados_sedex'][$j]->complemento,
+                    'numero' => $param['dados_sedex'][$j]->numero,
+                    'bairro' => $param['dados_sedex'][$j]->bairro,
+                    'cidade' => $param['dados_sedex'][$j]->cidade,
+                    'estado' => $param['dados_sedex'][$j]->estado,
                     'cep' => $param['dados_sedex'][$j]->CEP,
                     'nota_fiscal' => $param['dados_sedex'][$j]->nota_fiscal,
                     'valor_cobrar' => '0,0',
@@ -956,6 +1012,7 @@ class Correio {
                     'largura' => $param['dados_sedex'][$j]->largura,
                     'tipo_envio' => 'SEDEX'
                 );
+                
                 if ($param['dados_sedex'][$j]->seguro) {
                     $param_plp_sedex['valor_seguro'] = $param['dados_sedex'][$j]->seguro;
                 }
@@ -964,7 +1021,7 @@ class Correio {
                 }
                 $xml_tmp .= $this->getXmlObjetoPostal($param_plp_sedex);
             }
-
+           
             $codido_serv_pac = '03298';
             if (isset($param['is_industrial']) && $param['is_industrial']) {
                 $codido_serv_pac = '03336';
@@ -1003,7 +1060,7 @@ class Correio {
                 }
                 $xml_tmp .= $this->getXmlObjetoPostal($param_plp_pac);
             }
-
+            
             $codido_serv_pacmini = '04227';
             if (isset($param['is_industrial']) && $param['is_industrial']) {
                 $codido_serv_pacmini = '04391';
@@ -1108,7 +1165,7 @@ class Correio {
             }
 
             $xml .= $xml_tmp . "</correioslog>";
-
+            
             if ($log_sedex_hoje || (isset($param['user']['id']) && $param['user']['id'] == '8483' && isset($param['coleta_id'])) || (isset($param['user']['id']) && $param['user']['id'] == '5' && isset($param['coleta_id']))) {
                 DB::table('coletas')
                     ->where('id', $param['coleta_id'])
@@ -1158,7 +1215,7 @@ class Correio {
             $this->error_trace = print_r($e, true);
             return false;
         }
-
+        
         return $plp;
     }
 

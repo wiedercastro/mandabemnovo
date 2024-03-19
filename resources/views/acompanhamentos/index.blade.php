@@ -58,7 +58,7 @@
               Visualizar detalhe
             </h2>
             <svg
-              onclick="fechaModal()"
+              onclick="fechaModalAcompanhamento()"
               xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-6 h-6 cursor-pointer">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -114,7 +114,7 @@
                 </button>
                 <button  
                   type="button" 
-                  onclick="fechaModal()"
+                  onclick="fechaModalAcompanhamento()"
                   class="mr-2 bg-red-500 hover:bg-red-600 text-white flex items-center font-bold text-xs rounded px-2 py-1">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -183,7 +183,7 @@
             </td>
             <td class="px-4 py-4">
               <button 
-                onclick="abreModal({{$acompanhamento->id}})"
+                onclick="abreModalAcompanhamento({{$acompanhamento->id}})"
                 class="bg-blue-400 hover:bg-blue-500 border border-blue-400 rounded text-sm px-2 py-1 text-white font-bold">
                 <div class="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">

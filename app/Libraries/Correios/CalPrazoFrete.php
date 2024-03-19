@@ -71,7 +71,7 @@ class CalPrazoFrete
     }
 
     public function calc($data = array()) {
-
+        
         $correioRest = new CorreioRest();
         
         $servico = isset($data['servico']) ? $data['servico'] : null;
@@ -135,11 +135,11 @@ class CalPrazoFrete
                 'valor' => $ret_consulta[1][0]['pcFinal'],
                 'prazo' => $ret_consulta[0][0]['prazoEntrega'],
             ];
-            
+
             // ajuste para casos de 1.300,20 
             $return['valor'] = preg_replace('/\./', '', $return['valor']);
 
-            if(!($data['seguro']) && !($data['AR'])){
+            if(isset($data['seguro']) && isset($data['AR'])){
                 $tmp_rest = $return;
             }
                 return $return;

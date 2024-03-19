@@ -27,18 +27,14 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): View
+    public function store(LoginRequest $request)
     {
         $request->authenticate();
 
         $request->session()->regenerate();
-        // $ip_do_usuario = $_SERVER['REMOTE_ADDR'];
-
-        // $envios = Envio::where("user_id",$request->user()->id)->paginate();
-        $envios = DB::table('coletas')->join('envios','coletas.id','=','envios.coleta_id')->select('coletas.id',DB::raw('Count(envios.id) as qte'),DB::raw('sum(envios.valor_total) as total'),DB::raw('sum(envios.valor_desconto) as desconto'),'coletas.type')->where("coletas.user_id","=",5)->groupBy("coletas.id")->paginate();
-        // return redirect()->intended(RouteServiceProvider::HOME);
-        // print_r($envios);exit;
-        return view('layouts.etiquetas', compact("envios"));
+       
+        return redirect()->intended(RouteServiceProvider::HOME);
+        
     }
 
     /**

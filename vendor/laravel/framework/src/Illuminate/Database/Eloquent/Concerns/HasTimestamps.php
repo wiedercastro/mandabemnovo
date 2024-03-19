@@ -151,7 +151,7 @@ trait HasTimestamps
      */
     public function getUpdatedAtColumn()
     {
-        return static::UPDATED_AT;
+        return static::DATE_UPDATE;
     }
 
     /**

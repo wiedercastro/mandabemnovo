@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-class Date_utils 
+class DateUtils 
 {
     
     private $num_feriados = 13;
