@@ -169,7 +169,7 @@
             </x-dropdown-link>
 
             <x-dropdown-link :href="route('profile.edit')">
-                {{ __('Integrações') }}
+                {{ __('Integraçõess') }}
             </x-dropdown-link>
 
             <x-dropdown-link :href="route('profile.edit')">
