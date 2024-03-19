@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     PagamentoController,
     ProfileController,
     CotacaoController,
+    RelatorioEtiquetas,
     ReversaController,
     SoapController
 };
@@ -74,7 +75,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/acompanhamento',[AcompanhamentoController::class, 'index'])->name('acompanhamento');
   Route::get('/acomp_email/{id}',[AcompanhamentoController::class, 'busca_acomp_email']);
   Route::post('/acomp_email',[AcompanhamentoController::class, 'atualiza_acomp_email']);
-  
+
+   /*
+  Relatorio Etiquetas
+  */
+  Route::get('/relatorio',[RelatorioEtiquetas::class, 'index'])->name('relatorio.etiquetas');
   
   /*
   Profile
