@@ -168,8 +168,8 @@
                 {{ __('Cobrança') }}
             </x-dropdown-link>
 
-            <x-dropdown-link :href="route('profile.edit')">
-                {{ __('Integraçõess') }}
+            <x-dropdown-link :href="route('integracoes')">
+                {{ __('Integrações') }}
             </x-dropdown-link>
 
             <x-dropdown-link :href="route('profile.edit')">
