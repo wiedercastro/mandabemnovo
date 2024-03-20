@@ -54,8 +54,8 @@ class Envio extends Authenticatable
         
         // restringir dimensoes e AR
         if (true || request()->server('REMOTE_ADDR')) {
-            //$this->CalPrazoFrete = new CorreiosPrazoFreteOffline();
-            $this->CalPrazoFrete = new CorreiosCalPrazoFrete();
+            $this->CalPrazoFrete = new CorreiosCorreiosPrazoFreteOffline();
+            // $this->CalPrazoFrete = new CorreiosCalPrazoFrete();
         } else {
             $this->CalPrazoFrete = new CalPrazoFrete();
             exit;
@@ -79,7 +79,7 @@ class Envio extends Authenticatable
                 $peso_cubico = $param['peso'];
             }
         }
-        
+
         if (!isset($param['peso']) || !$param['peso']) {
             $param['peso'] = 0.300;
         }
@@ -195,7 +195,7 @@ class Envio extends Authenticatable
             }
             $param_correio['cal_industrial'] = true;
         }
-
+        
         $valid_sed_user_id = ( isset($param['user_id']) ? $param['user_id'] : ( isset($this->session->user_id) ? $this->session->user_id : null ) );
 
         // Retirando usuário de validação sobre limite de seguro envio mini
@@ -206,13 +206,13 @@ class Envio extends Authenticatable
         } else {
             // Validacoes do Seguro PAC mini
             if ($param['forma_envio'] == 'PACMINI') {
-                if ((float) $param['seguro'] > 100) {
+                
+                if (isset($param['seguro'])&&(float) $param['seguro'] > 100) {
                     $this->error = 'Em formas de envio "Envio Mini" o Seguro informado não pode ser maior que R$ 100.';
                     return false;
                 }
             }
         }
-
         // Validacoes Seguro para Sedex e PAC
         if ($param['forma_envio'] == 'SEDEX' || $param['forma_envio'] == 'PAC') {
             if ($param['forma_envio'] == 'PAC') {
@@ -227,7 +227,7 @@ class Envio extends Authenticatable
                 }
             }
         }
-
+       
         // 0.00 - Decimal em pontos
         if (isset($param['seguro'])) {
             $param_correio['seguro'] = $param['seguro'];
@@ -251,15 +251,17 @@ class Envio extends Authenticatable
         }
         
         $frete = $this->CalPrazoFrete->calc($param_correio);
-
+        
+        // dd($frete);
         // ... Código posterior ...
 
         if (!$frete) {
-            $this->error = $this->CalPrazoFrete->get_error();
-            if (!$this->CalPrazoFrete->get_error()) {
+            $this->error = $this->CalPrazoFrete->getError();
+
+            if (!$this->CalPrazoFrete->getError()) {
                 $this->error = "Erro, por favor, contate o suporte!";
             }
-            return false;
+            return $this->error = $this->CalPrazoFrete->getError();
         }
 
         if (isset($param['normalize_currency']) && $param['normalize_currency']) {

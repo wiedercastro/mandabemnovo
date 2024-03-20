@@ -125,11 +125,11 @@ class CorreiosPrazoFreteOffline
     
         public function calc($data = array()) 
         {
-     
+            
             $set_log = true;
     
             if ($this->testV2) {
-    
+                
                 if ($data['forma_envio'] == 'PACMINI') {
                     if ((float) $data['peso'] > 0.3) {
                         $this->error = "Peso inválido para Envio Mini";
@@ -167,10 +167,10 @@ class CorreiosPrazoFreteOffline
                         return false;
                     }
                 }
-    
+                
                 //$ci->load->library('correio/CalPrazoFrete', array(), 'CalPrazoFreteInner');
                 $calPrazoFreteInner = new CalPrazoFrete();
-    
+                
                 $sum = (int) (isset($data['altura']) ? $data['altura'] : 0) + (int) (isset($data['largura']) ? $data['largura'] : 0) + (int) (isset($data['comprimento']) ? $data['comprimento'] : 0);
     
                 // Nao permitir SOMA dimensoes acima de 200
@@ -195,7 +195,7 @@ class CorreiosPrazoFreteOffline
                         return $__return;
                     }
                 }
-                
+               
     
                 // Somatorio acima de 80 cm não fazer cache por enquanto
                 if ($sum > 80) {
@@ -204,7 +204,7 @@ class CorreiosPrazoFreteOffline
                          
                         $__return = $calPrazoFreteInner->calc($data);
                         //se valor menor que 7 retorna false
-                        if (!$__return || ($__return['valor'] < 7)) {
+                        if (!$__return || ((float)$__return['valor'] < 7)) {
                             $this->error = $calPrazoFreteInner->getError();
                             return false;
                         } else { 
@@ -218,7 +218,7 @@ class CorreiosPrazoFreteOffline
                             }
                             
                             // Adicionando Valor AR
-                            if (($data['AR']) && (($data['AR'] == 'S') || ($data['AR'] == 1))) {
+                            if (isset($data['AR']) && (($data['AR'] == 'S') || ($data['AR'] == 1))) {
                                 $__return['valor'] += $this->valor_AR;
                             }
                             $__return['valor'] = preg_replace('/\./', ',', $__return['valor']);
@@ -233,6 +233,7 @@ class CorreiosPrazoFreteOffline
                             return $__return;
                         }
                     }
+                    
                 }
                 // (!NAO ENTRA AQUI) Seguro nao fazer cache | Fazendo cache com calculo Local (todos)
                 if (isset($data['seguro']) && $data['seguro'] && !isset($data['cal_seguro_local'])) { 
@@ -246,7 +247,7 @@ class CorreiosPrazoFreteOffline
                 }
     
                 $valor_add_AR = 0;
-    
+               
                 if ($this->versao_correios == '1') {
                     // AR nao fazer caache
                     if (isset($data['AR']) && $data['AR'] == 'S') {
@@ -318,7 +319,7 @@ class CorreiosPrazoFreteOffline
                     $this->error = "Para este CEP apenas oferecemos o serviço de SEDEX por favor altere a forma de envio para SEDEX";
                     return false;
                 }
-    
+                
                 // Busca faixas de CEP
                 $faixa_origem = DB::table('faixa_cep')
                     ->select('id')
@@ -370,7 +371,7 @@ class CorreiosPrazoFreteOffline
                 if ($data['peso'] > 0.3 && $data['peso'] < 1) {
                     $data['peso'] = 1;
                 }
-    
+               
                 if (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] == '177.25.218.77') {
                     echo $faixa_origem->id . " - " . $faixa_destino->id . "\n";
                 }
@@ -389,7 +390,7 @@ class CorreiosPrazoFreteOffline
                     ->where('date_update', '>=', '2022-08-24 09:55:00')
                     ->where($param_get_valor_offline)
                     ->first();
-    
+                
                 $update_value = false;
                 if ($valor_offline) {
                     // não permitido
@@ -446,8 +447,8 @@ class CorreiosPrazoFreteOffline
                         return $return_value;
                     }
                 }
-    
-    
+                
+                
                 // Calculo diretamente na BASE WS dos Correios
                 // removendo seguro quando o calculo for local
                 $valor_seguro_cache = 0;
@@ -458,13 +459,14 @@ class CorreiosPrazoFreteOffline
                     }
                 }
                 $return = $calPrazoFreteInner->calc($data);
-                
-                if (!$return || ($return['valor'] < 7)) {
+
+                if (!$return || ((float)$return['valor'] < 7)) {
+                    dd("teste");
                     $this->error = "Falha ao calcular frete, tente novamente mais tarde (2);";
                     return false;
                 }
                 
-    
+                
                 if ($return) {
                     // NORMALIZANDO VALOR CASO VENHA COM VIRGULA
                     $return['valor'] = preg_replace('/,/', '.', $return['valor']);
@@ -480,6 +482,8 @@ class CorreiosPrazoFreteOffline
                     $param_get_valor_offline['cep_destino'] = $data['cep_destino'];
     
                     $id_valor_offline = $valor_offline ? $valor_offline->id : false;
+
+                    
     
                     $this->saveValorOffline($param_get_valor_offline, $id_valor_offline);
     
@@ -489,7 +493,7 @@ class CorreiosPrazoFreteOffline
     
                         $return['valor'] += $seg;
                     }
-    
+                   
                     // Adicionando Valor AR
                     if ($this->versao_correios == '2') {
                         if ($valor_add_AR > 0) {

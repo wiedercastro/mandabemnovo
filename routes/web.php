@@ -10,7 +10,8 @@ use App\Http\Controllers\{
     ProfileController,
     CotacaoController,
     ReversaController,
-    SoapController
+    SoapController,
+    SimuladorController
 };
 
 use App\Http\Controllers\Site\SiteController;
@@ -75,7 +76,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Cotação
   */
   Route::get('/cotacao',[CotacaoController::class, 'index'])->name('cotacao');
-
+  Route::post('/simuladorCotacao',[SimuladorController::class, 'simuladorCotacao'])->name('simuladorCotacao');
   /*
   Acompanhamento
   */
