@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{
     AcompanhamentoController,
+    CobrancaController,
     ColetasController,
     EnderecoController,
     EtiquetasController,
@@ -81,6 +82,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Manifestacao
   */
   Route::get('/manifestacoes',[ManifestacaoController::class, 'index'])->name('manifestacao');
+
+  /*
+  Cobrança
+  */
+  Route::get('/cobrancas',[CobrancaController::class, 'index'])->name('cobranca');
 
   /*
   Acompanhamento
