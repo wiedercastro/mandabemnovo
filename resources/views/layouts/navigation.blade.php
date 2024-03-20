@@ -176,7 +176,7 @@
                 {{ __('Manifestações') }}
             </x-dropdown-link>
 
-            <x-dropdown-link :href="route('profile.edit')">
+            <x-dropdown-link :href="route('cupom')">
                 {{ __('Cupom') }}
             </x-dropdown-link>
 

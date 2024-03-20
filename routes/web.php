@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     PagamentoController,
     ProfileController,
     CotacaoController,
+    CupomController,
     ReversaController,
     SoapController
 };
@@ -75,6 +76,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Cotação
   */
   Route::get('/cotacao',[CotacaoController::class, 'index'])->name('cotacao');
+
+  /*
+  Cupom
+  */
+  Route::get('/cupom',[CupomController::class, 'index'])->name('cupom');
 
   /*
   Acompanhamento
