@@ -1162,11 +1162,11 @@ class Payment extends Authenticatable
     public function saveTransferencia($request)
     {
         $validation = new Validation();
-
-        $doc = $request->banco == 'pixiugu' ? $request->doc : preg_replace('/[0-9^]/', '', $request->doc);
+        
+        $doc = $request['banco'] == 'pixiugu' ? $request['doc'] : preg_replace('/[0-9^]/', '', $request['doc']);
 
         // Banco neon, Necessário CPF ou CNPJ
-        if ($request->banco == 'neon') {
+        if ($request['banco'] == 'neon') {
             $validCpf = $validation->validCpf($doc);
             $validCnpj = $validation->validCnpj($doc);
 
@@ -1177,27 +1177,27 @@ class Payment extends Authenticatable
         }
 
         $dataSave = [
-            'user_id' => $request->user_id,
-            'banco' => $request->banco,
+            'user_id' => $request['user_id'],
+            'banco' => $request['banco'],
             'documento' => $doc,
-            'anexo' => $request->anexo,
-            'valor_solicitado' => $request->valor,
-            'date_insert' => now(),
-            'date_update' => now(),
+            'anexo' => $request['anexo'],
+            'valor_solicitado' => $request['valor'],
+            'date_insert' => date('Y-m-d H:i:s'),
+            'date_update' => date('Y-m-d H:i:s'),
         ];
-
+        
         $transferencia = DB::table('transferencia')->insertGetId($dataSave);
-
+       
         if (!$transferencia) {
             return response()->json(['error' => 'Falha ao inserir Transferência, tente novamente mais tarde.'], 500);
         }
-
-        if ($request->banco == 'pixiugu' && $request->has('creditos_antecipados') && false) {
-            foreach ($request->creditos_antecipados as $ca) {
+        $creditos_antecipados = isset($request['creditos_antecipados']) && $request['creditos_antecipados'] != "" ? $request['creditos_antecipados'] : null;//$request->has('creditos_antecipados')
+        if ($request['banco'] == 'pixiugu' && $creditos_antecipados && false) {
+            foreach ($creditos_antecipados as $ca) {
                 DB::table('transferencia_cred_antecipado')->insert([
                     'transferencia_id' => $transferencia,
                     'payment_id' => $ca,
-                    'date' => now(),
+                    'date' =>date('Y-m-d H:i:s'),
                 ]);
             }
         }
@@ -1501,6 +1501,7 @@ class Payment extends Authenticatable
     
     public function updateTransf($data)
     {
+        
         if (isset($data['id'])) {
             $dataUpd = [];
 
@@ -1510,9 +1511,10 @@ class Payment extends Authenticatable
             if (isset($data['anexo'])) {
                 $dataUpd['anexo'] = $data['anexo'];
             }
-
+            
             if ($dataUpd) {
-                return DB::table('transferencia')->where('id', $data['id'])->update($dataUpd);
+                return DB::table('transferencia')->where('id','=', $data['id'])->update($dataUpd);
+                
             }
         }
 
