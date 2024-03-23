@@ -47,31 +47,28 @@
               <div class="border w-full rounded flex justify-center">
                 <img id="image_pix_pagamento" src="" alt="" class="w-64 h-64">
               </div>
-              <div class="flex justify-center">
-                <div class="flex flex-col">
-                  <input type="text" id="valorQrCode" value="" class="text-xs w-full">
-                  <div class="flex flex-col">
-                    <button
-                      id="pix_copia_e_cola"
-                      onclick="copiaPix()"
-                      class="flex justify-center text-sm mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
-                      <i class="fa fa-barcode" aria-hidden="true"></i>                 
-                      <p class="ml-1">PIX copia e cola</p>
-                    </button>
-                    <div class="flex items-center justify-center mt-2 ml-2 hidden" id="exibeMsg">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 stroke-blue-500 font-bold">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                      </svg>  
-                      <div class="flex items-center">
-                        <p class="text-xs text-gray-600">Copiado com sucesso!</p>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
-                        </svg>
-                      </div>   
-                    </div> 
-                  </div>
-                </div>
-              </div>
+              <input type="text" id="valorQrCode" value="" class="text-xs w-full mt-1">
+              <div class="flex flex-col">
+                <button
+                  id="pix_copia_e_cola"
+                  onclick="copiaPix()"
+                  class="flex justify-center text-sm mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                  <i class="fa fa-barcode" aria-hidden="true"></i>                 
+                  <p class="ml-1">PIX copia e cola</p>
+                </button>
+                <div class="flex items-center justify-center mt-2 ml-2 hidden" id="exibeMsg">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3 stroke-blue-500 font-bold">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                  </svg>  
+                  <div class="flex items-center">
+                    <p class="text-xs text-gray-600">Copiado com sucesso!</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 ml-1">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+                    </svg>
+                  </div>   
+                </div> 
+              
+            </div>
             </div>
           </div>
         </div>
