@@ -3,6 +3,8 @@
         <div class="w-full">
 
             <x-card-pagamentos />
+            <x-modal-pix-pagamento/>
+             
             <!-- Modal -->
             <div class="modal fade hidden" id="resultadoModal" tabindex="-1" role="dialog"
                 aria-labelledby="resultadoModalLabel">
@@ -118,7 +120,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M6.75 6.75h.75v.75h-.75v-.75ZM6.75 16.5h.75v.75h-.75v-.75ZM16.5 6.75h.75v.75h-.75v-.75ZM13.5 13.5h.75v.75h-.75v-.75ZM13.5 19.5h.75v.75h-.75v-.75ZM19.5 13.5h.75v.75h-.75v-.75ZM19.5 19.5h.75v.75h-.75v-.75ZM16.5 16.5h.75v.75h-.75v-.75Z" />
                                     </svg>
-                                    <p class="ml-1">Gerar Qrcode</p>
+                                    <p class="ml-1" id="preloaderGerarQrCode">Gerar Qrcode</p>
                                 </button>
                             </div>
                         </form>
@@ -251,56 +253,3 @@
         </div>
     </div>
 </x-app-layout>
-<script>
-    $('#gerarQR').submit(function(event) {
-        event.preventDefault();
-        var formData = new FormData(document.getElementById('gerarQR'));
-
-        $.ajax({
-            url: '{{ route('gerarPix') }}',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                // Atualiza o conteúdo da div com o resultado da operação
-                console.log(data.pix);
-                // $('#resultadoOperacao').html(data.pix);
-                document.getElementById(`resultadoOperacao`).innerHTML = data.pix.html;
-                // Abre o modal após a conclusão da chamada AJAX
-                var modal = document.getElementById('resultadoModal');
-
-                // Remove a classe 'hidden'
-                modal.classList.remove('hidden');
-            },
-            error: function(xhr, status, error) {
-                // Lógica de tratamento de erro do AJAX
-            }
-        });
-    });
-
-
-    $(document).ready(function() {
-        $('#valor_pix').inputmask('currency', {
-            prefix: '', // Altere o prefixo conforme necessário
-            alias: 'numeric',
-            autoGroup: true,
-            digits: 2,
-            radixPoint: ",",
-            groupSeparator: ".",
-            allowMinus: false,
-            rightAlign: false,
-            numericInput: true, // Define entrada numérica da direita para a esquerda
-            removeMaskOnSubmit: false
-        });
-
-        // Adiciona um evento de clique ao campo
-        $('#valor_declaracao').click(function() {
-            // Verifica se o valor é igual a zero
-            if ($(this).val() === "0") {
-                // Define o valor como null
-                $(this).val(null);
-            }
-        });
-    });
-</script>
