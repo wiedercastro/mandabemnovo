@@ -118,7 +118,7 @@
         </button>
 
         <!-- Dropdown menu -->
-        <div id="dropdownAvatarName" class="hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+        <div id="dropdownAvatarName" class="absolute z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
           <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
             <li>
               <a href="#" class="block px-4 py-2 hover:bg-gray-100">Meus Dados</a>
