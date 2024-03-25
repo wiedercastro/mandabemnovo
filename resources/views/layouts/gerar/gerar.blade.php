@@ -1,11 +1,11 @@
 <x-app-layout>
 
     <div class="w-5/6 ml-auto lg:px-12">
-        <div class="flex sm:hidden ml-24 sm:ml-0">
+        <div class="flex sm:hidden ml-20 sm:ml-0">
           <img src="{{asset('images/logo_mandabem_az.png')}}" alt="" class="w-32"/>
         </div>
 
-        <div class="text-4xl ml-4 sm:ml-0 mt-8 sm:mt-0">
+        <div class="text-4xl mt-8 sm:mt-0">
             <h1 class="text-gray-500 font-bold">Envios Pendentes</h1>
         </div>
   
