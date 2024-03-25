@@ -4,7 +4,7 @@
     <div class="flex justify-between h-20">
       <div class="flex">
         <aside
-            class="bg-white fixed top-0 left-0 z-40 w-72 h-screen transition-transform -translate-x-full sm:translate-x-0"
+            class="bg-white fixed top-0 left-0 z-40 w-72 h-screen transition-transform -translate-x-full lg:translate-x-0"
             >
             <div class="ml-3.5 mr-3.5">
               <div class="shrink-10 flex items-center ml-3.5">
@@ -30,26 +30,6 @@
                         <span>Etiquetas</span>
                       </div>
                     </a>
-                      <!-- <ul class="desplegable ml-4 hidden">
-                        <li>
-                            <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                Tratamientos
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                Gastos
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                Facturas
-                            </a>
-                        </li>
-                    </ul> -->
                   </li>
                   <li class="{{ request()->routeIs('reversa') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
                     <a href="{{ route('reversa') }}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
@@ -58,20 +38,6 @@
                         <span>Reversa</span>
                       </div>
                     </a>
-                      <!-- <ul class="desplegable ml-4 hidden">
-                          <li>
-                              <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                  <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                  Presupuestos
-                              </a>
-                          </li>
-                          <li>
-                              <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                                  <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                                  Informe médico
-                              </a>
-                          </li>
-                      </ul> -->
                   </li>
                   <li class="{{ request()->routeIs('declaracoes') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
                     <a href="{{ route('declaracoes') }}" class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 grou">
@@ -136,110 +102,126 @@
         </aside>
       </div>
 
-        <!-- Settings Dropdown -->
-      <div class="hidden sm:flex sm:items-center sm:ml-6">
-        <x-dropdown align="right" width="48">
-          <x-slot name="trigger">
-            <button
-              class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white focus:outline-none transition ease-in-out duration-150">
-              <div>{{ Auth::user()->name }}</div>
-
-              <div class="ml-1">
-                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clip-rule="evenodd" />
-                </svg>
-              </div>
-            </button>
-          </x-slot>
-
-          <x-slot name="content">
-            <x-dropdown-link :href="route('profile.edit')">
-                {{ __('Meus Dados') }}
-            </x-dropdown-link>
-
-            <x-dropdown-link :href="route('profile.edit')">
-                {{ __('Relatório Etiquetas') }}
-            </x-dropdown-link>
-
-            <x-dropdown-link :href="route('profile.edit')">
-                {{ __('Cobrança') }}
-            </x-dropdown-link>
-
-            <x-dropdown-link :href="route('profile.edit')">
-                {{ __('Integraçõess') }}
-            </x-dropdown-link>
-
-            <x-dropdown-link :href="route('profile.edit')">
-                {{ __('Manifestações') }}
-            </x-dropdown-link>
-
-            <x-dropdown-link :href="route('profile.edit')">
-                {{ __('Cupom') }}
-            </x-dropdown-link>
-
-            <!-- Authentication -->
-            <form method="POST" action="{{ route('logout') }}">
-              @csrf
-              <x-dropdown-link :href="route('logout')"
-                  onclick="event.preventDefault();
-                                this.closest('form').submit();">
-                  {{ __('Sair') }}
-              </x-dropdown-link>
-            </form>
-          </x-slot>
-        </x-dropdown>
-      </div>
-
-      <!-- Hamburger -->
-      <div class="-mr-2 flex items-center sm:hidden">
-        <button @click="open = ! open"
-          class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-          <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-            <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex"
-                stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16" />
-            <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round"
-                stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      <!-- Settings Dropdown -->
+      <div class="mt-4">
+        <button 
+          onclick="abreFechaDropDown()"
+          id="dropdownAvatarNameButton" 
+          data-dropdown-toggle="dropdownAvatarName" 
+          class="ml-7 text-gray-500 flex items-center text-sm pe-1 rounded-full hover:text-blue-600 md:me-0 focus:ring-4 focus:ring-gray-100" type="button">
+          <span class="sr-only">Open user menu</span>
+          <img src="{{asset('images/user.png')}}" alt="" class="h-9 w-9 overflow-hidden rounded-full"/>
+          <p class="ml-1">{{ Auth::user()->name }}</p>
+          <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
           </svg>
         </button>
+
+        <!-- Dropdown menu -->
+        <div id="dropdownAvatarName" class="hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+          <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
+            <li>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Meus Dados</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Relatório Etiquetas</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Cobrança</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Integrações</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Manifestações</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Cupom</a>
+            </li>
+
+            <form method="POST" action="{{ route('logout') }}">
+              @csrf
+              <x-responsive-nav-link 
+                :href="route('logout')"
+                onclick="event.preventDefault();
+                                this.closest('form').submit();">
+                {{ __('Sair') }}
+              </x-responsive-nav-link>
+            </form>
+          </ul>
+        </div>
+     
+         <!-- Hamburger -->
+        <div class="fixed top-0 left-0 z-50 p-4">
+          <div class="-mr-2 flex items-center lg:hidden">
+              <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                  <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                      <path :class="{ 'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                      <path :class="{ 'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+              </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Responsive Navigation Menu -->
-  <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-      <div class="pt-2 pb-3 space-y-1">
-          <x-responsive-nav-link :href="route('etiquetas')" :active="request()->routeIs('etiquetas')">
-              {{ __('etiquetas') }}
-          </x-responsive-nav-link>
-      </div>
+    <!-- Responsive Navigation Menu -->
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden lg:hidden">
+        <div class="pt-2 pb-3 space-y-1">
+          <x-dropdown-link :href="route('profile.edit')">
+              {{ __('Meus Dados') }}
+          </x-dropdown-link>
 
-      <!-- Responsive Settings Options -->
-      <div class="pt-4 pb-1 border-t border-gray-200">
-          <div class="px-4">
-              <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-              <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-          </div>
+          <x-dropdown-link :href="route('profile.edit')">
+              {{ __('Relatório Etiquetas') }}
+          </x-dropdown-link>
 
-          <div class="mt-3 space-y-1">
-              <x-responsive-nav-link :href="route('profile.edit')">
-                  {{ __('Profile') }}
-              </x-responsive-nav-link>
+          <x-dropdown-link :href="route('profile.edit')">
+              {{ __('Cobrança') }}
+          </x-dropdown-link>
 
-              <!-- Authentication -->
-              <form method="POST" action="{{ route('logout') }}">
-                  @csrf
+          <x-dropdown-link :href="route('profile.edit')">
+              {{ __('Integraçõess') }}
+          </x-dropdown-link>
 
-                  <x-responsive-nav-link :href="route('logout')"
-                      onclick="event.preventDefault();
-                                      this.closest('form').submit();">
-                      {{ __('Log Out') }}
-                  </x-responsive-nav-link>
-              </form>
-          </div>
-      </div>
+          <x-dropdown-link :href="route('profile.edit')">
+              {{ __('Manifestações') }}
+          </x-dropdown-link>
+
+          <x-dropdown-link :href="route('profile.edit')">
+              {{ __('Cupom') }}
+          </x-dropdown-link>
+        </div>
+
+        <!-- Responsive Settings Options -->
+        <div class="pt-4 pb-1 border-t border-gray-200">
+            <div class="px-4">
+                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+            </div>
+
+            <div class="mt-3 space-y-1">
+
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+
+                    <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Sair') }}
+                    </x-responsive-nav-link>
+                </form>
+            </div>
+        </div>
+    </div>
   </div>
 </nav>
+
+<script>
+  const abreFechaDropDown = () => {
+      const dropdown = document.getElementById('dropdownAvatarName');
+      dropdown.classList.toggle('hidden');
+  };
+  
+</script>

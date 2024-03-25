@@ -1,7 +1,11 @@
 <x-app-layout>
 
     <div class="w-5/6 ml-auto lg:px-12">
-        <div class="text-4xl">
+        <div class="flex sm:hidden ml-24 sm:ml-0">
+          <img src="{{asset('images/logo_mandabem_az.png')}}" alt="" class="w-32"/>
+        </div>
+
+        <div class="text-4xl ml-4 sm:ml-0 mt-8 sm:mt-0">
             <h1 class="text-gray-500 font-bold">Envios Pendentes</h1>
         </div>
   
@@ -65,9 +69,9 @@
         </div>
   
         <div class="w-full">
-            <div x-data="{ open: false }" class="flex flex-row-reverse">
+            <div x-data="{ open: false }" class="mr-10 sm:mr-0 flex flex-col sm:flex-row-reverse">
                 <!-- Botão para abrir o modal -->
-                <div class="flex text-xs mt-12">
+                <div class="flex sm:flex-row flex-col sm:space-y-0 space-y-2 text-xs mt-12 sm:mr-0 mr-4"> 
                     <button @click="open = true"
                         class="bg-red-700 hover:bg-red-800 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -385,10 +389,9 @@
                 </div>
             </div>
             <br>
-  
-            <table id="enviosTable" data-envios="{{ json_encode($envios) }}"
-                class="min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
-              text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
+            <div class="sm:overflow-hidden overflow-x-auto sm:w-full w-[22rem]">
+              <table id="enviosTable" data-envios="{{ json_encode($envios) }}" class="min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
+                text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -418,61 +421,61 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($envios as $envio)
-                        <tr class="bg-white hover:bg-gray-100 border-b rounded-full font-light"
-                            id="linha_{{ $envio->id }}">
-                            <th class="px-6 py-4 rounded-s-lg">
-                                <input type="checkbox" id="id_envio_{{ $envio->id }}"
-                                    data-id="{{ $envio->id }}" name="aceito_termos" class="mr-2">
-                            </th>
-                            <td class="px-6 py-4">
-                                <button id="btnInfoCol" data-id ="{{ $envio->id }}">
-                                    <i class="fa fa-clock-ow" aria-hidden="true"></i>
-                                    {{ date('d/m/Y', strtotime($envio->date_insert)) }} <br>
-                                </button>
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $envio->destinatario }}
-                            </td>
-                            <td class="px-6 py-4 font-medium text-green-950">
-                                {{ $envio->envio }}
-                            </td>
-                            <td class="px-2 py-2">
-                                R$ {{ $envio->balcao }}
-                            </td>
-                            <td dir="rtl" class=" py-2 rounded-s-lg">
-                                R$ {{ $envio->desconto }}
-  
-                            </td>
-                            <td dir="rtl" class="py-2 rounded-s-lg">
-                                R$ {{ $envio->total }}
-                            </td>
-  
-                            <td dir="rtl" class="px-2 py-2 rounded-s-lg ml-2">
-                                <div class="flex cursor-pointer">
-                                    <button id="btnExcluir" data-row-id="{{ $envio->id }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor"
-                                            class="w-4 h-4 sm:w-5 sm:h-6 stroke-red-600">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                        </svg>
-                                    </button>
-  
-                                    <button id="btnEditar" data-row-id="{{ $envio->id }}">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor"
-                                            class="w-4 h-4 sm:w-5 sm:h-6 stroke-yellow-600">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
+                  @foreach ($envios as $envio)
+                    <tr class="bg-white hover:bg-gray-100 border-b rounded-full font-light" id="linha_{{ $envio->id }}">
+                      <th class="px-6 py-4 rounded-s-lg">
+                          <input type="checkbox" id="id_envio_{{ $envio->id }}"
+                              data-id="{{ $envio->id }}" name="aceito_termos" class="mr-2">
+                      </th>
+                      <td class="px-6 py-4">
+                          <button id="btnInfoCol" data-id ="{{ $envio->id }}">
+                              <i class="fa fa-clock-ow" aria-hidden="true"></i>
+                              {{ date('d/m/Y', strtotime($envio->date_insert)) }} <br>
+                          </button>
+                      </td>
+                      <td class="px-6 py-4">
+                          {{ $envio->destinatario }}
+                      </td>
+                      <td class="px-6 py-4 font-medium text-green-950">
+                          {{ $envio->envio }}
+                      </td>
+                      <td class="px-2 py-2">
+                          R$ {{ $envio->balcao }}
+                      </td>
+                      <td dir="rtl" class=" py-2 rounded-s-lg">
+                          R$ {{ $envio->desconto }}
+
+                      </td>
+                      <td dir="rtl" class="py-2 rounded-s-lg">
+                          R$ {{ $envio->total }}
+                      </td>
+
+                      <td dir="rtl" class="px-2 py-2 rounded-s-lg ml-2">
+                          <div class="flex cursor-pointer">
+                              <button id="btnExcluir" data-row-id="{{ $envio->id }}">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                      stroke-width="1.5" stroke="currentColor"
+                                      class="w-4 h-4 sm:w-5 sm:h-6 stroke-red-600">
+                                      <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                  </svg>
+                              </button>
+
+                              <button id="btnEditar" data-row-id="{{ $envio->id }}">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                      stroke-width="1.5" stroke="currentColor"
+                                      class="w-4 h-4 sm:w-5 sm:h-6 stroke-yellow-600">
+                                      <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                  </svg>
+                              </button>
+                          </div>
+                      </td>
+                    </tr>
+                  @endforeach
                 </tbody>
-            </table>
+              </table>
+            </div>
             <div class="flex justify-between pb-6">
                 <div class="flex mt-2 text-xs">
                     <button id="btnExcluirSelecionados"
@@ -493,40 +496,10 @@
                         <p class="ml-1">Gerar etiquetas</p>
                     </button>
                 </div>
-                <nav class="mt-2">
-                    <ul class="inline-flex -space-x-px mt-2 text-xs">
-                        @if ($envios->currentPage() > 1)
-                            <li>
-                                <a href="?page={{ $envios->currentPage() - 1 }}"
-                                    class="py-2 px-3 ml-0 leading-tight text-gray-500 bg-white 
-                    rounded-l-lg border border-gray-300 hover:bg-gray-100 
-                    hover:text-gray-700">
-                                    Anterior
-                                </a>
-                            </li>
-                        @endif
-                        @for ($i = 1; $i <= $envios->lastPage(); $i++)
-                            <li>
-                                <a href="?page={{ $i }}"
-                                    class="py-2 px-3 {{ $envios->currentPage() == $i ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white' }}
-                    border border-gray-300 hover:bg-gray-100 
-                    hover:text-gray-700">
-                                    {{ $i }}
-                                </a>
-                            </li>
-                        @endfor
-                        @if ($envios->currentPage() < $envios->lastPage())
-                            <li>
-                                <a href="?page={{ $envios->currentPage() + 1 }}"
-                                    class="py-2 px-3 leading-tight text-gray-500 bg-white
-                  rounded-r-lg border border-gray-300 hover:bg-gray-100 
-                  hover:text-gray-700">
-                                    Próxima
-                                </a>
-                            </li>
-                        @endif
-                    </ul>
-                </nav>
+
+                {{-- <div class="sm:ml-0 ml-4">
+                  <x-pagination :paginator="$envios"/>
+                </div> --}}
             </div>
         </div>
     </div>
