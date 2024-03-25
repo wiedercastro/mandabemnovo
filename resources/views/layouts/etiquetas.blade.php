@@ -2,14 +2,14 @@
 
   <div class="w-5/6 lg:px-12 sm:ml-6 lg:ml-80">
 
-    <div class="flex justify-center sm:hidden">
+    <div class="flex justify-center sm:hidden ml-10 sm:ml-0">
       <img src="{{asset('images/logo_mandabem_az.png')}}" alt="" class="w-32"/>
     </div>
 
-    <div class="mt-4 w-full">
+    <div class="mt-4 w-full ml-4 sm:ml-0">
       <x-card-pagamentos/>
     </div>
-    <div class="flex flex-col sm:flex-row sm:justify-between mt-20 sm:ml-0 ml-4">
+    <div class="flex flex-col sm:flex-row sm:justify-between mt-20 sm:ml-0 ml-4 sm:w-full w-[22rem]">
       <div class="text-4xl mt-6">
         <h1 class="text-gray-500 font-bold text-4xl text">Etiquetas</h1>
       </div>
@@ -40,7 +40,7 @@
       </div>
     </div>
     
-    <div class="overflow-x-auto">
+    <div class="sm:overflow-hidden overflow-x-auto sm:w-full w-[22rem] sm:ml-0 ml-4">
       <table
         class="mt-2 min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg text-sm text-left text-gray-500 border-collapse border-1">
         <thead class="text-xs text-gray-700 uppercase bg-gray-200">
@@ -150,7 +150,9 @@
       </table>
     </div>
 
-    <x-pagination :paginator="$envios"/>
+    <div class="sm:ml-0 ml-4">
+      <x-pagination :paginator="$envios"/>
+    </div>
   </div>
 </x-app-layout>
   

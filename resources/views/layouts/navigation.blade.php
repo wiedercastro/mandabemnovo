@@ -118,7 +118,7 @@
         </button>
 
         <!-- Dropdown menu -->
-        <div id="dropdownAvatarName" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+        <div id="dropdownAvatarName" class="hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
           <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
             <li>
               <a href="#" class="block px-4 py-2 hover:bg-gray-100">Meus Dados</a>
@@ -138,6 +138,16 @@
             <li>
               <a href="#" class="block px-4 py-2 hover:bg-gray-100">Cupom</a>
             </li>
+
+            <form method="POST" action="{{ route('logout') }}">
+              @csrf
+              <x-responsive-nav-link 
+                :href="route('logout')"
+                onclick="event.preventDefault();
+                                this.closest('form').submit();">
+                {{ __('Sair') }}
+              </x-responsive-nav-link>
+            </form>
           </ul>
         </div>
      
