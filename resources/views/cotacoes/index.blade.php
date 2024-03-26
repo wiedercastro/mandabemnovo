@@ -1,10 +1,12 @@
 <x-app-layout>
   <div class="p-4">
-    <div class="sm:w-5/6 w-full ml-auto lg:px-12 shadow bg-white rounded">
+    <div class="flex justify-center sm:hidden">
+      <img src="{{asset('images/logo_mandabem_az.png')}}" alt="" class="w-32"/>
+    </div>
+    <div class="sm:w-5/6 w-full ml-auto lg:px-12 shadow bg-white rounded mt-8 sm:mt-0">
       <h1 class="px-4 py-2 text-gray-500 font-bold text-2xl">Simulador para Cotação Manda Bem</h1>
       <hr class="border-gray-240 border-dashed mt-2">
       <div class="mt-4 px-4 py-2">
-
         <form method="POST">
           <div class="mt-2 sm:flex">
             <div class=" flex flex-col w-full">
