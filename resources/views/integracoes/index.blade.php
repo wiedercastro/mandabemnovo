@@ -1,7 +1,9 @@
 <x-app-layout>
-  <div class="w-5/6 ml-auto lg:px-12 pb-10">
-    <div class="w-4/5 bg-white shadow-md rounded p-6">
-
+  <div class="sm:w-5/6 w-full ml-auto lg:px-12 pb-10 p-4">
+    <div class="flex justify-center sm:hidden">
+      <img src="{{asset('images/logo_mandabem_az.png')}}" alt="" class="w-32"/>
+    </div>
+    <div class="sm:w-4/5 w-full bg-white shadow-md rounded p-6 mt-10 sm:mt-0">
       {{--  INICIO FORM Configurações Gerais --}}
       <div class="border border-1 rounded p-2">
         <h1 class="font-bold text-xl text-gray-700">Configurações Gerais</h1>
@@ -19,7 +21,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <input placeholder="Digite o cliente que devolverá..." type="text" name="prazo_extra" id="prazo_extra" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <input placeholder="Digite o cliente que devolverá..." type="text" name="prazo_extra" id="prazo_extra" class="px-1 py-2 sm:sm:w-96 w-full w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
           </div>
           <div class="mt-4">
             <div class="flex items-center">
@@ -28,7 +30,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <select name="formato_valor_adicional" id="formato_valor_adicional" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <select name="formato_valor_adicional" id="formato_valor_adicional" class="px-1 py-2 sm:w-96 w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
               <option value="fixo">Fixo</option>
               <option value="percentual">Percentual %</option>
             </select>
@@ -40,7 +42,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <input placeholder="Valor Adicional" type="text" name="valor_adicional" id="valor_adicional" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <input placeholder="Valor Adicional" type="text" name="valor_adicional" id="valor_adicional" class="px-1 py-2 sm:w-96 w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
           </div>
           <div class="mt-4">
             <div class="flex items-center">
@@ -49,7 +51,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <select name="desconto_carrinho" id="desconto_carrinho" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <select name="desconto_carrinho" id="desconto_carrinho" class="px-1 py-2 sm:w-96 w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
               <option value="sim">Sim</option>
               <option value="nao">Não</option>
             </select>
@@ -61,7 +63,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <select name="seguro" id="seguro" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <select name="seguro" id="seguro" class="px-1 py-2 sm:w-96 w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
               <option value="sim">Sim</option>
               <option value="nao">Não</option>
             </select>
@@ -92,7 +94,7 @@
           </p>
         </div>
         <hr class="mt-2">
-        <form action="" class="ml-4 mt-4">
+        <form action="" class="ml-0 sm:ml-4 mt-4">
           <div class="mt-2">
             <div class="flex items-center">
               <label for="altura_media" class="block text-gray-500 font-bold text-sm">Altura Média</label>
@@ -100,7 +102,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <input type="text" name="altura_media" id="altura_media" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <input type="text" name="altura_media" id="altura_media" class="px-1 py-2 sm:w-96 w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
           </div>
           <div class="mt-2">
             <div class="flex items-center">
@@ -109,7 +111,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <input type="text" name="largura_media" id="largura_media" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <input type="text" name="largura_media" id="largura_media" class="px-1 py-2 sm:w-96 w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
           </div>
           <div class="mt-2">
             <div class="flex items-center">
@@ -118,7 +120,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <input type="text" name="comprimento_medio" id="comprimento_medio" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <input type="text" name="comprimento_medio" id="comprimento_medio" class="px-1 py-2 sm:w-96 w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
           </div>
           <button
             class="mt-2 bg-gray-400 hover:bg-gray-500 text-white font-bold px-2 py-1 rounded flex items-center text-sm">    
@@ -154,7 +156,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <input placeholder="Altura Média" type="text" name="altura_media" id="altura_media" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <input placeholder="Altura Média" type="text" name="altura_media" id="altura_media" class="px-1 py-2 sm:w-96 w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
           </div>
           <div class="mt-2">
             <div class="flex items-center">
@@ -163,7 +165,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <input placeholder="Largura Média" type="text" name="largura_media" id="largura_media" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <input placeholder="Largura Média" type="text" name="largura_media" id="largura_media" class="px-1 py-2 sm:w-96 w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
           </div>
           <div class="mt-2">
             <div class="flex items-center">
@@ -172,7 +174,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
               </svg>            
             </div>
-            <input placeholder="Comprimento Médio" type="text" name="comprimento_medio" id="comprimento_medio" class="px-1 py-2 w-96 border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
+            <input placeholder="Comprimento Médio" type="text" name="comprimento_medio" id="comprimento_medio" class="px-1 py-2 sm:w-96 w-full border outline-none shadow rounded bg-white border-gray-200 text-sm text-gray-600 mt-1">
           </div>
           <button
             class="mt-2 bg-gray-700 hover:bg-gray-800 text-white font-bold px-2 py-1 rounded flex items-center text-sm">    
