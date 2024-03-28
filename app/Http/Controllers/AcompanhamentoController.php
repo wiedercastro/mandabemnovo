@@ -10,9 +10,19 @@ class AcompanhamentoController extends Controller
 {
   public function index()
   {
-    return view('acompanhamentos.index' , [
+    return view('acompanhamentos.index');
+  }
+
+  public function gerencimanento_emails()
+  {
+    return view('acompanhamentos.edicao-email' , [
       'acompanhamento_email' => Acompanhamento::select('id', 'name')->get()
     ]);
+  }
+
+  public function gerenciamento_crise()
+  {
+    return view('acompanhamentos.gerenciamento-crise');
   }
 
   public function busca_acomp_email(int $id)

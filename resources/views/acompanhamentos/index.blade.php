@@ -1,201 +1,119 @@
 <x-app-layout>
-  {{--  INICIO MODAL ACOMPANHAMENTOS--}}
-  <div 
-    class="justify-center items-center hidden" id="modal-info-acompanhamentos">
-    <div>
-      <div class="fixed inset-0 px-2 z-10 overflow-hidden flex items-center justify-center animate__animated animate__fadeIn">
-        <div class="absolute inset-0 bg-gray-800 bg-opacity-75 transition-opacity"></div>
-        <!-- Modal Content -->
-        <div
-          class="bg-white rounded-md shadow-xl overflow-hidden max-w-md w-full sm:w-96 md:w-1/2 lg:w-2/3 xl:w-1/3 z-50">
-          <!-- Modal Header -->
-          <div class="bg-[#25688B] text-white px-4 py-2 flex justify-between">
-            <h2 class="text-sm font-semibold">
-              ABA ACOMPANHAMENTO
-            </h2>
-            <svg
-              onclick="fechaModalComInformacoes()"
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-6 h-6 cursor-pointer">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-            </svg>
-          </div>
-
-          <div class="p-4 font-light">
-            <p>Na Aba Acompanhamento você terá acesso ao gerenciamento de e-mails enviados para seus clientes acompanharem os envios e ao gerenciamento de crise.<br><br>
-              No gerenciamento de e-mails você pode ativar e editar as mensagens que o seu cliente receberá por e-mail sobre o fluxo postal, são 4 situação chaves do fluxo:<br><br>
-              
-              <b>Objeto Postado, Objeto saiu para entrega, Entrega não pode ser efetuada e Objeto encontra-se para retirada.</b><br><br>
-              
-              Você pode ativar essas notificações e também editar o corpo da mensagem do e-mail enviado para o cliente.<br><br>
-              
-              Para o cliente receber o e-mail é preciso que, ao gerar o envio, você coloque o e-mail dele nas informações opcionais.<br><br>
-              
-              No gerenciamento de crise nós antecipamos e informamos quando algo der errado no fluxo postal como objeto roubado, extraviado ou quando a entrega não pode ser efetuada. Sempre que isso ocorrer um sinal de exclamação será indicado na aba para você tomar as providências cabíveis em relação ao ocorrido.</p>
-          </div>
-          <hr>
-          <div class="flex flex-row-reverse p-4">
-            <button onclick="fechaModalComInformacoes()" class="bg-blue-500 hover:bg-blue-600 text-white flex items-center font-bold text-xs rounded px-3 py-2">OK</button>
-          </div>
-        </div>
-      </div>
+  <x-modal-acompanhamento/>
+  <x-modal-detalhes/>
+  <div class="sm:w-5/6 w-full ml-auto lg:px-12 p-4">
+    <div class="flex justify-center sm:hidden">
+      <img src="{{asset('images/logo_mandabem_az.png')}}" alt="" class="w-32"/>
     </div>
-  </div>
- {{--  FINAL MODAL INFORMACOES ACOMPANHAMENTOS--}}
-
- {{--  INICIO MODAL DETALHES--}}
-  <div 
-    class="justify-center items-center hidden" id="modal-container">
-    <div>
-      <div class="fixed inset-0 px-2 z-10 overflow-hidden flex items-center justify-center animate__animated animate__fadeIn">
-        <div class="absolute inset-0 bg-gray-800 bg-opacity-75 transition-opacity"></div>
-        <!-- Modal Content -->
-        <div
-          class="bg-white rounded-md shadow-xl overflow-hidden max-w-md w-full sm:w-96 md:w-1/2 lg:w-2/3 xl:w-1/3 z-50">
-          <!-- Modal Header -->
-          <div class="bg-[#25688B] text-white px-4 py-2 flex justify-between">
-            <h2 class="text-sm font-semibold">
-              Visualizar detalhe
-            </h2>
-            <svg
-              onclick="fechaModalAcompanhamento()"
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-6 h-6 cursor-pointer">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-            </svg>
-          </div>
-
-          <form method="POST" action="#" id="submitForm">
-            @csrf
-            
-            <input type="hidden" name="id" id="id">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}" id="_token">
-
-            <div class="p-4">
-              <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100" role="alert">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 inline w-5 h-5 me-4">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                </svg>                
-                <span class="sr-only">Info</span>
-                <div>
-                  <span class="font-medium">ATENÇÃO!</span> Não altere o texto entre < e >, pois é usado para associar as informações no email
-                </div>
-              </div>
-
-              <div class="flex flex-col w-full mt-6">
-                <label for="assunto" class="text-gray-600 text-sm">ASSUNTO</label>
-                <input 
-                  id="assunto"
-                  name="assunto"
-                  class="px-4 p-2 w-full border shadow outline-none rounded bg-white border-gray-200 text-gray-600 text-sm">
-              </div>
-
-              <div class="flex flex-col w-full mt-4">
-                <label for="corpo_email" class="text-gray-600 text-sm">CORPO DO E-MAIL</label>
-                <textarea 
-                  required 
-                  rows="14" 
-                  id="corpo_email"
-                  name="corpo_email"
-                  class="resize-none outline-none block p-2.5 w-full text-sm text-gray-900 shadow rounded-lg border border-gray-300 bg-white overflow-y-auto" 
-                  placeholder="Digite..."></textarea>
-              </div>
-            </div>
-
-            <div>
-              <div class="flex flex-row-reverse p-2">
-                <button 
-                  id="submitFormButton" 
-                  class="bg-blue-500 hover:bg-blue-600 text-white flex items-center font-bold text-xs rounded px-2 py-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  </svg>
-                  Salvar
-                </button>
-                <button  
-                  type="button" 
-                  onclick="fechaModalAcompanhamento()"
-                  class="mr-2 bg-red-500 hover:bg-red-600 text-white flex items-center font-bold text-xs rounded px-2 py-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                  </svg>                  
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
+    <div class="flex items-center mt-10 sm:mt-0 sm:justify-start justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 stroke-gray-500">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+      </svg>      
+      <h1 class="text-gray-500 font-bold text-4xl">Acompanhamentos</h1>
     </div>
-  </div>
- {{--  FINAL MODAL DETALHES--}}
 
-  <div class="w-5/6 ml-auto lg:px-12">
-    <div class="flex justify-between">
-      <div class="bg-white rounded-lg w-1/2 shadow">
-        <div class="p-4 font-light">
-          <h1 class="text-2xl text-gray-800 font-bold">Total</h1>
-          <div class="flex justify-between text-sm text-gray-800">
-            <div class="flex flex-col space-y-4 mt-2">
-              <span class="">Fevereiro 2024</span>
-              <span class="">Clientes c/ Postagens: 0</span>
-            </div>
-            <div class="flex flex-col space-y-4 mt-2"> 
-              <span class="">Totais: 0 | Nuvem: 0 | LI : 0</span>
-              <span class="">Hoje: 0 | Nuvem: 0 | LI: 0</span>
-            </div>
+    <x-menu-navigation/>
+
+    <div class="mt-16">
+      <div class="flex flex-row-reverse sm:justify-start justify-center">
+        <form action="#" class="mt-1 flex flex-col sm:flex-row space-x-1 p-4 items-center sm:items-end border rounded bg-white">
+          <div class="flex flex-col">
+            <label for="etiqueta" class="text-gray-600 sm:text-sm text-xs">Etiqueta</label>
+            <input id="etiqueta" type="text" class="px-1 py-1 w-72 border outline-none rounded bg-white border-gray-200 text-sm" placeholder="Buscar por etiqueta">
           </div>
-        </div>
+
+          <div class="flex flex-col mt-2">
+            <label for="situacao_objeto" class="text-gray-600 sm:text-sm text-xs">Situação do Objeto</label>
+            <select 
+              id="situacao_objeto"
+              required
+              class="px-1 py-1 w-72 border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+              <option value="todos" disabled selected class="text-sm">Todos</option>
+              <option value="atrasado">Atrasado</option>
+              <option value="no_prazo">No prazo</option>
+            </select>
+          </div>
+
+          <button 
+            type="submit"
+            class="text-white font-bold text-xs w-full
+            hover:bg-sky-800 rounded border mt-2 flex items-center justify-center
+            border-gray-500 bg-[#25688B]  px-2 py-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <p class="ml-1">Buscar</p>            
+          </button>
+        </form>
       </div>
-      <div class="flex text-blue-700 items-center">
-        <p
-          type="button"
-          onclick="exibiModalComInformacoes()" 
-          class="font-bold text-[#25688B] text-xl font-bold cursor-pointer">
-          Como funciona essa aba
-        </p>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="cursor-pointer w-8 h-8">
-          <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
-        </svg>                  
-      </div>
-  </div>
-  <div class="mt-16">
-    <h1 class="text-gray-500 font-bold text-3xl">Gerenciamento de Emails</h1>
-    <table
-      class="mt-2 w-2/3 table-auto font-normal rounded shadow-lg
-      text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-300">
-        <tr>
-          <th scope="col" class="px-6 py-3">
-             NOME
-          </th>
-          <th scope="col" class="px-6 py-3">
-            OPÇÕES
-          </th>
-        </tr>
-      </thead>
-      @foreach ($acompanhamento_email as $acompanhamento)
-        <tbody>
-          <tr 
-            class="bg-white hover:bg-gray-100 border-b rounded-full font-light cursor-pointer">
-            <td class="px-6 py-4">
-              {{$acompanhamento->name}}
-            </td>
-            <td class="px-4 py-4">
-              <button 
-                onclick="abreModalAcompanhamento({{$acompanhamento->id}})"
-                class="bg-blue-400 hover:bg-blue-500 border border-blue-400 rounded text-sm px-2 py-1 text-white font-bold">
+
+      <div class="overflow-x-auto">
+        <table
+          class="mt-2 w-full table-auto font-normal rounded shadow-lg
+          text-sm text-left text-gray-500 border-collapse border-1">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-300">
+            <tr>
+              <th scope="col" class="px-6 py-3">
+                Objeto
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Destinatário
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Status
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Prazo 
+                (dias úteis)
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Postagem
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Prev.
+                Entrega
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Manifestação
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bg-white hover:bg-gray-100 border-b rounded-full font-light cursor-pointer">
+              <td class="px-6 py-4 text-xs sm:text-sm">
+                SZ909197154BR
+              </td>
+              <td class="px-6 py-4 text-xs sm:text-sm">
+                Wieder
+              </td>
+              <td class="px-6 py-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 stroke-blue-500 hover:stroke-blue-800">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+                <b class="ml-1 text-xs sm:text-sm">Aguardando Postagem</b>
+              </td>
+              <td class="px-6 py-4 text-xs sm:text-sm">
+                2
+              </td>
+              <td class="px-6 py-4 text-xs sm:text-sm ">
+                18/10/2020
+              </td>
+              <td class="px-6 py-4 flex items-center text-red-600">
+                <p class="mr-1 text-xs sm:text-sm">20/09/2023</p>
+                <i class="fa fa-exclamation"></i>
+              </td>
+              <td class="px-6 py-4">
                 <div class="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                  </svg>
-                  <p class="ml-1">Editar</p>
+                  <div class="text-red-500">
+                    <i class="fa fa-hourglass-half"></i>
+                  </div>
+                  <p class="ml-1 text-xs sm:text-sm">Em processo de Abertura</p>
                 </div>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      @endforeach
-    </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </x-app-layout>

@@ -80,6 +80,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Acompanhamento
   */
   Route::get('/acompanhamento',[AcompanhamentoController::class, 'index'])->name('acompanhamento');
+  Route::get('/edicao-email',[AcompanhamentoController::class, 'gerencimanento_emails'])->name('edicao.email');
+  Route::get('/gerenciamento_crise',[AcompanhamentoController::class, 'gerenciamento_crise'])->name('gerenciamento_crise');
   Route::get('/acomp_email/{id}',[AcompanhamentoController::class, 'busca_acomp_email']);
   Route::post('/acomp_email',[AcompanhamentoController::class, 'atualiza_acomp_email']);
   
