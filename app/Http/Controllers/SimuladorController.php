@@ -455,8 +455,9 @@ class SimuladorController extends Controller
             } else {
                 $data['device'] = "desktop";
             }
+            $data['device'] = 'desktop';
             //                    if ($this->input->server('REMOTE_ADDR') == '177.185.208.242') {
-            if ($data['device'] != 'desktop' || $data['device'] != 'mobile') {
+            if ($data['device'] != 'desktop') {
                 $html = '<div class="row">';
                 $html .= '<div class="col-md-12">';
                 $html .= '<h5><small>Opções de Frete para:</small> ' . $data_destino->cidade . '</h5>';
