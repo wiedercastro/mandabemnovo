@@ -334,7 +334,7 @@ class SimuladorController extends Controller
                     $result['SEDEX 12']['contrato'] = $info_sedex_doze_contrato;
                 }
             }
-            dd($info_pac['valor']);
+
             $tmp_valor_pac = (float) preg_replace('/,/', '.', $info_pac['valor']);
             $tmp_valor_sed = (float) preg_replace('/,/', '.', $info_sedex['valor']);
 
@@ -456,7 +456,7 @@ class SimuladorController extends Controller
                 $data['device'] = "desktop";
             }
             //                    if ($this->input->server('REMOTE_ADDR') == '177.185.208.242') {
-            if ($data['device'] != 'desktop') {
+            if ($data['device'] != 'desktop' || $data['device'] != 'mobile') {
                 $html = '<div class="row">';
                 $html .= '<div class="col-md-12">';
                 $html .= '<h5><small>Opções de Frete para:</small> ' . $data_destino->cidade . '</h5>';
