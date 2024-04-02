@@ -1,10 +1,10 @@
 <x-app-layout>
-  <div class="w-5/6 ml-auto lg:px-12 sm:ml-0 lg:ml-80">
-      <div class="flex sm:hidden ml-20 sm:ml-0">
+  <div class="sm:w-5/6 w-full ml-auto lg:px-12 sm:ml-0 lg:ml-80 p-4">
+      <div class="flex justify-center sm:hidden">
         <img src="{{asset('images/logo_mandabem_az.png')}}" alt="" class="w-32"/>
       </div>
 
-      <div class="text-4xl mt-8 sm:mt-0">
+      <div class="text-4xl mt-8 sm:mt-0 flex justify-center">
           <h1 class="text-gray-500 font-bold">Envios Pendentes</h1>
       </div>
 
@@ -68,9 +68,9 @@
       </div>
 
       <div class="w-full">
-          <div x-data="{ open: false }" class="mr-10 sm:mr-0 flex flex-col sm:flex-row-reverse">
+          <div x-data="{ open: false }" class="flex flex-col sm:flex-row-reverse">
               <!-- Botão para abrir o modal -->
-              <div class="flex sm:flex-row flex-col sm:space-y-0 space-y-2 text-xs mt-12 sm:mr-0 mr-4"> 
+              <div class="flex sm:flex-row flex-col sm:space-y-0 space-y-2 text-xs mt-12"> 
                   <button @click="open = true"
                       class="bg-red-700 hover:bg-red-800 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -128,16 +128,16 @@
                       <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
                           aria-hidden="true">&#8203;</span>
                       <div x-show="open" id="modal_incluir1"
-                          class="ml-56 inline-block align-bottom bg-white 
-            rounded-lg text-left overflow-hidden shadow-xl 
-            transform transition-all sm:my-8 sm:align-middle sm:w-1/2">
+                          class="sm:ml-56 ml-0 inline-block align-bottom bg-white 
+                          rounded-lg text-left overflow-hidden shadow-xl 
+                          transform transition-all sm:my-8 sm:align-middle sm:w-1/2">
                           <!-- Conteúdo do modal aqui -->
-                          <div class=" px-4 pt-5 pb-4 sm:p-6 sm:pb-4 bg-white">
+                          <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4 bg-white">
                               <div class="sm:flex sm:items-start">
                                   <!-- Título do modal -->
                                   <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                       <div class="flex justify-between">
-                                          <h2 class="text-2xl mb-6 text-gray-500">Incluir envio</h2>
+                                          <h2 class="text-3xl mb-6 text-gray-500 font-bold">Incluir envio</h2>
                                           <svg @click="open = false" xmlns="http://www.w3.org/2000/svg" fill="none"
                                               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                               class="w-6 h-6 cursor-pointer">
@@ -150,209 +150,158 @@
                                           <form id="myForm" action="" method="POST">
                                               @csrf
                                               <input type="hidden" name="_token" value="{{ csrf_token() }}" id="_token">
-                                              <div class="flex w-full">
+                                              <div class="flex flex-col w-full flex justify-start items-start">
                                                   <div class="w-full mb-4 mr-4">
-                                                      <label for="remetente"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Remetente</label>
-                                                      <input type="text" name="remetente" id="remetente"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500"
-                                                          value="Principal">
+                                                    <label for="remetente" class="flex justify-start items-start text-gray-700 text-xs sm:text-sm font-bold">Remetente</label>
+                                                    <input type="text" name="remetente" id="remetente" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500" value="Principal">
                                                   </div>
 
                                                   <div class="w-full mb-4 mr-4">
-                                                      <label for="destinatario"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Destinatário</label>
-                                                      <input type="text" name="destinatario" id="destinatario"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                    <label for="destinatario" class="flex justify-start items-start text-gray-700 text-xs sm:text-sm font-bold">Destinatário</label>
+                                                    <input type="text" name="destinatario" id="destinatario" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
                                                   </div>
 
                                                   <div class="w-full mb-4">
-                                                      <label for="forma_envio"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Forma de
-                                                          envio</label>
-                                                      <select name="forma_envio" id="forma_envio"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                          {{-- @foreach ($categories as $category) --}}
-                                                          <option value="">Selecione</option>
-                                                          <option value="SEDEX">Sedex</option>
-                                                          <option value="PAC">Pac</option>
-                                                          {{-- @endforeach --}}
-                                                      </select>
+                                                    <label for="forma_envio" class="flex justify-start items-start text-gray-700 text-xs sm:text-sm font-bold">Forma de envio</label>
+                                                    <select name="forma_envio" id="forma_envio" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                      <option value="">Selecione</option>
+                                                      <option value="SEDEX">Sedex</option>
+                                                      <option value="PAC">Pac</option>
+                                                    </select>
                                                   </div>
                                               </div>
 
-                                              <div class="flex w-full">
-                                                  <div class="w-1/2 mb-4 mr-4">
-                                                      <label for="CEP"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">CEP</label>
-                                                      <input type="text" name="CEP" id="CEP"
-                                                          value="{{ old('CEP') }}"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500"
-                                                          placeholder="Digite seu CEP">
-                                                  </div>
+                                              <div class="w-full flex sm:flex-row flex-col justify-start items-start">
+                                                <div class="sm:w-1/2 w-full mb-4 mr-4">
+                                                  <label for="CEP" class="block text-gray-700 text-xs sm:text-sm font-bold flex justify-start items-start">CEP</label>
+                                                  <input type="text" 
+                                                    name="CEP" id="CEP"
+                                                    value="{{ old('CEP') }}"
+                                                    class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500"
+                                                    placeholder="Digite seu CEP">
+                                                </div>
 
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="logradouro"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Logradouro</label>
-                                                      <input type="text" name="logradouro" id="logradouro"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                  </div>
+                                                <div class="w-full mb-4 mr-4">
+                                                  <label for="logradouro" class="block text-gray-700 text-xs sm:text-sm font-bold flex justify-start items-start">Logradouro</label>
+                                                  <input type="text" name="logradouro" id="logradouro" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                </div>
 
-                                                  <div class="w-1/2 mb-4">
-                                                      <label for="numero"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Número</label>
-                                                      <input type="text" name="numero" id="numero"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                  </div>
+                                                <div class="sm:w-1/2 w-full mb-4">
+                                                  <label for="cidade" class="block text-gray-700 text-xs sm:text-sm font-bold flex justify-start items-start">Cidade</label>
+                                                  <input type="text" name="cidade" id="cidade" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                </div>
                                               </div>
 
                                               <div class="flex w-full">
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="complemento"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Complemento</label>
-                                                      <input type="text" name="complemento" id="complemento"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500"
-                                                          placeholder="">
-                                                  </div>
+                                                <div class="w-full mb-4 mr-4">
+                                                  <label for="complemento" class="block text-gray-700 text-xs sm:text-sm font-bold">Complemento</label>
+                                                  <input type="text" name="complemento" id="complemento" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                </div>
 
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="bairro"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Bairro</label>
-                                                      <input type="text" name="bairro" id="bairro"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                  </div>
+                                                <div class="w-full mb-4 mr-4">
+                                                  <label for="bairro" class="block text-gray-700 text-xs sm:text-sm font-bold">Bairro</label>
+                                                  <input type="text" name="bairro" id="bairro" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                </div>
 
-                                                  <div class="w-full mb-4">
-                                                      <label for="cidade"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Cidade</label>
-                                                      <input type="text" name="cidade" id="cidade"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                  </div>
+                                                <div class="w-full mb-4">
+                                                  <label for="numero" class="block text-gray-700 text-xs sm:text-sm font-bold">Número</label>
+                                                  <input type="text" name="numero" id="numero" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                </div>
                                               </div>
 
                                               <div class="flex w-full">
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="estado"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Estado</label>
-                                                      <select name="estado" id="estado"
-                                                          value="{{ old('estado') }}"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                          {{-- @foreach ($categories as $category) --}}
-                                                          <option value="">Selecione</option>
-                                                          {{-- @endforeach --}}
-                                                      </select>
-                                                  </div>
+                                                <div class="w-full mb-4 mr-4">
+                                                  <label for="estado" class="block text-gray-700 text-xs sm:text-sm font-bold">Estado</label>
+                                                  <select name="estado" id="estado" value="{{ old('estado') }}"
+                                                    class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                    {{-- @foreach ($categories as $category) --}}
+                                                    <option value="">Selecione</option>
+                                                    {{-- @endforeach --}}
+                                                  </select>
+                                                </div>
 
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="peso"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Peso</label>
-                                                      <select name="peso" id="peso"
-                                                          value="{{ old('peso') }}"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                          {{-- @foreach ($categories as $category) --}}
-                                                          <option value="">Selecione</option>
-                                                          {{-- @endforeach --}}
-                                                      </select>
-                                                  </div>
+                                                <div class="w-full mb-4 mr-4">
+                                                  <label for="peso" class="block text-gray-700 text-xs sm:text-sm font-bold">Peso</label>
+                                                  <select name="peso" id="peso" value="{{ old('peso') }}"
+                                                    class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                    {{-- @foreach ($categories as $category) --}}
+                                                    <option value="">Selecione</option>
+                                                    {{-- @endforeach --}}
+                                                  </select>
+                                                </div>
                                               </div>
 
                                               <hr class="border-gray-400 border-dashed mt-4">
 
                                               <h4 class="text-2xl mb-6 text-gray-600 mt-10">Campos opcionais</h4>
 
-                                              <div class="flex w-full">
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="email"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">email</label>
-                                                      <input type="text" name="email" id="email"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                  </div>
-
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="seguro"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Seguro</label>
-                                                      <input type="text" name="seguro" id="seguro"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                  </div>
+                                              <div class="flex flex-col w-full flex justify-start items-start">
+                                                
+                                                <label for="email" class="block text-gray-700 text-xs sm:text-sm font-bold">E-mail</label>
+                                                <input type="text" name="email" id="email" class="w-full text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                              
+                                                <label for="seguro" class="block text-gray-700 text-xs sm:text-sm font-bold mt-2">Seguro</label>
+                                                <input type="text" name="seguro" id="seguro" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
                                               </div>
 
-                                              <div class="flex w-full">
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="nota_fiscal"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Nota
-                                                          fiscal</label>
-                                                      <input type="text" name="nota_fiscal" id="nota_fiscal"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500"
-                                                          placeholder="">
-                                                  </div>
 
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="AR"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">AR</label>
-                                                      <select name="AR" id="AR"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                          {{-- @foreach ($categories as $category) --}}
-                                                          <option value="N">Não</option>
-                                                          <option value="S">Sim</option>
-                                                          {{-- @endforeach --}}
-                                                      </select>
-                                                  </div>
+                                              <div class="flex flex-col w-full flex justify-start items-start mt-2">
+                                                <label for="nota_fiscal" class="block text-gray-700 text-xs sm:text-sm font-bold">Nota fiscal</label>
+                                                <input type="text" name="nota_fiscal" id="nota_fiscal" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500" placeholder="">
+                                       
+                                                <label for="AR" class="block text-gray-700 text-xs sm:text-sm font-bold mt-2">AR</label>
+                                                <select name="AR" id="AR" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                  <option value="N">Não</option>
+                                                  <option value="S">Sim</option>
+                                                </select>
                                               </div>
 
                                               <div class="mt-4">
-                                                  <p class="text-sm text-gray-500 font-bold">Medidas</p>
+                                                  <p class="text-xs sm:text-sm text-gray-500 font-bold">Medidas</p>
                                                   <p class="text-xs text-gray-500">(Só preencha se a soma da altura, largura e comprimento do seu pacote for maior que 90 cm)</p>
-                                                  <p class="text-sm text-red-500">* Atenção: Não é permitido o envio de caixas em formato cilíndrico.</p>
-                                                  <p class="text-sm text-red-500">** Atenção: Nenhuma medida sozinha pode ultrapassar 70cm.</p>
+                                                  <p class="text-xs sm:text-sm text-red-500">* Atenção: Não é permitido o envio de caixas em formato cilíndrico.</p>
+                                                  <p class="text-xs sm:text-sm text-red-500">** Atenção: Nenhuma medida sozinha pode ultrapassar 70cm.</p>
                                               </div>
-                                              <hr>
+                                              <hr class="mt-4 border-dashed">
 
-                                              <div class="flex w-full">
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="altura"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Altura</label>
-                                                      <select name="altura" id="altura"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                          <option value="">Selecione</option>
-                                                          @foreach ($alturas as $altura)
-                                                              <option value="{{ $altura->value }}">{{ $altura->value }}</option>
-                                                          @endforeach
-                                                      </select>
-                                                  </div>
+                                              <div class="flex flex-col justify-start items-start sm:flex-row w-full mt-6">
+                                                <div class="w-full mb-4 mr-4">
+                                                  <label for="altura" class="block text-gray-700 text-xs sm:text-sm font-bold flex justify-start items-start">Altura</label>
+                                                  <select name="altura" id="altura"
+                                                      class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                      <option value="">Selecione</option>
+                                                      @foreach ($alturas as $altura)
+                                                          <option value="{{ $altura->value }}">{{ $altura->value }}</option>
+                                                      @endforeach
+                                                  </select>
+                                                </div>
 
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="comprimento"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Comprimento</label>
-                                                      <select name="comprimento" id="comprimento"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                          <option value="">Selecione</option>
-                                                          @foreach ($comprimentos as $comprimento)
-                                                              <option value="{{ $comprimento->value }}">{{ $comprimento->value }}</option>
-                                                          @endforeach
-                                                      </select>
-                                                  </div>
+                                                <div class="w-full mb-4 mr-4">
+                                                  <label for="comprimento" class="block text-gray-700 text-xs sm:text-sm font-bold flex justify-start items-start">Comprimento</label>
+                                                  <select name="comprimento" id="comprimento" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                    <option value="">Selecione</option>
+                                                    @foreach ($comprimentos as $comprimento)
+                                                        <option value="{{ $comprimento->value }}">{{ $comprimento->value }}</option>
+                                                    @endforeach
+                                                  </select>
+                                                </div>
                                               </div>
 
-                                              <div class="flex w-full">
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="largura"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Largura</label>
-                                                      <select name="largura" id="largura"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
-                                                          <option value="">Selecione</option>
-                                                          @foreach ($larguras as $largura)
-                                                              <option value="{{ $largura->value }}">{{ $largura->value }}</option>
-                                                          @endforeach
-                                                      </select>
-                                                  </div>
+                                              <div class="flex flex-col justify-start items-start sm:flex-row w-full">
+                                                <div class="w-full mb-4 mr-4">
+                                                  <label for="largura" class="block text-gray-700 text-xs sm:text-sm font-bold flex justify-start items-start">Largura</label>
+                                                  <select name="largura" id="largura" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                                    <option value="">Selecione</option>
+                                                    @foreach ($larguras as $largura)
+                                                        <option value="{{ $largura->value }}">{{ $largura->value }}</option>
+                                                    @endforeach
+                                                  </select>
+                                                </div>
 
-                                                  <div class="w-full mb-4 mr-4">
-                                                      <label for="obs"
-                                                          class="block text-gray-700 text-sm font-bold mb-2">Observação</label>
-                                                      <input type="text" name="obs" id="obs"
-                                                          class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500"
-                                                          placeholder="">
-                                                  </div>
+                                                <div class="w-full mb-4 mr-4">
+                                                  <label for="obs" class="block text-gray-700 text-xs sm:text-sm font-bold flex justify-start items-start">Observação</label>
+                                                  <input type="text" name="obs" id="obs" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500" placeholder="">
+                                                </div>
                                               </div>
 
                                               <div class="flex justify-end text-xs mt-4">
@@ -388,10 +337,10 @@
               </div>
           </div>
           <br>
-          <div class="sm:overflow-hidden overflow-x-auto sm:w-full w-[20rem]">
+          <div class="sm:overflow-hidden overflow-x-auto sm:w-full w-full">
             <table id="enviosTable" data-envios="{{ json_encode($envios) }}" class="min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
-              text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
-              <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+              text-xs sm:text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
+              <thead class="text-xs sm:text-sm text-gray-700 bg-gray-200">
                   <tr>
                       <th scope="col" class="px-6 py-3">
                         <input type="checkbox" class="mr-2" name="seleciona_todos" id="seleciona_todos">
@@ -406,7 +355,7 @@
                           Forma de Envio
                       </th>
                       <th scope="col" class="px-1 py-3">
-                          Balcãoo
+                          Balcão
                       </th>
                       <th scope="col" class="px-1 py-3">
                           Desconto
