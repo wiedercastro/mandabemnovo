@@ -30,10 +30,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::post('/saveEnvio', [GerarEnvioController::class, 'saveEnvio'])->name('saveEnvio');
   Route::get('/obter-dados-peso', [GerarEnvioController::class, 'buscarPeso'])->name('retornarPeso');
   Route::get('/obter-dados-estado', [GerarEnvioController::class, 'buscarEstado'])->name('retornarEstado');
-  Route::post('/buscarDestinatiro', [GerarEnvioController::class, 'buscarDestinatiro'])->name('buscarDestinatiro');
   Route::get('/excluirEnvio/{id}',[GerarEnvioController::class, 'excluirEnvio'])->name('excluirEnvio');
   Route::post('/excluirEnviosSelecionados', [GerarEnvioController::class, 'excluirEnviosSelecionados'])->name('excluirEnviosSelecionados'); 
   Route::get('/buscarEnvio/{id}',[GerarEnvioController::class, 'buscarEnvio'])->name('buscarEnvio');
+
+
+  Route::get('/buscaDestinatario',[GerarEnvioController::class, 'buscaDestinatario']);
+
+
 
   /*
   Etiquetas

@@ -96,12 +96,14 @@ class GerarEnvioController extends Controller
     }
   }
 
-  public function buscarDestinatiro(Request $request)
+  public function buscaDestinatario(Request $request)
   {
-
-    // dd($request->searchTerm);
-
-    return "Wieder teste";
+    $destinatario = Envio::query()
+          ->select('id', 'destinatario')
+          ->where('destinatario', "LIKE", "%{$request->text}%")
+          ->get();
+          
+    return response()->json(['destinatario' => $destinatario]);
   }
 
   public function excluirEnvio($id)
