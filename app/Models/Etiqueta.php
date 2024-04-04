@@ -129,4 +129,5 @@ class Etiqueta extends Model
 
         return true;
     }
+
 }

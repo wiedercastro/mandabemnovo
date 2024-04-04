@@ -43,6 +43,54 @@ class Envio extends Authenticatable
 
     protected $table = "envios";
 
+    public function getTotalEconomia(): string|null
+    {
+        return DB::table('envios')
+            ->selectRaw('SUM(valor_balcao - valor_total) as total')
+            ->where('user_id', auth()->user()->id)
+            ->whereNotNull('date_postagem')
+            ->whereNotNull('valor_correios')
+            ->first()->total;
+    }
+
+    public function getTotal(): string|null
+    {
+        return DB::table('envios')
+            ->selectRaw('SUM(valor_total + valor_divergente) as total')
+            ->where('user_id', auth()->user()->id)
+            ->whereNotNull('date_postagem')
+            ->whereNotNull('valor_correios')
+            ->first()->total;
+    }
+
+    public function getTotalDivergencia(): string|null
+    {
+        return DB::table('envios')
+            ->selectRaw('SUM(valor_divergente) as total')
+            ->where('user_id', auth()->user()->id)
+            ->whereNotNull('date_postagem')
+            ->whereNotNull('payment_divergente_id')
+            ->whereNotNull('valor_divergente')
+            ->where('valor_divergente', '>', 0)
+            ->first()->total;
+    }
+
+    public function getTotalEconomiaDoMes(): string|null
+    {
+        $mesAtual = now()->month;
+        $anoAtual = now()->year;
+    
+        return DB::table('envios')
+            ->selectRaw('SUM(valor_balcao - valor_total) as total')
+            ->where('user_id', auth()->user()->id)
+            ->whereNotNull('date_postagem')
+            ->whereNotNull('valor_correios')
+            ->whereRaw('MONTH(date_postagem) = ?', [$mesAtual])
+            ->whereRaw('YEAR(date_postagem) = ?', [$anoAtual])
+            ->first()->total;
+    }
+    
+
     public function getError()
     {
         return $this->error;
@@ -390,7 +438,7 @@ class Envio extends Authenticatable
         
         // Caso for NUVEM SHOP salvar envio com erro + alerta
         
-    //Verificar Wieder
+        //Verificar Wieder
 
         // if (!$data_post) {
         //     if (isset($post['api']) && in_array($post['api'], ['NUVEM_SHOP', 'BLING', 'LINX', 'YAMPI', 'SHOPIFY', 'WEBSTORE', 'FASTCOMMERCE', 'LOJA_INTEGRADA', 'WORDPRESS', 'TINY'])) {

@@ -13,8 +13,13 @@ use Illuminate\Support\Facades\DB;
 
 class EtiquetasController extends Controller
 {
+    public function __construct(protected Envio $envio)
+    { }
+
   public function index()
   {
+    $mesAtual = now()->format('m');
+
     $envios = DB::table('coletas')
       ->join('envios','coletas.id','=','envios.coleta_id')
       ->select('coletas.id', DB::raw('Count(envios.id) as qte'), 
@@ -22,16 +27,24 @@ class EtiquetasController extends Controller
                              DB::raw('sum(envios.valor_desconto) as desconto'),
                               'coletas.type'
                             )
-      ->where("coletas.user_id","=",5)
+      ->where("coletas.user_id", "=", auth()->user()->id)
       ->groupBy("coletas.id")
       ->paginate();
 
-    return view('layouts.etiquetas',compact("envios"));
+    return view('layouts.etiquetas', [
+        'envios'             => $envios,
+        'mesAtual'           => $this->getMeses($mesAtual),
+        'anoAtual'           => now()->format('Y'),
+        'totalEconomia'      => $this->envio->getTotalEconomia(),
+        'totalEconomiaDoMes' => $this->envio->getTotalEconomiaDoMes(),
+        'totalDivergencia'   => $this->envio->getTotalDivergencia(),
+        'valorTotal'         => $this->envio->getTotal()
+    ]);
   }
 
   public function buscaDetalhesDasEtiquetas(int $idEtiqueta)
   {
-    $etiquetas = Envio::select(
+    $etiquetas = $this->envio->select(
       'coleta_id',
       'AR',
       'CEP',
@@ -76,15 +89,31 @@ class EtiquetasController extends Controller
 
   public function show($id)
   {
-    $envios = Envio::where("id",$id)->paginate();
-    //return view('layouts.dashboard',compact('envios'));
-    return response()->json(['html' =>view('layouts.coleta.detalhesColeta',compact('envios'))->render()]);
+    $envios = $this->envio->where("id", $id)->paginate();
+    return view('layouts.coleta.detalhesColeta', [
+        'envios' => $envios
+    ]);
   }
 
-  public function teste()
+  public function getMeses(string $mesAtual): string
   {
-    return true;
-  }
+    $meses = [
+        '01' => 'Janeiro',
+        '02' => 'Fevereiro',
+        '03' => 'Março',
+        '04' => 'Abril',
+        '05' => 'Maio',
+        '06' => 'Junho',
+        '07' => 'Julho',
+        '08' => 'Agosto',
+        '09' => 'Setembro',
+        '10' => 'Outubro',
+        '11' => 'Novembro',
+        '12' => 'Dezembro'
+    ];
+
+    return $meses[$mesAtual];
+  }  
 
   public function update(ProfileUpdateRequest $request): RedirectResponse
   {
