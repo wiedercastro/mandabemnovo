@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Envio;
 use App\Models\Payment;
+use App\Models\Report;
 use Illuminate\Contracts\View\View;
 
 class PagamentoController extends Controller
 {
     public function __construct(
         protected Envio $envio,
+        protected Report $report,
         protected Payment $payment
     ){ }
     
@@ -32,9 +34,9 @@ class PagamentoController extends Controller
         'cobrancas'          => $cobrancas,
         'mesAtual'           => getMeses($mesAtual),
         'anoAtual'           => now()->format('Y'),
-        'totalEconomia'      => $this->envio->getTotalEconomia(),
-        'totalEconomiaDoMes' => $this->envio->getTotalEconomiaDoMes(),
-        'totalDivergencia'   => $this->envio->getTotalDivergencia(),
+        'totalEconomia'      => $this->report->getTotalEconomia(),
+        'totalEconomiaDoMes' => $this->report->getTotalEconomiaDoMes(),
+        'totalDivergencia'   => $this->report->getTotalDivergencia(),
         'valorTotal'         => $this->envio->getTotal(),
         'totalSaldo'         => $this->payment->getCreditoSaldo($this->envio->getTotal())
       ]);
