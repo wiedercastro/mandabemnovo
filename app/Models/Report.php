@@ -1246,19 +1246,34 @@ class Report extends Model
         dd($info);
     }
 
-    public function getTotalEconomia($data = [])
+    public function getTotalEconomia()
     {
         return DB::table('envios')
-            ->where('user_id', '=', $data['user_id'])
+            ->where('user_id', '=', auth()->user()->id)
             ->whereNotNull('date_postagem')
             ->whereNotNull('valor_correios')
             ->sum(DB::raw('(valor_balcao - valor_total)'));
     }
 
-    public function getTotalDivergencia($data = [])
+    public function getTotalEconomiaDoMes(): string|null
+    {
+        $mesAtual = now()->month;
+        $anoAtual = now()->year;
+    
+        return DB::table('envios')
+            ->selectRaw('SUM(valor_balcao - valor_total) as total')
+            ->where('user_id', auth()->user()->id)
+            ->whereNotNull('date_postagem')
+            ->whereNotNull('valor_correios')
+            ->whereRaw('MONTH(date_postagem) = ?', [$mesAtual])
+            ->whereRaw('YEAR(date_postagem) = ?', [$anoAtual])
+            ->first()->total;
+    }
+
+    public function getTotalDivergencia(): int | float
     {
         return DB::table('envios')
-            ->where('user_id', '=', $data['user_id'])
+            ->where('user_id', '=', auth()->user()->id)
             ->whereNull('payment_divergente_id')
             ->whereNotNull('date_postagem')
             ->where('valor_divergente', '>', 0)

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Envio;
 use App\Models\Payment;
+use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
@@ -16,6 +17,7 @@ class EtiquetasController extends Controller
 {
     public function __construct(
         protected Envio $envio,
+        protected Report $report,
         protected Payment $payment
     ){ }
 
@@ -38,9 +40,9 @@ class EtiquetasController extends Controller
         'envios'             => $envios,
         'mesAtual'           => getMeses($mesAtual),
         'anoAtual'           => now()->format('Y'),
-        'totalEconomia'      => $this->envio->getTotalEconomia(),
-        'totalEconomiaDoMes' => $this->envio->getTotalEconomiaDoMes(),
-        'totalDivergencia'   => $this->envio->getTotalDivergencia(),
+        'totalEconomia'      => $this->report->getTotalEconomia(),
+        'totalEconomiaDoMes' => $this->report->getTotalEconomiaDoMes(),
+        'totalDivergencia'   => $this->report->getTotalDivergencia(),
         'valorTotal'         => $this->envio->getTotal(),
         'totalSaldo'         => $this->payment->getCreditoSaldo($this->envio->getTotal())
     ]);
