@@ -9,7 +9,7 @@
     </div>
     <div class="p-2 flex justify-between">
         <p class="text-sm font-bold">Saldo</p>
-        <span>R$ 18.008,35</span>
+        <span>R$ {{ number_format($totalSaldo['saldo_total_value'] , 2, ',', '.') ?: '0,00' }}</span>
     </div>
     <div class="p-2 flex justify-between">
         <p class="text-sm font-bold">Divergências</p>

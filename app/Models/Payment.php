@@ -48,7 +48,6 @@ class Payment extends Authenticatable
         return Carbon::parse($value)->format('d/m/Y');
     }
 
-
     public function getFieldCustomer()
     {
         $field = $this->fields_cobranca['cliente'];
@@ -579,17 +578,15 @@ class Payment extends Authenticatable
         }
     }
 
-    public function getCreditoSaldo($param = [])
+    public function getCreditoSaldo(string | null $totalValor)
     {
         if (true) {
-            $valorTotal = isset($param['valor_total']) ? $param['valor_total'] : 0;
-            $saldoTotalValue = 0;
-            $valorDescontar = 0;
+            $valorTotal = isset($totalValor) ? $totalValor : 0;
             $descontado = 0;
 
             $creditos = DB::table('payment')
                 ->select('*')
-                ->where('user_id', $param['user_id'])
+                ->where('user_id', auth()->user()->id)
                 ->whereNull('status')
                 ->where('value', '<', 0)
                 ->get();
@@ -639,7 +636,7 @@ class Payment extends Authenticatable
             }
 
             if ($info['saldo_total_value'] <= 0 || $info['valor_descontar'] <= 0) {
-                if (!isset($param['valor_total'])) {
+                if (!isset($totalValor)) {
                     return $info;
                 } else {
                     return false;
@@ -657,7 +654,7 @@ class Payment extends Authenticatable
             // Somatório de créditos disponíveis por usuário
             $creditos = DB::table('payment')
                 ->select('*')
-                ->where('user_id', $param['user_id'])
+                ->where('user_id', auth()->user()->id)
                 ->whereNull('status')
                 ->where('value', '<', 0)
                 ->get();
@@ -677,7 +674,7 @@ class Payment extends Authenticatable
             // Próximo crédito a descontar
             $credito = DB::table('payment')
                 ->select('*')
-                ->where('user_id', $param['user_id'])
+                ->where('user_id', auth()->user()->id)
                 ->whereNull('status')
                 ->where('value', '<', 0)
                 ->orderBy('date')

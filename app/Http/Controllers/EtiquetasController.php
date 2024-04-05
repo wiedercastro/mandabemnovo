@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Envio;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
@@ -13,11 +14,15 @@ use Illuminate\Support\Facades\DB;
 
 class EtiquetasController extends Controller
 {
-    public function __construct(protected Envio $envio)
-    { }
+    public function __construct(
+        protected Envio $envio,
+        protected Payment $payment
+    ){ }
 
   public function index()
   {
+    //dd(collect($this->payment->getCreditoSaldo($this->envio->getTotal())));
+
     $mesAtual = now()->format('m');
 
     $envios = DB::table('coletas')
@@ -38,7 +43,8 @@ class EtiquetasController extends Controller
         'totalEconomia'      => $this->envio->getTotalEconomia(),
         'totalEconomiaDoMes' => $this->envio->getTotalEconomiaDoMes(),
         'totalDivergencia'   => $this->envio->getTotalDivergencia(),
-        'valorTotal'         => $this->envio->getTotal()
+        'valorTotal'         => $this->envio->getTotal(),
+        'totalSaldo'         => $this->payment->getCreditoSaldo($this->envio->getTotal())
     ]);
   }
 

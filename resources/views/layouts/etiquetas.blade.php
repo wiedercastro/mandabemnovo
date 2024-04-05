@@ -12,6 +12,7 @@
           :totalEconomiaDoMes="$totalEconomiaDoMes"
           :valorTotal="$valorTotal"
           :totalDivergencia="$totalDivergencia"
+          :totalSaldo="$totalSaldo"
           :mesAtual="$mesAtual"
           :anoAtual="$anoAtual"
       />
