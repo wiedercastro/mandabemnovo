@@ -21,8 +21,6 @@ class EtiquetasController extends Controller
 
   public function index()
   {
-    //dd(collect($this->payment->getCreditoSaldo($this->envio->getTotal())));
-
     $mesAtual = now()->format('m');
 
     $envios = DB::table('coletas')
@@ -38,7 +36,7 @@ class EtiquetasController extends Controller
 
     return view('layouts.etiquetas', [
         'envios'             => $envios,
-        'mesAtual'           => $this->getMeses($mesAtual),
+        'mesAtual'           => getMeses($mesAtual),
         'anoAtual'           => now()->format('Y'),
         'totalEconomia'      => $this->envio->getTotalEconomia(),
         'totalEconomiaDoMes' => $this->envio->getTotalEconomiaDoMes(),
@@ -101,25 +99,7 @@ class EtiquetasController extends Controller
     ]);
   }
 
-  public function getMeses(string $mesAtual): string
-  {
-    $meses = [
-        '01' => 'Janeiro',
-        '02' => 'Fevereiro',
-        '03' => 'Março',
-        '04' => 'Abril',
-        '05' => 'Maio',
-        '06' => 'Junho',
-        '07' => 'Julho',
-        '08' => 'Agosto',
-        '09' => 'Setembro',
-        '10' => 'Outubro',
-        '11' => 'Novembro',
-        '12' => 'Dezembro'
-    ];
 
-    return $meses[$mesAtual];
-  }  
 
   public function update(ProfileUpdateRequest $request): RedirectResponse
   {

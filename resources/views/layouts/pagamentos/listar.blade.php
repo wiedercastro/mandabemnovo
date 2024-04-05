@@ -2,7 +2,15 @@
   <div class="w-5/6 ml-auto lg:px-12">
     <div class="w-full">
 
-     <x-card-pagamentos/>
+        <x-card-pagamentos 
+            :totalEconomia="$totalEconomia"
+            :totalEconomiaDoMes="$totalEconomiaDoMes"
+            :valorTotal="$valorTotal"
+            :totalDivergencia="$totalDivergencia"
+            :totalSaldo="$totalSaldo"
+            :mesAtual="$mesAtual"
+            :anoAtual="$anoAtual"
+        />
 
       <div class="mt-6">
         <h1 class="text-gray-500 font-bold text-3xl text">Pagamentos</h1>
