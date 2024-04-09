@@ -1433,7 +1433,7 @@ A gente terá muito prazer em te atender.</p>';
     public function isNuvemShop($id)
     {
         return DB::table('api_nuvem_shop')
-            ->where('status_generate_post IS NOT NULL')
+            ->whereNotNull('status_generate_post')
             ->where('user_id', $id)
             ->first();
     }
@@ -1466,7 +1466,7 @@ A gente terá muito prazer em te atender.</p>';
         }
         if ($api == 'nuvem_shop' || $api == 'nuvemshop') {
             return DB::table('api_nuvem_shop')
-                ->where('store_id IS NOT NULL')
+                ->whereNotNull('store_id')
                 ->where('user_id', $userId)
                 ->orderBy('date_update', 'desc')
                 ->first();

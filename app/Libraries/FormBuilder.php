@@ -232,7 +232,7 @@ class FormBuilder
                         $html_item .= 'col-md-' . $col_1 . ' ';
                     }
                     if (!isset($field['skip_form_group']) || !$field['skip_form_group']) {
-                        $html_item .= 'control-label" for="' . $code . '">' . ( isset($field['no_label']) && $field['no_label'] ? '' : isset($field['label']) ? $field['label'] : '' ) . ' ';
+                        $html_item .= 'control-label" for="' . $code . '">' . ( optional($field)['no_label'] ? '' : optional($field)['label'] ?? '' ) . ' ';
                     }
                     if (isset($field['help'])) {
                         $html_item .= '<i class="fa fa-info-circle" style="color: #008adb;" title="' . $field['help'] . '"></i>';
@@ -272,7 +272,8 @@ class FormBuilder
                             $html_item .= '         <option value="">' . (isset($field['place_holder_default']) ? $field['place_holder_default'] : 'Selecione:') . '</option>';
                         }
                         foreach ($field['opts'] as $opt) :
-                            $html_item .= '           <option ' . (isset($field['default_value']) && $field['default_value'] == $opt->id ? ' selected ' : '' ) . ' value="' . $opt->id . '">' . $opt->name . '</option>';
+                            $html_item .= '<option {{ (isset($field["default_value"]) && $field["default_value"] == $opt->id) ? "selected" : "" }} value="{{ $opt->id }}">{{ $opt->name }}</option>';
+
                         endforeach;
                         $html_item .= '     </select>';
                     } else if ($field['type'] == 'textarea') {

@@ -10,7 +10,8 @@ use App\Http\Controllers\{
     ProfileController,
     CotacaoController,
     ReversaController,
-    SoapController
+    SoapController,
+    UserController
 };
 
 use App\Http\Controllers\Site\SiteController;
@@ -81,6 +82,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/acompanhamento',[AcompanhamentoController::class, 'index'])->name('acompanhamento');
   Route::get('/acomp_email/{id}',[AcompanhamentoController::class, 'busca_acomp_email']);
   Route::post('/acomp_email',[AcompanhamentoController::class, 'atualiza_acomp_email']);
+
+/*
+  Profile
+  */
+  Route::get('/users', [UserController::class, 'index'])->name('users');
   
   
   /*
