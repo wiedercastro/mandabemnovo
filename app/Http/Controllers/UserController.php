@@ -57,18 +57,41 @@ class UserController extends Controller
     }
 
 
-    // public function edit(Request $request): View
-    // {
-    //     return view('profile.edit', [
-    //     'user' => $request->user(),
-    //     ]);
-    // }
-
-    public function show($id)
+    public function show(int $id)
     {
-        $envios = Envio::where("id",$id)->paginate();
-        //return view('layouts.dashboard',compact('envios'));
-        return response()->json(['html' =>view('layouts.coleta.detalhesColeta',compact('envios'))->render()]);
+        $user = User::select(
+                'id',
+                'login as usuario',
+                'email',
+                'name_ecommerce',
+                'status',
+                'CEP as cep',
+                'logradouro',
+                'numero',
+                'complemento',
+                'bairro',
+                'cidade',
+                'uf',
+                'name',
+                'email',
+                'telefone',
+                'tipo_cliente as tipo_emissao',
+                'cpf',
+                'cnpj',
+                'razao_social',
+                'grupo_taxa',
+                'grupo_taxa_pacmini',
+                'ref_indication as link_indicacao',
+                'plataform_integration',
+            )
+            ->where('id', '=', $id)
+            ->first();
+
+        if (! $user) {
+            abort(204);
+        }
+
+        return response()->json(['user' => $user]);
     }
 
 

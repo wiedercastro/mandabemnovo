@@ -15,7 +15,7 @@
             <div class="flex flex-col">
               <select 
                 required
-                class="px-1 py-1 w-40 border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                class="px-1 py-1 w-40 border outline-none rounded bg-white border-gray-200 text-sm text-gray-500">
                 <option value="" disabled selected class="text-sm">Situação Postagem</option>
                 <option value="postados">Postados</option>
                 <option value="pendentes">Pendentes</option>
@@ -131,10 +131,10 @@
                                   $status = '<i class="fa fa-ban"></i> Bloqueado';
                                   break;
                               case 'INACTIVE':
-                                  $status = '<span class="text-red-600"><i class="fa fa-times"></i> Inativo</span>';
+                                  $status = '<span class="text-yellow-600"><i class="fa fa-times"></i> Inativo</span>';
                                   break;
                               default:
-                                  $status = '<span class="text-yellow-600"><i class="fa fa-hourglass-half"></i> Pendente</span>';
+                                  $status = '<span class="text-red-600"><i class="fa fa-hourglass-half"></i> Pendente</span>';
                           }
                       @endphp
                       {!! $status !!}
@@ -188,7 +188,7 @@
                   @endif
                   <td class="px-2 py-2">
                       <div class="flex cursor-pointer">
-                          <button>
+                          <button onclick="abreModalEditaUsuario({{$user->id}})">
                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                   stroke-width="1.5" stroke="currentColor"
                                   class="w-5 h-5 sm:w-5 sm:h-6 stroke-blue-500">
@@ -318,6 +318,9 @@
           @endforeach
         </tbody>
       </table>
+
+      <x-modal-edita-usuario />
+      
     </div>
   </x-app-layout>
 

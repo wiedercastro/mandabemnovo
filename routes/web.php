@@ -87,6 +87,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Profile
   */
   Route::get('/users', [UserController::class, 'index'])->name('users');
+  Route::get('/users/{id}', [UserController::class, 'show']);
   
   
   /*
