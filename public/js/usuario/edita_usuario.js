@@ -3,6 +3,8 @@ let modal_edit_usuario = document.getElementById('modal_edit_usuario');
 /*
 *Dados Gerais
 */
+let usuarioId = document.getElementById('usuarioId');
+let csrfToken = document.getElementById('csrfToken');
 let usuario = document.getElementById('usuario');
 let tipo_usuario = document.getElementById('tipo_usuario');
 let ecommerce = document.getElementById('ecommerce');
@@ -50,7 +52,7 @@ const abreModalEditaUsuario = (idUsuario) => {
         /*
         *Preenchendo os dados Gerais
         */
-        
+        usuarioId.value = data.user.id
         usuario.value = data.user.usuario
         ecommerce.value = data.user.name_ecommerce
         cep.value = data.user.cep
@@ -82,9 +84,83 @@ const abreModalEditaUsuario = (idUsuario) => {
 
 }
 
-  
+/*
+* Fazendo a requisição para atualizar os dados do usuario
+*/
+document.getElementById('submitFormEditaUsuario').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    let submitButtonEditUser       = document.getElementById('submitButtonEditUser');
+    submitButtonEditUser.innerHTML = "Atualizando dados...."
+    submitButtonEditUser.disabled  = true;
+
+    const formData = {
+        id             : usuarioId.value,
+        _token         : csrfToken.value,
+        usuario        : usuario.value,
+        tipo_usuario   : tipo_usuario.value,
+        ecommerce      : ecommerce.value,
+        status_usuario : status_usuario.value,
+        cep            : cep.value,
+        logradouro     : logradouro.value,
+        numero         : numero.value,
+        complemento    : complemento.value,
+        estado         : estado.value,
+        bairro         : bairro.value,
+        cidade         : cidade.value,
+        nome_usuario   : nome_usuario.value,
+        email_usuario  : email_usuario.value,
+        telefone       : telefone.value,
+        tipo_emissao   : tipo_emissao.value,
+        cpf            : cpf.value,
+        cnpj           : cnpj.value,
+        razao_social   : razao_social.value,
+        grupo_taxa     : grupo_taxa.value,
+        grupo_taxa_mini: grupo_taxa_mini.value,
+        link_indicacao : link_indicacao.value,
+    };
+
+    fetch(`http://localhost:8989/users`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao fazer requisição');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success === true) {
+            submitButtonEditUser.innerHTML = "Salvar"
+            submitButtonEditUser.disabled = false;
+
+            Swal.fire({
+                title: 'Sucesso!',
+                text: data.message,
+                icon: 'success',
+                customClass: {
+                    confirmButton: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline-blue active:bg-blue-800',
+                },
+                buttonsStyling: false,
+                confirmButtonText: 'OK',
+            }).then(function () {
+                window.location.href = 'http://localhost:8989/users';
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+    })
+}); 
+
 const fechaModalEditaUsuario = () => {
     modal_edit_usuario.classList.add('hidden');
 }
+
+
 
 

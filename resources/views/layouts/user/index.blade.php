@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="w-5/6 ml-auto lg:px-12 pb-10">
+    <div class="w-5/6 ml-auto lg:px-12 pb-10 animate__animated animate__fadeIn">
   
       <div class="flex justify-between mt-6">
         <div class="text-4xl mt-6">

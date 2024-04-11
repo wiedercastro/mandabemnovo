@@ -27,3 +27,7 @@ body.loading {
   transform: translate(-50%, -50%);
   z-index: 10000;
 }
+
+.selected {
+    border: 1px solid #e5e5e5;
+}

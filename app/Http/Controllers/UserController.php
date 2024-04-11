@@ -94,18 +94,44 @@ class UserController extends Controller
         return response()->json(['user' => $user]);
     }
 
-
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $req)
     {
-        $request->user()->fill($request->validated());
+        $user = User::findOrFail($req->id);
 
-        if ($request->user()->isDirty('email')) {
-        $request->user()->email_verified_at = null;
+        if (! $user) {
+            abort(404);
         }
 
-        $request->user()->save();
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $user->update([
+            "login" => $req->usuario,
+            //"login" => $req->tipo_usuario,
+            "name_ecommerce" => $req->ecommerce,
+            "status" => ($req->status_usuario == "ativo" ? "ACTIVE" : ($req->status_usuario == "bloqueado" ? "INACTIVE" : "BLOCK")),
+            "cep" => $req->cep,
+            "logradouro" => $req->logradouro,
+            "numero" => $req->numero,
+            "complemento" => $req->complemento,
+            "uf" => $req->estado,
+            "bairro" => $req->bairro,
+            "cidade" => $req->cidade,
+            "name" => $req->nome_usuario,
+            "email" => $req->email_usuario,
+            "telefone" => $req->telefone,
+            "tipo_cliente" => $req->tipo_emissao,
+            "cpf" => $req->cpf,
+            "cnpj" => $req->cnpj,
+            "razao_social" => $req->razao_social,
+            "grupo_taxa" => $req->grupo_taxa,
+            "grupo_taxa_pacmini" => $req->grupo_taxa_mini,
+            "ref_indication" => $req->link_indicacao,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Dados do usuário atualizado com sucesso :)'
+        ]);
     }
+    
 
     public function destroy(Request $request): RedirectResponse
     {

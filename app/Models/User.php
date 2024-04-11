@@ -27,6 +27,26 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'login',
+        'name_ecommerce',
+        'status',
+        'cep',
+        'logradouro',
+        'numero',
+        'complemento',
+        'uf',
+        'bairro',
+        'cidade',
+        'name',
+        'email',
+        'telefone',
+        'tipo_cliente',
+        'cpf',
+        'cnpj',
+        'razao_social',
+        'grupo_taxa',
+        'grupo_taxa_pacmini',
+        'ref_indication'
     ];
 
     protected $table = "user";
