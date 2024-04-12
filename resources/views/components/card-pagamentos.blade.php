@@ -1,4 +1,4 @@
-<div class="bg-red-800 rounded-lg text-white w-1/3">
+<div class="bg-red-800 rounded-lg text-white w-full sm:w-1/3">
   <div class="p-2">
     <p class="text-xs">Você economizou até agora com a Manda Bem</p>
     <span class="font-bold">R$ 28,38</span>
