@@ -25,5 +25,13 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('owner', function (User $user, string $id) {
             return $user->id === $id;
         });
+
+        Gate::define('user_admin_mandabem', function () {
+            return auth()->user()->user_group_id === 1;
+        });
+
+        Gate::define('users', function () {
+            return auth()->user()->user_group_id !== 1;
+        });
     }
 }

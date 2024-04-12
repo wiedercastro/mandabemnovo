@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     PagamentoController,
     ProfileController,
     CotacaoController,
+    NotFoundPermissionController,
     ReversaController,
     SoapController,
     UserController
@@ -86,9 +87,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 /*
   Profile
   */
-  Route::get('/users', [UserController::class, 'index'])->name('users');
-  Route::get('/users/{id}', [UserController::class, 'show']);
-  Route::post('/users', [UserController::class, 'update']);
+  Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios')->middleware('user_admin_mandabem');
+  Route::get('/usuarios/{id}', [UserController::class, 'show'])->middleware('user_admin_mandabem');;
+  Route::post('/usuarios', [UserController::class, 'update'])->middleware('user_admin_mandabem');
   
   
   /*
@@ -97,6 +98,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+   /*
+  Not Found Permission
+  */
+  Route::get('/not-found', NotFoundPermissionController::class)->name('not-found');
 });
 
 

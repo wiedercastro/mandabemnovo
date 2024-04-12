@@ -7,34 +7,43 @@
           <h1 class="text-gray-500 font-bold text-4xl text">Usuários</h1>
         </div>
         <div class="flex flex-row-reverse">
-          <form action="#" class="mt-1 flex space-x-1 p-4 items-end border rounded bg-white">
-            <div class="flex flex-col">
-              <input type="text" class="px-1 py-1 w-72 border outline-none rounded bg-white border-gray-200 text-sm" placeholder="Buscar por Nome, Destinatário, Etiqueta...">
-            </div>
+          <form action="#" method="GET" class="mt-1 flex space-x-1 p-4 items-end border rounded bg-white">
   
             <div class="flex flex-col">
+                <input type="text" id="filter_id" name="filter_id" class="px-1 py-1 w-full border outline-none rounded bg-white border-gray-200 text-sm" placeholder="Buscar pelo ID do usuário">
+            </div>
+
+            <div class="flex flex-col">
+                <input type="text" id="filter_email" name="filter_email" class="px-1 py-1 w-full border outline-none rounded bg-white border-gray-200 text-sm" placeholder="Busque por e-mail">
+            </div>
+
+            <div class="flex flex-col">
               <select 
-                required
+                id="filter_integracao"
+                name="filter_integracao"
                 class="px-1 py-1 w-40 border outline-none rounded bg-white border-gray-200 text-sm text-gray-500">
-                <option value="" disabled selected class="text-sm">Situação Postagem</option>
-                <option value="postados">Postados</option>
-                <option value="pendentes">Pendentes</option>
+                <option disabled selected class="text-sm">Integração</option>
+                <option value="cadastro">Cadastro</option>
+                <option value="nuvem_shop">Nuvem shop</option>
               </select>
             </div>
   
             <button 
               type="submit"
               class="text-white font-bold text-xs
-              hover:bg-gray-700 rounded border 
-              border-gray-500 bg-gray-500 px-2 py-1.5">
-              Buscar
+              hover:bg-blue-700 rounded border 
+              bg-blue-500 px-2 py-1.5 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+              <p class="ml-1">Buscar</p>
             </button>
           </form>
         </div>
       </div>
   
       <table
-        class="mt-2 min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
+        class="mt-4 min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
         text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1 cursor-pointer">
         <thead class="text-xs text-gray-700 uppercase bg-gray-200">
           <tr>

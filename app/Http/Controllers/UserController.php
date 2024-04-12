@@ -40,8 +40,6 @@ class UserController extends Controller
     private $validation;
     private $payment_model;
 
-    private $result;
-
     public function __construct() {
         $this->user_model = new User();
         $this->cupom_model = new Cupom();
@@ -253,15 +251,11 @@ class UserController extends Controller
 
     public function index(Request $request) 
     {
-        
         if (session(['user_is_logged' => false])) {
             redirect('login');
             return;
         }
-        
-        // if (Session::get('group_code') != 'mandabem') {
-        //     exit("Usuario nao permitido");
-        // }
+    
 
         $data = new \stdClass();
         
@@ -306,7 +300,6 @@ class UserController extends Controller
             $params['franquia'] = auth()->id();
         }
 
-        
 
         // permitindo execultar o metodo
         $params['source'] = 'list_user';
@@ -321,16 +314,13 @@ class UserController extends Controller
         
         unset($params['get_total']);
         $config = $this->utils->getConfigPagination([
-            'url' => 'usuarios?' . $url, #$request->input('REQUEST_URI'),
+            'url' => 'usuarios?' . $url, 
             'total' => $data->total_rows,
-                //'uri_segment' => 3,
         ]);
         $page_start = $request->input('pstart') ? $request->input('pstart') : 0;
         $params['per_page'] = $config["per_page"];
         $params['page_start'] = $page_start;
 
-        // $this->pagination->initialize($config);
-        // Pagination Ends
 
         $list = $this->user_model->getList($params);
         
@@ -370,10 +360,6 @@ class UserController extends Controller
 
         $data->list = $list;
 
-        if ($request->input('delete')) {
-            $data->info = "Usuário removido com sucesso!";
-        }
-
         $integracaos = array();
         $int_cadastro = new \stdClass();
         $int_nuvem = new \stdClass();
@@ -391,7 +377,10 @@ class UserController extends Controller
         $fields_filter['txt_search'] = ['label' => 'Cliente', 'type' => 'autocomplete', 'element_name' => 'user_id', 'element_id' => 'filter_user_cadastro', 'element_keyup_id' => 'filter_user_cadastro', 'default_value' => $request->input('user_id'), 'description' => $this->user_model->getDesAutocomplete($request->input('user_id'))];
         $data->user_filter = $this->form_builder->mountFormV1($fields_filter);
         
-        return view('layouts/user/index',compact("data"));
+
+        return view('layouts/user/index', [
+            'data' => $data
+        ]);
         
     }
 
@@ -1831,7 +1820,7 @@ class UserController extends Controller
 
         $data = new \stdClass();
 
-        $this->result = $this->payment_model->getExtratoUser($user_id);
+        $this->payment_model->getExtratoUser($user_id);
 
         View::make('user/extrato', $data, true);
     }
