@@ -36,7 +36,7 @@ const abreModalEditaUsuario = (idUsuario) => {
     modal_edit_usuario.classList.remove('hidden');
     modal_edit_usuario.classList.add('block');
 
-    fetch(`http://localhost:8989/users/${idUsuario}`, {
+    fetch(`http://localhost:8989/usuarios/${idUsuario}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -120,7 +120,7 @@ document.getElementById('submitFormEditaUsuario').addEventListener('submit', (e)
         link_indicacao : link_indicacao.value,
     };
 
-    fetch(`http://localhost:8989/users`, {
+    fetch(`http://localhost:8989/usuarios`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -148,7 +148,7 @@ document.getElementById('submitFormEditaUsuario').addEventListener('submit', (e)
                 buttonsStyling: false,
                 confirmButtonText: 'OK',
             }).then(function () {
-                window.location.href = 'http://localhost:8989/users';
+                window.location.href = 'http://localhost:8989/usuarios';
             });
         }
     })

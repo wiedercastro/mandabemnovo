@@ -4,7 +4,7 @@
 
         <!-- Modal Content -->
         <div
-            class="ml-56 inline-block align-bottom bg-white
+            class="sm:ml-56 ml-0 inline-block align-bottom bg-white
           rounded-lg text-left shadow-xl mt-10 overflow-y-auto h-full
           transform transition-all sm:my-8 sm:align-middle sm:w-1/2">
             <!-- Modal Header -->
@@ -17,7 +17,7 @@
             </div>
             
             <div>
-                <ul class="flex items-center border-b cursor-pointer ml-4">
+                <ul class="flex sm:flex-row flex-col items-center border-b cursor-pointer ml-4">
 
                     <li class="menu-item text-blue-500 hover:border-r hover:border-l hover:border-t px-4 py-2 rounded" data-target="dados_usuario">
                         Dados do usuário
@@ -35,16 +35,15 @@
             </div>
 
             <div id="conteudo_principal">
-
                 {{-- Dados do usuário --}}
-                <div id="dados_usuario" class="content">
-                    <form action="#" method="POST" class="mt-2" id="submitFormEditaUsuario" class="">
+                <div id="dados_usuario" class="content p-8">
+                    <form action="#" method="POST" class="mt-2" id="submitFormEditaUsuario">
                         @csrf
                         <input type="hidden" name="usuarioId" id="usuarioId">
                         <input type="hidden" name="csrfToken" value="{{ csrf_token() }}" id="csrfToken">
             
             
-                        <div class="p-8 flex justify-between space-x-28">
+                        <div class="p-8 flex sm:flex-row justify-between flex-col sm:space-x-28 space-x-0">
                             {{--  DADOS GERAIS --}}
                             <div class="w-full">
                                 <h1 class="text-gray-500 font-bold text-4xl text-2xl">Dados Gerais</h1>
@@ -136,12 +135,14 @@
                                     <p class="ml-1">Vincular afiliado</p>
                                 </button>
                             </div>
+
+                            <hr class="mt-8 block sm:hidden">
             
                             {{-- RESPONSAVEL --}}
-                            <div class="w-full">
+                            <div class="w-full mt-10 sm:mt-0">
                                 <h1 class="text-gray-500 font-bold text-4xl text-2xl">Responsável</h1>
             
-                                <div class="mt-6">
+                                <div class="sm:mt-6 mt-2">
                                     <label for="nome_usuario" class="block text-gray-500 text-sm font-bold">Nome</label>
                                     <input type="text" name="nome_usuario" id="nome_usuario"
                                         class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
@@ -245,7 +246,7 @@
                     {{-- Integração Webservice --}}
                     <div id="integracao_webservice" class="content p-6">
                         <div class="shadow p-6 border rounded">
-                            <div class="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-100" role="alert">
+                            <div class="flex items-center p-4 mb-4 text-xs sm:text-sm text-red-800 rounded-lg bg-red-100" role="alert">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="flex-shrink-0 inline w-5 h-5 me-4">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
                                 </svg>                
@@ -283,7 +284,7 @@
                                 @csrf
                                 <input type="hidden" name="csrfToken" value="{{ csrf_token() }}" id="csrfToken">
 
-                                <div class="flex justify-between space-x-28">
+                                <div class="flex sm:flex-row justify-between flex-col sm:space-x-28 space-x-0">
 
                                     <div class="flex flex-col w-full">
                                         {{-- GERAL --}}
@@ -370,10 +371,11 @@
                                         </div>
                                     </div>
 
+                                    <hr class="mt-8 block sm:hidden">
                                     {{-- Afiliados --}}
-                                    <div class="w-full">
-                                        <h1 class="text-2xl  text-gray-500 font-bold">Afiliados</h1>
-                                        <div class="mt-8">
+                                    <div class="w-full mt-8 sm:mt-0">
+                                        <h1 class="text-2xl text-gray-500 font-bold">Afiliados</h1>
+                                        <div class="sm:mt-8 mt-2">
                                             <label for="habilitar_afiliado" class="block text-gray-500 text-sm font-bold">Hablitar Aba Afiliado</label>
                                             <select name="habilitar_afiliado" id="habilitar_afiliado" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
                                                 <option value="sim">Sim</option>
@@ -428,10 +430,10 @@
                                 <input type="hidden" name="csrfToken" value="{{ csrf_token() }}" id="csrfToken">
                 
                                <div class="flex items-center text-gray-500 font-bold">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="sm:w-10 sm:h-10 w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
                                     </svg>
-                                    <h1 class="text-4xl">Adicionar novo Remetente</h1>
+                                    <h1 class="sm:text-4xl text-xl">Adicionar novo Remetente</h1>
                                </div>
                                 
                                 <div class="mt-8">

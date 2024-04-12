@@ -88,7 +88,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Profile
   */
   Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios')->middleware('user_admin_mandabem');
-  Route::get('/usuarios/{id}', [UserController::class, 'show'])->middleware('user_admin_mandabem');;
+  Route::get('/usuarios/{id}', [UserController::class, 'show'])->middleware('user_admin_mandabem');
   Route::post('/usuarios', [UserController::class, 'update'])->middleware('user_admin_mandabem');
   
   
