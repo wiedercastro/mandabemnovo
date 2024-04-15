@@ -119,8 +119,8 @@
                                 @endcan
                                 @can('user_admin_mandabem')
                                     <li
-                                        class="{{ request()->routeIs('usuarios') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
-                                        <a href="{{ route('usuarios') }}"
+                                        class="{{ request()->routeIs('afiliados.index') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
+                                        <a href="{{ route('afiliados.index') }}"
                                             class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
                                             <div class="flex items-center">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
