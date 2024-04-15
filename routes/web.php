@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     PagamentoController,
     ProfileController,
     CotacaoController,
+    FaqAjudaController,
     NotFoundPermissionController,
     ReversaController,
     SoapController,
@@ -104,7 +105,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Afiliados
   */
   Route::get('/afiliados', [AfiliadosController::class, 'index'])->name('afiliados.index');
+  
+  /*
+  FAQ Me ajuda
+  */
+  Route::get('/faq', [FaqAjudaController::class, 'index'])->name('faq.index');
 
+  
    /*
   Not Found Permission
   */

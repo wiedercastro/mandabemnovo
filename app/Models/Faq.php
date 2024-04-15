@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -23,48 +25,29 @@ class Faq extends Model
         'date_update',
         'date_insert',
     ];
-
-    public function get($id)
+      
+    public function categorie(): BelongsTo
     {
-        return $this->find($id);
+        return $this->belongsTo(FaqCategorie::class, 'category_id');
     }
-
-    public function getList($param = [])
+    
+    public function getListFaqs(string|null $filter)
     {
-        $query = DB::table('faq')
-            ->join('faq_categories', 'faq.category_id', '=', 'faq_categories.id')
-            ->select('faq.*', 'faq_categories.name as category')
-            ->where('faq_categories.name', 'ASC');
-
-        if (isset($param['group_code']) && $param['group_code']) {
-            if ($param['group_code'] == 'mandabem') {
-                $query->where('visible_mandabem', 1);
-            } else {
-                $query->where('visible_customer', 1);
-            }
-        }
-
-        if (isset($param['text']) && strlen($param['text'])) {
-            $query->where(function ($query) use ($param) {
-                $query->where('faq.question', 'like', '%' . addslashes(preg_replace('/\s/', '%', $param['text'])) . '%')
-                    ->orWhere('faq.answer', 'like', '%' . addslashes(preg_replace('/\s/', '%', $param['text'])) . '%');
-            });
-        }
-
-        $list = $query->get();
-
-        if (!isset($param['data_struct'])) {
-            return $list;
-        }
-
-        $result = [];
-
-        foreach ($list as $i) {
-            $result[$i->category][] = $i;
-        }
-
-        return $result;
+        return $this
+            ->with('categorie:id,name')
+            ->when(filled($filter), function ($query) use ($filter) {
+                return $query->where('question', 'LIKE', "%{$filter}%")
+                        ->orWhere('answer', 'LIKE', "%{$filter}%");
+            })
+            ->orderBy('date_insert', 'DESC')
+            ->paginate(15);
     }
+    
+
+    public function getDateInsertAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
+    }    
 
     public function saveFaq($data)
     {
@@ -89,29 +72,6 @@ class Faq extends Model
         return true;
     }
 
-    public function deleteFaq($data)
-    {
-        if (!isset($data['id']) || !(int)$data['id']) {
-            return false;
-        }
-
-        $faq = $this->find($data['id']);
-        $faq->delete();
-
-        return true;
-    }
-
-    public function getCategories()
-    {
-        $categories = DB::table('faq_categories')
-            ->select('faq_categories.*', DB::raw('(SELECT COUNT(id) FROM faq WHERE faq.category_id = faq_categories.id) > 0 as can_delete'))
-            ->get();
-
-        return $categories;
-    }
-    public function getError() {
-        return $this->error;
-    }
 
     public function saveCategory($data)
     {
@@ -131,19 +91,6 @@ class Faq extends Model
             $data_upd['date_insert'] = now();
             DB::table('faq_categories')->insert($data_upd);
         }
-
-        return true;
-    }
-
-    public function deleteCategory($data)
-    {
-        if (!isset($data['id']) || !(int) $data['id']) {
-            return false;
-        }
-
-        DB::table('faq_categories')
-            ->where('id', $data['id'])
-            ->delete();
 
         return true;
     }

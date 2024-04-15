@@ -189,7 +189,7 @@
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-100">Consultar PLP</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">FAQ - Me ajuda</a>
+                                <a href="{{route('faq.index')}}" class="block px-4 py-2 hover:bg-gray-100">FAQ - Me ajuda</a>
                             </li>
                             <li>
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-100">Tabela Simulação</a>
