@@ -110,6 +110,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
   FAQ Me ajuda
   */
   Route::get('/faq', [FaqAjudaController::class, 'index'])->name('faq.index');
+  Route::post('/faq', [FaqAjudaController::class, 'store']);
+  Route::get('/faq/{id}', [FaqAjudaController::class, 'show']);
+  Route::delete('/faq/{id}', [FaqAjudaController::class, 'destroy']);
 
   
    /*

@@ -16,9 +16,8 @@
                 </svg>
             </div>
             
-            <form action="#" method="POST" id="submitFormEditaUsuario">
+            <form action="#" method="POST" id="submitFormFaq">
                 @csrf
-                <input type="hidden" name="usuarioId" id="usuarioId">
                 <input type="hidden" name="csrfToken" value="{{ csrf_token() }}" id="csrfToken">
     
     
@@ -46,10 +45,9 @@
                             </select>
                         </div>
 
-    
                         <div class="mt-2">
-                            <label for="estado" class="block text-gray-500 text-sm font-bold">Estado</label>
-                            <input type="text" name="estado" id="estado"
+                            <label for="teste" class="block text-gray-500 text-sm font-bold">Estado</label>
+                            <input type="text" name="teste" id="teste"
                                 class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
                         </div>
                     </div>
@@ -67,7 +65,8 @@
                     </button>
     
                     <button
-                        id="submitButtonEditUser"
+                        id="buttonCreateFaq"
+                        onclick="submitNewFaq()"
                         class="text-sm bg-green-600 hover:bg-green-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -79,40 +78,3 @@
         </div>
     </div>
 </div>
-
-<script>
-
-/* document.addEventListener('DOMContentLoaded', function () {
-    const menuItems = document.querySelectorAll('.menu-item');
-    const contents = document.querySelectorAll('.content');
-
-    // add o evento de clique em cada item do menu
-    menuItems.forEach(item => {
-        item.addEventListener('click', function () {
-            const target = this.getAttribute('data-target');
-            let subMenu = document.getElementById('subMenu')
-
-            if (target == 'integracao_webservice' || target == 'incluir_remetente' || target == 'configuracoes') {
-                subMenu.classList.remove('hidden');
-                
-            }
-
-            // oculta todos os conteúdos
-            contents.forEach(content => {
-                content.style.display = 'none';
-            });
-
-            // mostra o conteúdo correspondente ao item do menu clicado
-            document.getElementById(target).style.display = 'block';
-
-            menuItems.forEach(item => {
-                item.classList.remove('selected');
-            });
-
-            this.classList.add('selected');
-        });
-    });
-});
- */
-
-</script>

@@ -19,9 +19,15 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 stroke-red-500 mx-auto mb-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
                     </svg>
+
+                    <form action="#" method="POST">
+                        @csrf
+                        <input type="hidden" name="idFaq" id="idFaq">
+                        <input type="hidden" name="csrfTokenFaq" value="{{ csrf_token() }}" id="csrfTokenFaq">
+                    </form>
                     
                     <h3 class="mb-5 text-lg font-bold text-gray-500">Você tem certeza que deseja deletar essa pergunta?</h3>
-                    <button type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                    <button id="buttonDelete" onclick="deletaFaq()" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                         Sim, tenho certeza
                     </button>
                     <button onclick="cancelaDelecaoFaq()" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">
@@ -33,42 +39,4 @@
         <!-- Final Modal Content -->
     </div>
 </div>
-
-<script>
-
-/* document.addEventListener('DOMContentLoaded', function () {
-    const menuItems = document.querySelectorAll('.menu-item');
-    const contents = document.querySelectorAll('.content');
-
-    // add o evento de clique em cada item do menu
-    menuItems.forEach(item => {
-        item.addEventListener('click', function () {
-            const target = this.getAttribute('data-target');
-            let subMenu = document.getElementById('subMenu')
-
-            if (target == 'integracao_webservice' || target == 'incluir_remetente' || target == 'configuracoes') {
-                subMenu.classList.remove('hidden');
-                
-            }
-
-            // oculta todos os conteúdos
-            contents.forEach(content => {
-                content.style.display = 'none';
-            });
-
-            // mostra o conteúdo correspondente ao item do menu clicado
-            document.getElementById(target).style.display = 'block';
-
-            menuItems.forEach(item => {
-                item.classList.remove('selected');
-            });
-
-            this.classList.add('selected');
-        });
-    });
-});
- */
-
-</script>
-
 
