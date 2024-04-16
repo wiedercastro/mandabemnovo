@@ -3,29 +3,29 @@
     <div class="sm:w-5/6 w-full ml-auto lg:px-12 p-4">
 
         <div class="mt-4">
-            <div class="bg-white rounded-lg w-full sm:w-1/2 shadow-lg mt-6">
+            <div class="bg-red-800 rounded-lg w-full sm:w-1/2 mt-6 text-white">
                 <div class="p-4 font-light text-xs sm:text-sm">
                     <div class="flex items-center">
                         <div class="w-2/5"></div>
                         <div class="flex-1 flex justify-between">
-                            <div class="text-gray-600 font-bold">NOVO</div>
+                            <div class="font-bold">NOVO</div>
                             <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 sm:w-5 sm:h-5 stroke-green-500">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                                </svg>                                  
-                                <div class="text-gray-600 font-bold">ATIVO</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 sm:w-5 sm:h-5 text-green-500">
+                                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                                </svg>                          
+                                <div class="font-bold">ATIVO</div>
                             </div>
                             <div class="flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 sm:w-5 sm:h-5 stroke-red-500">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                                 </svg>
                               
-                                <div class="text-gray-600 font-bold">INATIVO</div>
+                                <div class="font-bold">INATIVO</div>
                             </div>
                         </div>
                     </div>
                     <div class="flex items-center mt-4">
-                        <div class="w-2/5 text-gray-600 font-bold">Afiliado</div>
+                        <div class="w-2/5 font-bold">Afiliado</div>
                         <div class="flex-1 flex justify-between mr-6">
                             <div>0</div>
                             <div>1</div>
@@ -33,25 +33,25 @@
                         </div>
                     </div>
                     <div class="flex items-center mt-4">
-                        <div class="w-2/5 text-gray-600 font-bold">Indicado</div>
+                        <div class="w-2/5 font-bold">Indicado</div>
                         <div class="flex-1 flex justify-between mr-6">
                             <div>0</div>
                             <div>1</div>
                             <div>4</div>
                         </div>
                     </div>
-                    <hr class="mt-4 border-gray-200 border-dashed">
+                    <hr class="mt-4 border-gray-100 border-dashed">
                     <div class="flex items-center mt-8">
-                        <div class="w-2/5 text-gray-600 font-bold">Custo</div>
+                        <div class="w-2/5 font-bold">Custo</div>
                         <div class="flex-1 flex justify-between">
-                            <div class="font-bold text-gray-600">30D</div>
-                            <div class="font-bold text-gray-600">Ano</div>
-                            <div class="font-bold text-gray-600">Total</div>
+                            <div class="font-bold">30D</div>
+                            <div class="font-bold">Ano</div>
+                            <div class="font-bold">Total</div>
                         </div>
                     </div>
-                    <hr class="mt-4 border-gray-200 border-dashed">
+                    <hr class="mt-4 border-gray-100 border-dashed">
                     <div class="flex items-center mt-8">
-                        <div class="w-2/5 text-gray-600 font-bold">Comissão</div>
+                        <div class="w-2/5 font-bold">Comissão</div>
                         <div class="flex-1 flex justify-between">
                             <div>R$ 0,00</div>
                             <div>R$ 433.02</div>
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                     <div class="flex items-center mt-4">
-                        <div class="w-2/5 text-gray-600 font-bold">Faturamento</div>
+                        <div class="w-2/5 font-bold">Faturamento</div>
                         <div class="flex-1 flex justify-between">
                             <div>R$ 3.21</div>
                             <div>R$ 2123.25</div>
