@@ -51,5 +51,6 @@
         <script src="{{ url('js/usuario/edita_usuario.js') }}"></script>
         <script src="{{ url('js/faq/insere_faq.js') }}"></script>
         <script src="{{ url('js/faq/deleta_faq.js') }}"></script>
+        <script src="{{ url('js/faq/fetch_dados_faq.js') }}"></script>
     </body>
 </html>

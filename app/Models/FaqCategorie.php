@@ -16,4 +16,9 @@ class FaqCategorie extends Model
     {
         return $this->hasMany(Faq::class);
     }
+
+    public function getListCategories()
+    {
+        return $this->select('id', 'name')->get();
+    }
 }

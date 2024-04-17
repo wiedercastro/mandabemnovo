@@ -152,7 +152,7 @@
             </div>
         @endif
 
-        <x-modal-inserir-faq />
+        <x-modal-inserir-faq :categories="$categories"/>
         <x-modal-deletar-faq />
 
     </div>
