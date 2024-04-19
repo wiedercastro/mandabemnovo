@@ -56,12 +56,33 @@
                 <th scope="col" class="px-6 py-3">
                     Id
                 </th>
+                @can('user_admin_mandabem')
+                    <th scope="col" class="px-6 py-3">
+                        Ecommerce
+                    </th>
+                @endcan
                 <th scope="col" class="px-6 py-3">
                     Pagto
                 </th>
+                @can('user_admin_mandabem')
+                    <th scope="col" class="px-6 py-3">
+                        Cliente
+                    </th>
+                @endcan
                 <th scope="col" class="px-6 py-3">
                     Desconto
                 </th>
+                @can('user_admin_mandabem')
+                    <th scope="col" class="px-6 py-3">
+                        Correios
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        PayPal
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Mandabem
+                    </th>
+                @endcan
                 <th scope="col" class="px-6 py-3">
                     Valor
                 </th>
@@ -73,6 +94,7 @@
                 </th>
             </tr>
           </thead>
+        
           <tbody>
             @foreach ($envios as $envio)
               <tr 
@@ -89,12 +111,33 @@
                     MB{{ $envio->id }}
                   </button>
                 </th>
+                @can('user_admin_mandabem')
+                    <td class="px-6 py-4">
+                        teste
+                    </td>
+                @endcan
                 <td class="px-6 py-4">
                   Credito
                 </td>
+                @can('user_admin_mandabem')
+                    <td class="px-6 py-4">
+                        teste
+                    </td>
+                @endcan
                 <td id="desconto" lass="px-6 py-4">
                   R$ {{ $envio->desconto }}
                 </td>
+                @can('user_admin_mandabem')
+                    <td class="px-6 py-4">
+                        teste
+                    </td>
+                    <td class="px-6 py-4">
+                        teste
+                    </td>
+                    <td class="px-6 py-4">
+                        teste
+                    </td>
+                @endcan
                 <td id="valor" class="px-6 py-4 font-medium text-green-950">
                   R$ {{ $envio->total }}
                 </td>
