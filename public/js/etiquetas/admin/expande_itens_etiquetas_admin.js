@@ -1,7 +1,7 @@
-const expandeDetalhesEtiquetas = async (idEtiqueta) => {
+const expandeDetalhesEtiquetasAdmin = async (idEtiqueta) => {
 
 
-    const linhaClicada = document.getElementById(`detalhes_${idEtiqueta}`);
+    const linhaClicada = document.getElementById(`detalhes_admin_${idEtiqueta}`);
     const displayAtual = linhaClicada.style.display;
     const valorTotal = document.getElementById('valor').textContent;
     const desconto = document.getElementById('desconto').textContent;
@@ -66,7 +66,7 @@ const expandeDetalhesEtiquetas = async (idEtiqueta) => {
                
        
              }
-             document.getElementById(`detalhes_${idEtiqueta}`).innerHTML = html; */
+             document.getElementById(`detalhes_admin_${idEtiqueta}`).innerHTML = html; */
 
         } else {
             toggleRowDisplay(linhaClicada, 'none');
@@ -91,9 +91,9 @@ $(document).on("click", "#btnInfoColEtiquetas", function () {
             $('#linha_' + info).css("background", "#2d6984");
             $('#linha_' + info).css("color", "white");
             $('#idenvio_' + info).css("color", "white");
-            $('#detalhes_' + info).show();
-            $('#detalhes_' + info).append(data.html);
-            $('#detalhes_' + info).css("color", "white");
+            $('#detalhes_admin_' + info).show();
+            $('#detalhes_admin_' + info).append(data.html);
+            $('#detalhes_admin_' + info).css("color", "white");
         },
     });
 });

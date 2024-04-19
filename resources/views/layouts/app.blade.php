@@ -47,7 +47,8 @@
 
         <!-- ARQUIVOS JS -->
         <script src="{{ url('js/acompanhamentos/acomp_email.js') }}"></script>
-        <script src="{{ url('js/etiquetas/expande_itens_etiquetas.js?v=1') }}"></script>
+        <script src="{{ url('js/etiquetas/admin/expande_itens_etiquetas_admin.js') }}"></script>
+        <script src="{{ url('js/etiquetas/clientes/expande_itens_etiquetas_cliente.js') }}"></script>
         <script src="{{ url('js/usuario/edita_usuario.js') }}"></script>
         <script src="{{ url('js/faq/insere_faq.js') }}"></script>
         <script src="{{ url('js/faq/deleta_faq.js') }}"></script>

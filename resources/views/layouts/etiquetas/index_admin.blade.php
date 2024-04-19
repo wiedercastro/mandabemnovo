@@ -44,7 +44,7 @@
 
         <div class="sm:overflow-hidden overflow-x-auto sm:w-full w-[22rem] sm:ml-0 ml-4">
             <table
-                class="mt-2 min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg text-sm text-left text-gray-500 border-collapse border-2">
+                class="mt-2 min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg text-sm text-left text-gray-500 border-collapse border-1">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -85,7 +85,7 @@
 
                 <tbody>
                     @foreach ($envios as $envio)
-                        <tr onclick="expandeDetalhesEtiquetas({{ $envio->id }})"
+                        <tr onclick="expandeDetalhesEtiquetasAdmin({{ $envio->id }})"
                             class="bg-white hover:bg-gray-100 border-b rounded-full font-light cursor-pointer"
                             id="linha_{{ $envio->id }}">
                             <th class="px-6 py-4 rounded-s-lg text-[#2d6984]" id="idenvio_{{ $envio->id }}">
@@ -244,8 +244,8 @@
                             </div>
                         </div>
 
-
-                        <tr id="detalhes_{{$envio->id}}" class="hidden">
+                       
+                        <tr id="detalhes_admin_{{$envio->id}}" class="hidden">
                             <td colspan="12" class="bg-blue-100 p-4" > 
                                 <div class="flex justify-between">
                                     <div>
@@ -433,6 +433,7 @@
                                 
                             
                         </tr>
+
                     @endforeach
                 </tbody>
             </table>

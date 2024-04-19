@@ -77,7 +77,7 @@
           <tbody>
             @foreach ($envios as $envio)
               <tr 
-                onclick="expandeDetalhesEtiquetas({{$envio->id}})"
+                onclick="expandeDetalhesEtiquetasCliente({{$envio->id}})"
                 class="bg-white hover:bg-gray-100 border-b rounded-full font-light cursor-pointer" id="linha_{{ $envio->id }}">
                 <th class="px-6 py-4 rounded-s-lg text-[#2d6984]" id="idenvio_{{ $envio->id }}">
                   <button id="btnInfoCol" data-id ="{{ $envio->id }}">
