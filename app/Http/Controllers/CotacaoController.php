@@ -16,7 +16,7 @@ class CotacaoController extends Controller
     $largurasEnum    = LarguraEnum::cases();
     $alturaEnum      = AlturaEnum::cases();
 
-    return view('cotacoes.index', [
+    return view('layouts.cotacoes.index', [
       'pesosEnum'       => $pesosEnum,
       'comprimentoEnum' => $comprimentoEnum,
       'largurasEnum'    => $largurasEnum,

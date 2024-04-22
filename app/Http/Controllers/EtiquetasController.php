@@ -54,7 +54,7 @@ class EtiquetasController extends Controller
         )
     ->where("coletas.user_id", "=", auth()->user()->id)
     ->groupBy("coletas.id")
-    ->paginate();
+    ->paginate(12);
 
 
     return view($view, [
@@ -71,33 +71,7 @@ class EtiquetasController extends Controller
 
   public function buscaDetalhesDasEtiquetas(int $idEtiqueta)
   {
-    $etiquetas = $this->envio->select(
-      'coleta_id',
-      'AR',
-      'CEP',
-      'CEP_origem',
-      'cpf_destinatario',
-      'type',
-      'logradouro',
-      'numero',
-      'complemento',
-      'bairro',
-      'cidade',
-      'estado',
-      'email',
-      'nota_fiscal',
-      'peso',
-      'email',
-      'date_postagem',
-      'forma_envio',
-      'destinatario',
-      'seguro',
-      'prazo',
-      'nota_fiscal',
-      'etiqueta_correios'
-    )
-    ->where('coleta_id', $idEtiqueta)
-    ->get();
+    $etiquetas = $this->envio->getDetalhesEtiquetasUsuario($idEtiqueta);
 
     if (! $etiquetas) {
       abort(204);

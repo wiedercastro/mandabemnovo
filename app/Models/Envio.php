@@ -96,6 +96,59 @@ class Envio extends Authenticatable
         return $this->error;
     }
 
+    public function getDetalhesEtiquetasUsuario(int $idParamEtiqueta)
+    {
+        return $this->select(
+            'id',
+            'coleta_id',
+            'AR',
+            'CEP',
+            'CEP_origem',
+            'cpf_destinatario',
+            'type',
+            'logradouro',
+            'numero',
+            'complemento',
+            'bairro',
+            'cidade',
+            'estado',
+            'nota_fiscal',
+            'peso',
+            'email',
+            'date_postagem',
+            'forma_envio',
+            'destinatario',
+            'seguro',
+            'prazo',
+            'etiqueta_correios'
+        )
+        ->selectRaw('SUM(valor_correios) as total_correios')
+        ->where('coleta_id', $idParamEtiqueta)
+        ->groupBy(
+            'coleta_id',
+            'AR',
+            'CEP',
+            'CEP_origem',
+            'cpf_destinatario',
+            'type',
+            'logradouro',
+            'numero',
+            'complemento',
+            'bairro',
+            'cidade',
+            'estado',
+            'nota_fiscal',
+            'peso',
+            'email',
+            'date_postagem',
+            'forma_envio',
+            'destinatario',
+            'seguro',
+            'prazo',
+            'etiqueta_correios'
+        )->get();
+    }
+
     public function simuleEnvio($param = [])
     {
         $this->error = '';
