@@ -42,16 +42,30 @@
             <main>
                 {{ $slot }}
             </main>
+            
         </div>
 
 
         <!-- ARQUIVOS JS -->
         <script src="{{ url('js/acompanhamentos/acomp_email.js') }}"></script>
+
+        <!--- ADMIN --> 
         <script src="{{ url('js/etiquetas/admin/expande_itens_etiquetas_admin.js') }}"></script>
+        <script src="{{ url('js/etiquetas/admin/auditor.js') }}"></script>
+        <script src="{{ url('js/etiquetas/admin/manifestacao.js') }}"></script>
+        <!--- ADMIN --> 
+
+
+        <!--- CLIENTE --> 
         <script src="{{ url('js/etiquetas/clientes/expande_itens_etiquetas_cliente.js') }}"></script>
+        <!--- CLIENTE --> 
+
         <script src="{{ url('js/usuario/edita_usuario.js') }}"></script>
+
+        <!--- FAQ --> 
         <script src="{{ url('js/faq/insere_faq.js') }}"></script>
         <script src="{{ url('js/faq/deleta_faq.js') }}"></script>
         <script src="{{ url('js/faq/fetch_dados_faq.js') }}"></script>
+        <!--- FAQ --> 
     </body>
 </html>

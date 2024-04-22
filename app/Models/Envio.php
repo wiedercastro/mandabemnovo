@@ -96,6 +96,27 @@ class Envio extends Authenticatable
         return $this->error;
     }
 
+    public function getSendAuditor(int $idParamEtiqueta)
+    {
+        return $this->select(
+            'id',
+            'destinatario',
+            'estado',
+            'cidade',
+            'etiqueta_correios'
+        )->where('id', '=', $idParamEtiqueta)->first();
+    }
+
+    public function getManifestacaoObjeto(int $idParamEtiqueta)
+    {
+        return $this->select(
+            'id',
+            'destinatario',
+            'CEP',
+            'etiqueta_correios'
+        )->where('id', '=', $idParamEtiqueta)->first();
+    }
+    
     public function getDetalhesEtiquetasUsuario(int $idParamEtiqueta)
     {
         return $this->select(

@@ -259,6 +259,8 @@
             </table>
         </div>
 
+        <x-modal-add-resumo-auditor/>
+        <x-modal-manifestacao />
         <div class="sm:ml-0 ml-4">
             <x-pagination :paginator="$envios" />
         </div>

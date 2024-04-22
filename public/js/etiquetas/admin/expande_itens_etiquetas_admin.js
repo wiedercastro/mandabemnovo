@@ -64,7 +64,7 @@ const expandeDetalhesEtiquetasAdmin = async (idEtiqueta) => {
 
             const resJson = await response.json();
             for (const item of resJson.data) {
-                console.log(item)
+   
                 html += `
                 <div style="width: 103em;">
                 <tr>
@@ -126,7 +126,7 @@ const expandeDetalhesEtiquetasAdmin = async (idEtiqueta) => {
                             </div>
                         </div>
                         <div>
-                            <button class="bg-gray-400 hover:bg-gray-500 hover:text-white flex justify-center text-black text-xs w-full px-2 py-1 rounded flex items-center text-sm">     
+                            <button onclick="auditorModal(${item.id})" class="bg-gray-400 hover:bg-gray-500 hover:text-white flex justify-center text-black text-xs w-full px-2 py-1 rounded flex items-center text-sm">     
                                 <i class="fa fa-envelope"></i>                                                                                
                                 <p class="ml-1">Auditor</p>
                             </button>
@@ -218,7 +218,7 @@ const expandeDetalhesEtiquetasAdmin = async (idEtiqueta) => {
                                 </div>
                             </div>
                             <div>
-                                <button class="bg-yellow-500 hover:bg-yellow-600 flex justify-center text-black text-xs w-full px-2 py-1 rounded flex items-center text-sm">     
+                                <button onclick="abreModalManifestacaoObjeto(${item.id})" class="bg-yellow-500 hover:bg-yellow-600 flex justify-center text-black text-xs w-full px-2 py-1 rounded flex items-center text-sm">     
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>                                                                                  

@@ -44,6 +44,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
   */
   Route::get('/etiquetas', [EtiquetasController::class, 'index'])->name('etiquetas');
   Route::get('/etiquetas/{idEtiqueta}', [EtiquetasController::class, 'buscaDetalhesDasEtiquetas']);
+  Route::get('/etiquetas/send_auditor/{idEtiqueta}', [EtiquetasController::class, 'getAuditor']);
+  Route::get('/etiquetas/manifestacao/{idEtiqueta}', [EtiquetasController::class, 'getManifestacao']);
+  Route::post('/etiquetas/send_auditor', [EtiquetasController::class, 'sendAuditor']);
   Route::get('/etiquetas/{id}', [EtiquetasController::class, 'show'])->name('etiqueta.show');
   Route::post('/gerar-etiquetas', [ColetasController::class, 'gerarEtiquetas']);
 
