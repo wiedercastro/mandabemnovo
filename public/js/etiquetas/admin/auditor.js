@@ -3,6 +3,7 @@ let cidade = document.getElementById('cidade');
 let destinatario = document.getElementById('destinatario');
 let etiqueta_correios = document.getElementById('etiqueta_correios');
 let resumo = document.getElementById('resumo');
+let idEtiquetaAuditor = document.getElementById('idEtiquetaAuditor');
 
 const clearFormFieldsAuditor = () => {
     cidade.textContent = '';
@@ -31,6 +32,7 @@ const auditorModal = (idEtiqueta) => {
         etiqueta_correios.innerHTML = data.auditor.etiqueta_correios ? data.auditor.etiqueta_correios : "Não registrado"
         cidade.innerHTML = `${data.auditor.cidade}/${data.auditor.estado}`
         destinatario.innerHTML = data.auditor.destinatario
+        idEtiquetaAuditor.value = data.auditor.id
         console.log(data)
 
     })
@@ -55,13 +57,13 @@ document.getElementById('submitFormAuditor').addEventListener('submit', (e) => {
     buttonSendAuditor.disabled = true;
 
     const formData = {
+        idEtiquetaAuditor: idEtiquetaAuditor.value,
         etiqueta_correios: etiqueta_correios.textContent,
         cidade           : cidade.textContent,
         destinatario     : destinatario.textContent,
         resumo           : resumo.value,
         _token           : csrfToken.value
     };
-
 
     fetch('/etiquetas/send_auditor', {
         method: "POST",
@@ -77,7 +79,9 @@ document.getElementById('submitFormAuditor').addEventListener('submit', (e) => {
         return response.json();
     })
     .then(data => {
-       /*  if (data.success === true) {
+        console.log(data);
+        
+        if (data.success === true) {
             buttonSendAuditor.innerHTML = "Salvar"
             buttonSendAuditor.disabled = false;
 
@@ -93,7 +97,7 @@ document.getElementById('submitFormAuditor').addEventListener('submit', (e) => {
             }).then(function () {
                 location.reload();
             });
-        } */
+        }
     })
     .catch(error => {
         console.error('Erro:', error);

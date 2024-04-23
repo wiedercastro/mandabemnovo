@@ -53,6 +53,7 @@
         <script src="{{ url('js/etiquetas/admin/expande_itens_etiquetas_admin.js') }}"></script>
         <script src="{{ url('js/etiquetas/admin/auditor.js') }}"></script>
         <script src="{{ url('js/etiquetas/admin/manifestacao.js') }}"></script>
+        <script src="{{ url('js/etiquetas/admin/cancelamento_objeto.js') }}"></script>
         <!--- ADMIN --> 
 
 

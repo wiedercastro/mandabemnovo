@@ -58,6 +58,7 @@
             <form action="#" method="POST" id="submitFormAuditor">
                 @csrf
                 <input type="hidden" name="csrfToken" value="{{ csrf_token() }}" id="csrfToken">
+                <input type="hidden" name="idEtiquetaAuditor" value="" id="idEtiquetaAuditor">
     
                 <div class="mt-2 p-4">
                     <label for="resposta" class="block text-gray-500 text-sm font-bold">Resumo</label>

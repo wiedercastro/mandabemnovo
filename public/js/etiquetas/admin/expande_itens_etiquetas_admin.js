@@ -170,11 +170,11 @@ const expandeDetalhesEtiquetasAdmin = async (idEtiqueta) => {
                             </div>
                         </div>
                         <div class="flex flex-row-reverse">
-                            <button class="bg-red-700 hover:bg-red-800 text-white text-xs font-bold px-2 py-1 rounded flex items-center text-sm">    
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>                                                                                    
-                            <p class="ml-1">Cancelar</p>
+                            <button onclick="abreModalCancelamentoObjeto(${item.id})" class="bg-red-700 hover:bg-red-800 text-white text-xs font-bold px-2 py-1 rounded flex items-center text-sm">    
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>                                                                                    
+                                <p class="ml-1">Cancelar</p>
                             </button>
                         </div>
                         <hr class="mt-4">

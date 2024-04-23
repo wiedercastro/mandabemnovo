@@ -11,15 +11,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
-use App\Services\CorreiosPrazoFreteOffline;
+
 use App\Services\CalPrazoFrete;
 use App\Models\Log;
 use App\Models\Coleta;
-use App\Libraries\Correio\Correio;
 use App\Libraries\Correios\CalPrazoFrete as CorreiosCalPrazoFrete;
-use App\Libraries\Correios\CorreiosPrazoFreteOffline as CorreiosCorreiosPrazoFreteOffline;
+use App\Libraries\Correios\Correio;
 use App\Libraries\EmailMaker;
-use App\Libraries\FormBuilder;
 use App\Models\User;
 use App\Models\Payment;
 
@@ -106,7 +104,7 @@ class Envio extends Authenticatable
             'etiqueta_correios'
         )->where('id', '=', $idParamEtiqueta)->first();
     }
-
+    
     public function getManifestacaoObjeto(int $idParamEtiqueta)
     {
         return $this->select(
@@ -1520,57 +1518,55 @@ class Envio extends Authenticatable
         return $estados;
     }
 
-    public function cancelEnvio($data = [])
+    public function cancelEnvio($data)
     {
-        $this->load->library('correio/correio');
-        $coletaModel = app(Coleta::class);
+        $coleta = new Coleta();
+        $user = new User();
+        $correio = new Correio();
 
-        $exist = DB::table('envios_cancelamento')->where('envio_id', $data['envio']->id)->first();
+        $exist = DB::table('envios_cancelamento')->where('envio_id', $data->id)->first();
         if ($exist) {
-            $this->error = "Cancelamento já solicitado";
-            return false;
+            return "Cancelamento já solicitado";
         }
-        $params_coleta = ['user_id' => $data['envio']->user_id, 'id' => $data['envio']->coleta_id];
-        $coleta = $coletaModel->get($params_coleta);
+        $params_coleta = ['user_id' => $data->user_id, 'id' => $data->coleta_id];
+        $coleta = $coleta->get($params_coleta);
 
-        if (isset($data['only_check']) && $data['only_check']) {
+
+        if (isset($data->only_check) && $data->only_check) {
             if ($coleta->date_insert < '2019-05-24' && session('group_code') != 'mandabem') {
-                $this->error = "Data de geração do envio fora da data permitida para cancelamento";
-                return false;
+                return "Data de geração do envio fora da data permitida para cancelamento";
             }
             return true;
         }
 
-        $user = $this->user_model->objectToArray($this->user_model->get($data['envio']->user_id));
+        $user = $user->get($data->user_id);
 
-        if ($data['envio']->type == 'REVERSA' && strlen($data['envio']->etiqueta_correios) && $data['envio']->etiqueta_correios != 'industrial') {
-            $this->error = "Reversa já postada, cancelamento negado.";
-            return false;
+        if ($data->type == 'REVERSA' && strlen($data->etiqueta_correios) && $data->etiqueta_correios != 'industrial') {
+            return "Reversa já postada, cancelamento negado.";
         }
 
         $cancelReversa = false;
-        if ($data['envio']->type == 'REVERSA' && (!strlen($data['envio']->etiqueta_correios) || $data['envio']->etiqueta_correios == 'industrial')) {
+        if ($data->type == 'REVERSA' && (!strlen($data->etiqueta_correios) || $data->etiqueta_correios == 'industrial')) {
             if (!preg_match('/Prazo de Utiliza(.*?)Expirado/', $coleta->status)) {
-                $cancel = $this->correio->cancelReversa([
+                $cancel = $correio->cancelReversa([
                     'user' => $user,
                     'numero_pedido' => $coleta->plp,
                     'environment' => $coleta->environment,
                 ]);
                 if (!$cancel) {
-                    $this->error = "Falha ao cancelar reversa, tente novamente mais tarde";
-                    return false;
+                    return "Falha ao cancelar reversa, tente novamente mais tarde";
                 }
                 $cancelReversa = true;
             }
         }
 
         $cancelPostado = false;
-        if (!$cancelReversa && strlen($data['envio']->etiqueta_correios)) {
+        if (!$cancelReversa && strlen($data->etiqueta_correios)) {
             if (true) {
-                $info = $this->correio->statusEtiqueta([
+                $info = $correio->statusEtiqueta([
                     'user' => $user,
                     'environment' => $coleta->environment,
-                    'etiqueta' => $data['envio']->etiqueta_correios . 'BR',
+                    'etiqueta' => $data->etiqueta_correios . 'BR',
                 ]);
 
                 if (preg_match('/Favor desconsiderar a informa(.*?)o anterior/i', $info['status']) && isset($info['data']->return->objeto->evento)) {
@@ -1582,7 +1578,7 @@ class Envio extends Authenticatable
                 }
                 
                 if (!$info) {
-                    $this->error = $this->correio->getError();
+                    $this->error = $correio->getError();
                     return false;
                 }
                 
@@ -1598,14 +1594,14 @@ class Envio extends Authenticatable
                 }
                 
                 if ($info && $info['status'] != '' && $info['status'] != 'NAO_ENCONTRADO') {
-                    $cancel = $this->correio->bloquearObjeto([
+                    $cancel = $correio->bloquearObjeto([
                         'user' => $user,
                         'plp' => $coleta->plp,
                         'environment' => $coleta->environment,
-                        'etiqueta' => $data['envio']->etiqueta_correios . 'BR',
+                        'etiqueta' => $data->etiqueta_correios . 'BR',
                     ]);
                 
-                    $errorCorreios = $this->correio->getError();
+                    $errorCorreios = $correio->getError();
                     if (!$cancel) {
                         $this->error = $errorCorreios ? $errorCorreios : "Falha ao cancelar objeto já postado, tente novamente mais tarde";
                         return false;
@@ -1615,14 +1611,14 @@ class Envio extends Authenticatable
                 }
             }
             if (request()->server('REMOTE_ADDR') == '45.181.35.193') {
-                $cancel = $this->correio->bloquearObjeto([
+                $cancel = $correio->bloquearObjeto([
                     'user' => $user,
                     'plp' => $coleta->plp,
                     'environment' => $coleta->environment,
-                    'etiqueta' => $data['envio']->etiqueta_correios . 'BR',
+                    'etiqueta' => $data->etiqueta_correios . 'BR',
                 ]);
             
-                $errorCorreios = $this->correio->getError();
+                $errorCorreios = $correio->getError();
             
                 if (!$cancel) {
                     $this->error = $errorCorreios ? $errorCorreios : "Falha ao cancelar objeto já postado, tente novamente mais tarde";
@@ -1635,11 +1631,11 @@ class Envio extends Authenticatable
             if (true && $cancelPostado == false) {
                 $dataCancelar = [
                     'plp' => $coleta->plp,
-                    'numeroEtiqueta' => $data['envio']->etiqueta_correios . 'BR',
+                    'numeroEtiqueta' => $data->etiqueta_correios . 'BR',
                     'user' => $user,
                 ];
             
-                $retCanc = $this->correio->cancelarObjeto($dataCancelar);
+                $retCanc = $correio->cancelarObjeto($dataCancelar);
             
                 if (!$retCanc) {
                     $errorCorreios = $this->correio->getError();
@@ -1655,7 +1651,7 @@ class Envio extends Authenticatable
             }
         }
         $insertCancel = [
-            'envio_id' => $data['envio']->id,
+            'envio_id' => $data->id,
             'user_id' => optional(session('user_id'))->value ?? 1,
             'date_insert' => now(),
             'date_update' => now(),
@@ -1673,9 +1669,9 @@ class Envio extends Authenticatable
         }
         
         // Atualizando campo etiqueta_correios para "industrial" para que o cliente possa gerar novamente como industrial
-        if ($data['envio']->valor_industrial > 0) {
-            Envio::where('id', $data['envio']->id)
-                ->where('user_id', $data['envio']->user_id)
+        if ($data->valor_industrial > 0) {
+            Envio::where('id', $data->id)
+                ->where('user_id', $data->user_id)
                 ->whereNull('coleta_id')
                 ->update(['etiqueta_correios' => 'industrial']);
         }

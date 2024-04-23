@@ -37,25 +37,26 @@
                     </div>
                 </div>
                  <hr class="mt-4 border border-dashed border-gray-300">
-                <div class="flex justify-between w-96 mt-4">
+                <div class="flex justify-between w-[17rem] mt-4">
                     <div class="text-gray-600" >
                         <p>CEP:</p>
                     </div>
                     <div class="text-gray-600">
-                        <p class="font-bold text-gray-700" id="cep"></p>
+                        <p class="font-bold text-gray-700" id="cep_manifestacao"></p>
                     </div>
                 </div>
             </div>
             
             <div class="p-4">
-                <form action="#" method="POST" class="border p-2 rounded mt-2">
+                <form action="#" method="POST" class="border p-2 rounded mt-2" id="submitFormManifestacaoObjeto">
                     <h4 class="text-sm text-gray-600">Por favor, informe o Motivo de abertura da Manifestação:</h4>
                     @csrf
                     <input type="hidden" name="csrfToken" value="{{ csrf_token() }}" id="csrfToken">
+                    <input type="hidden" name="idEtiquetasManifestacao" value="" id="idEtiquetasManifestacao">
         
                     <div class="mt-4">
                         <label for="categoria" class="block text-gray-500 text-sm font-bold">Motivo</label>
-                        <select required name="categoria" id="categoria" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                        <select required name="tipo_remessa" id="tipo_remessa" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
                             <option value="" disabled selected >Selecione</option>
                             <option value="132">Remessa/Objeto Postal entregue</option>
                             <option value="133">Remessa/Objeto Postal violada</option>
@@ -76,7 +77,7 @@
                         <div class="flex items-center mt-2">            
                             <button
                                 type="submit"
-                                id="buttonCreateFaq"
+                                id="buttonCreateManifestacao"
                                 class="text-sm bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded flex items-center"> 
                                 <i class="fa fa-check"></i>                   
                                 <p class="ml-1">Sim</p>
