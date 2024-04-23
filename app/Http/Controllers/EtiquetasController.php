@@ -81,7 +81,7 @@ class EtiquetasController extends Controller
     {
         $etiquetas = $this->envio->getDetalhesEtiquetasUsuario($idEtiqueta);
         $usuarioLogado = auth()->user()->id;
-        $data = new stdClass();
+   /*      $data = new stdClass();
 
         $coletas = $this->coleta->getList();
 
@@ -130,7 +130,7 @@ class EtiquetasController extends Controller
             }
         }
 
-        $data->coletas = $coletas;
+        $data->coletas = $coletas; */
 
         if (! $etiquetas) {
         abort(204);
