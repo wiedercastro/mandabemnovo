@@ -96,16 +96,16 @@
                                         </div>
                                     </a>
                                 </li>
+                                <li class="opcion-con-desplegable">
+                                    <a href="#"
+                                        class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
+                                        <div class="flex items-center">
+                                            <x-estatistica-icone />
+                                            <span>Estatistica</span>
+                                        </div>
+                                    </a>
+                                </li>
                                 @can('users')
-                                    <li class="opcion-con-desplegable">
-                                        <a href="#"
-                                            class="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 group">
-                                            <div class="flex items-center">
-                                                <x-estatistica-icone />
-                                                <span>Estatistica</span>
-                                            </div>
-                                        </a>
-                                    </li>
                                     <li
                                         class="{{ request()->routeIs('cotacao') ? 'rounded-lg bg-gray-100' : '' }} opcion-con-desplegable">
                                         <a href="{{ route('cotacao') }}"
