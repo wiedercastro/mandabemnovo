@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     PagamentoController,
     ProfileController,
     CotacaoController,
+    EstatisticasAdminController,
     FaqAjudaController,
     NotFoundPermissionController,
     ReversaController,
@@ -74,6 +75,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Declaracoes
   */
   Route::get('/declaracoes',[ReversaController::class, 'index'])->name('declaracoes');
+
+  /*
+  Estatisticas ADMIN
+  */
+  Route::get('/estatisticas',[EstatisticasAdminController::class, 'index'])->name('estatisticas_admin_index')->middleware('user_admin_mandabem');
+  Route::get('/estatisticas/pega-estatisticas',[EstatisticasAdminController::class, 'getDadosEstatisticas'])->middleware('user_admin_mandabem');
 
   /*
   Pagamentos
