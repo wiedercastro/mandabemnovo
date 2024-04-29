@@ -48,6 +48,11 @@ class Payment extends Authenticatable
         return Carbon::parse($value)->format('d/m/Y');
     }
 
+    public function getDateInsertAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
+    }
+
     public function getFieldCustomer()
     {
         $field = $this->fields_cobranca['cliente'];
@@ -1204,10 +1209,11 @@ class Payment extends Authenticatable
 
     public function getTransf($data)
     {
+
         if (isset($data['type']) && $data['type'] == 'pendentes') {
-            if (auth()->user()->group_code == 'mandabem') {
+            if (auth()->user()->user_group_id == 3) {
                 $query = DB::table('transferencia')
-                    ->select('transferencia.*')
+                    ->select('transferencia.*', 'user.name as cliente')
                     ->join('user', 'user.id', '=', 'transferencia.user_id')
                     ->leftJoin('payment', 'payment.transferencia_id', '=', 'transferencia.id')
                     ->leftJoin('user as user_creator', 'user_creator.id', '=', 'payment.user_id_creator')
@@ -1267,7 +1273,7 @@ class Payment extends Authenticatable
                 ->leftJoin('payment', 'payment.transferencia_id', '=', 'transferencia.id')
                 ->where('transferencia.id', $data['id']);
 
-            if (auth()->user()->group_code != 'mandabem' && !isset($data['group'])) {
+            if (auth()->user()->user_group_id != 3 && !isset($data['group'])) {
                 $query->where('transferencia.user_id', $data['user_id']);
             }
 

@@ -3,11 +3,16 @@
         <div class="w-full">
 
             <x-card-pagamentos_admin/>
-            <x-menu-navigation-pagamentos/>
             <x-modal-cobranca/>
+            <x-modal-afiliados/>
+            <x-modal-credito/>
+            <x-modal-boletos/>
+            <x-modal-transferencias/>
+            <x-modal-edita-banco-usuario/>
 
             <div class="flex flex-row-reverse">
                 <button
+                    onclick="abreModalAfiliados()" 
                     class="bg-red-500 hover:bg-red-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -17,6 +22,7 @@
                     <p class="ml-1">Afiliados</p>
                 </button>
                 <button
+                    onclick="abreModalTransferencias()" 
                     class="bg-cyan-500 hover:bg-cyan-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -26,11 +32,13 @@
                     <p class="ml-1">Transferências</p>
                 </button>
                 <button
+                    onclick="abreModalBoletos()"
                     class="bg-gray-500 hover:bg-gray-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
                     <i class="fa fa-barcode"></i>
                     <p class="ml-1">Boletos</p>
                 </button>
                 <button
+                    onclick="abreModalCreditos()" 
                     class="bg-orange-500 hover:bg-orange-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
                     <i class="fa fa-barcode"></i>
                     <p class="ml-1">Cŕedito</p>
@@ -40,13 +48,6 @@
                     class="bg-green-500 hover:bg-green-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
                     <i class="fa fa-minus-circle"></i>
                     <p class="ml-1">Cobrança</p>
-                </button>
-                <button
-                    class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
-                    </svg>   
-                    <p class="ml-1">Pagamentos</p>
                 </button>
             </div>
 
@@ -119,7 +120,7 @@
                 <h1 class="text-gray-500 font-bold text-3xl text">Cobranças</h1>
                 <table
                     class="min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
-          text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
+                    text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                         <tr>
                             <th scope="col" class="px-6 py-3">

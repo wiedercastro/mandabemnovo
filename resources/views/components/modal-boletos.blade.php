@@ -1,13 +1,29 @@
-<x-app-layout>
-    <div class="w-5/6 ml-auto lg:px-12">
-        <div class="w-full">
+<div class="justify-center items-center hidden" id="modal_boletos">
+    <div class="fixed inset-0 px-2 z-10 flex items-start justify-center animate__animated animate__fadeIn pb-16">
+        <div class="absolute inset-0 bg-gray-800 bg-opacity-75 transition-opacity"></div>
 
-            <x-card-pagamentos_admin/>
-            <x-menu-navigation-pagamentos/>
+        <!-- Modal Content -->
+        <div
+            class="sm:ml-56 ml-0 inline-block align-bottom bg-white
+            rounded-lg text-left shadow-xl overflow-y-auto
+            transform transition-all sm:my-8 sm:align-middle sm:w-2/5">
+            <!-- Modal Header -->
+            <div class="text-gray-600 px-4 py-4 flex justify-between bg-gray-200">
+                <div class="flex items-center text-gray-500 font-bold text-3xl">
+                    <i class="fa fa-hourglass-half"></i>
+                    <h1 class="ml-1">Boletos Pendentes</h1>
+                </div>
+                <svg
+                    onclick="fechaModalBoletos()"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6 cursor-pointer">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </div>
 
-            <div class="mt-8 w-3/5">
-                <form action="{{ route('estatisticas_admin_index') }}" method="GET"
-                    class="mt-1 flex w-full space-x-1 p-4 items-end border rounded bg-white">
+            <div class="mt-4 p-4">
+                <form action="#" method="GET"
+                    class="mt-1 flex flex-col w-full p-4 items-end border rounded bg-white shadow">
                     <div class="flex items-center w-full">
                         <div class="flex flex-col w-full ml-2">
                             <label for="filtrar_situacao" class="text-sm text-gray-700">Filtrar situação</label>
@@ -46,61 +62,41 @@
                 </form>
             </div>
 
-            <div class="mt-6">
-                <div class="flex items-center text-gray-500 font-bold text-3xl">
-                    <i class="fa fa-hourglass-half"></i>
-                    <h1 class="ml-1">Boletos Pendentes</h1>
-                </div>
+            <div class="mt-6 p-4 overflow-x-auto">
                 <table
                     class="min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
-          text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
+                        text-xs text-left text-gray-500 border-collapse border-1">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                         <tr>
                             <th scope="col" class="px-6 py-3">
                                 Data
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Tipo Pagto
+                                Valor
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Cliente
                             </th>
                             <th scope="col" class="px-1 py-3">
-                                Valor Solicitado
+                                Crédito
                             </th>
                             <th scope="col" class="px-1 py-3">
-                                Comprovante
+                                Pagto
                             </th>
                             <th scope="col" class="px-1 py-3">
-                                Status
+                                Comprovantes
+                            </th>
+                            <th scope="col" class="px-1 py-3">
+                                Impressão
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="bg-white hover:bg-gray-100 border-b rounded-full font-light">
-                            <td class="px-6 py-4">
-                                1
-                            </td>
-                            <td class="px-6 py-4 flex items-center">
-                                <i class="fa fa-qrcode"></i>
-                                <p class="ml-1 font-bold">PIX</p>
-                            </td>
-                            <td class="px-6 py-4 max-w-sm">
-                                Crédito concedido por transferência (PIX) em 26/04/2024(PIX)
-                            </td>
-                            <td class="px-6 py-4 max-w-sm">
-                                DONA BAMBINA TIARAS E LAÇOS
-                            </td>
-                            <td class="px-2 py-2 text-blue-400 font-bold">
-                                963DBA868A534ABC98E7648669C5EB66	
-                            </td>
-                            <td class=" py-2 text-[#154864] font-bold">
-                                R$ 20,00
-                            </td>
-                        </tr>
+                    <tbody id="resultBoletos">
+      
                     </tbody>
                 </table>
             </div>
+        
         </div>
     </div>
-</x-app-layout>
+</div>

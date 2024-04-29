@@ -23,7 +23,7 @@
             </div>
 
             <div class="mt-2 p-4">
-                <form action="{{ route('estatisticas_admin_index') }}" method="POST" class="mt-8 flex flex-col w-full">
+                <form action="#" method="POST" class="mt-8 flex flex-col w-full">
         
                     <div class="flex flex-col w-full">
                         <label for="cliente" class="text-sm text-gray-700">Cliente</label>

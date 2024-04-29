@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -14,6 +15,11 @@ class Transferencia extends Model
     public function __construct()
     {
         parent::__construct();
+    }
+
+    public function getDateInsertAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
     }
 
     public function getPixDeleteAuto($param = [])

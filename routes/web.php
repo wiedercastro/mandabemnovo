@@ -86,9 +86,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Pagamentos
   */
   Route::get('/pagamentos',[PagamentoController::class, 'index'])->name('pagamentos.index');
-  Route::get('/transferencia',[PagamentoController::class, 'transferencia'])->name('transferencia');
+  Route::get('/transferencia',[PagamentoController::class, 'get_transferencia']);
+  Route::get('/boleto',[PagamentoController::class, 'get_boletos']);
   Route::get('/afiliados-pagamentos',[PagamentoController::class, 'afiliados'])->name('afiliados.pagamento');
-  Route::get('/boleto',[PagamentoController::class, 'boleto'])->name('boleto.pagamento');
   Route::get('/creditos',[PagamentoController::class, 'creditos'])->name('creditos.pagamento');
   Route::get('/cobranca',[PagamentoController::class, 'cobranca'])->name('cobranca.pagamento');
 

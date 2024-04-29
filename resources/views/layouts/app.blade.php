@@ -65,6 +65,10 @@
 
         <!--- PAGAMENTOS --> 
         <script src="{{ url('js/pagamentos/admin/cobranca.js') }}"></script>
+        <script src="{{ url('js/pagamentos/admin/afiliados.js') }}"></script>
+        <script src="{{ url('js/pagamentos/admin/creditos.js') }}"></script>
+        <script src="{{ url('js/pagamentos/admin/boletos.js') }}"></script>
+        <script src="{{ url('js/pagamentos/admin/transferencias.js') }}"></script>
         <!--- PAGAMENTOS --> 
 
         <script src="{{ url('js/usuario/edita_usuario.js') }}"></script>

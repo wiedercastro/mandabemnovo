@@ -34,29 +34,28 @@ class Boleto extends Model
         return $query->first();
     }
 
-    public function getBoletoList($data)
+    public function getBoletoList()
     {
+        $usuarioLogado = auth()->user()->user_group_id;
+        
         $query = $this->select(DB::raw('CONCAT(user.razao_social, " | ", user.name ) as cliente'),
-                               'boletos.*', 'p_credito.id as credito')
+                               'boletos.id', 
+                               'boletos.date_insert', 
+                               'boletos.value', 
+                               'boletos.file_comprovante', 
+                               'boletos.doc as impressao', 
+                               'boletos.status', 
+                               'boletos.user_id',   
+                               'p_credito.id as credito')
                       ->leftJoin('payment as p_credito', 'p_credito.boleto_id', '=', 'boletos.id')
                       ->leftJoin('user', 'user.id', '=', 'boletos.user_id');
 
-        if ($data['user_id'] != 'mandabem') {
-            $query->where('boletos.user_id', $data['user_id']);
+        if ($usuarioLogado != 3) {
+            $query->where('boletos.user_id', $usuarioLogado);
         }
 
         $query->where('boletos.bar_code', 'IS NOT', null)
               ->where('boletos.status', 'NOT LIKE', 'DELETE');
-
-        if (isset($data['get_total']) && $data['get_total']) {
-            return $query->count();
-        } else {
-            $limit = isset($data['per_page']) ? $data['per_page'] : 10;
-            $start = isset($data['page_start']) ? $data['page_start'] : 0;
-
-            $query->limit($limit)->offset($start)
-                  ->orderBy('boletos.id', 'DESC');
-        }
 
         return $query->get();
     }

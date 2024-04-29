@@ -1,14 +1,29 @@
-<x-app-layout>
-    <div class="w-5/6 ml-auto lg:px-12">
-        <div class="w-full">
+<div class="justify-center items-center hidden" id="modal_creditos">
+    <div class="fixed inset-0 px-2 z-10 flex items-start justify-center animate__animated animate__fadeIn pb-16">
+        <div class="absolute inset-0 bg-gray-800 bg-opacity-75 transition-opacity"></div>
 
-            <x-card-pagamentos_admin/>
-            <x-menu-navigation-pagamentos/>
-            
-            <div class="bg-white mt-8 w-3/5 p-4 rounded shadow">
-                <h1 class="text-gray-500 font-bold text-3xl text">Dados do Crédito</h1>
+        <!-- Modal Content -->
+        <div
+            class="sm:ml-56 ml-0 inline-block align-bottom bg-white
+            rounded-lg text-left shadow-xl overflow-y-auto
+            transform transition-all sm:my-8 sm:align-middle sm:w-2/5">
+            <!-- Modal Header -->
+            <div class="text-gray-600 px-4 py-4 flex justify-between bg-gray-200">
+                <div class="flex items-center">
+                    <h2 class="text-2xl font-bold">
+                        Dados do Crédito
+                    </h2>
+                </div>
+                <svg
+                    onclick="fechaModalCreditos()"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6 cursor-pointer">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </div>
 
-                <form action="{{ route('estatisticas_admin_index') }}" method="POST" class="mt-8 flex flex-col w-full">
+            <div class="mt-2 p-4">
+                <form action="#" method="POST" class="mt-8 flex flex-col w-full">
         
                     <div class="flex flex-col w-full">
                         <label for="cliente" class="text-sm text-gray-700">Cliente</label>
@@ -53,6 +68,7 @@
                             <p class="ml-1">Gerar cŕedito</p>
                         </button>
                         <button
+                            onclick="fechaModalCreditos()"
                             class="bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded flex items-center text-sm">
                             <i class="fa fa-trash"></i>
                             <p class="ml-1">Cancelar</p>
@@ -60,7 +76,7 @@
                     </div>
                 </form>
             </div>
- 
+        
         </div>
     </div>
-</x-app-layout>
+</div>
