@@ -63,6 +63,10 @@
         <script src="{{ url('js/etiquetas/clientes/expande_itens_etiquetas_cliente.js') }}"></script>
         <!--- CLIENTE --> 
 
+        <!--- PAGAMENTOS --> 
+        <script src="{{ url('js/pagamentos/admin/cobranca.js') }}"></script>
+        <!--- PAGAMENTOS --> 
+
         <script src="{{ url('js/usuario/edita_usuario.js') }}"></script>
 
         <!--- FAQ --> 
