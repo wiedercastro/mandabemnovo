@@ -1,4 +1,4 @@
-<div class="bg-red-800 rounded-lg text-white w-full sm:w-1/3 sm:ml-0 ml-4">
+<div class="bg-red-800 rounded-lg text-white w-full sm:w-1/3">
     <div class="p-2 flex justify-between items-center">
         <p class="text-xs">Clientes c/ Postagens: 4810</p>
         <div class="flex flex-col">

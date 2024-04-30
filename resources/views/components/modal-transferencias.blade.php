@@ -5,7 +5,7 @@
         <div
             class="sm:ml-56 ml-0 inline-block align-bottom bg-white
             rounded-lg text-left shadow-xl
-            transform transition-all sm:my-8 sm:align-middle sm:w-2/5">
+            transform transition-all sm:my-8 sm:align-middle sm:w-2/5 w-full">
             <!-- Modal Header -->
             <div class="text-gray-600 px-4 py-4 flex justify-between bg-gray-200">
                 <div class="flex items-center text-gray-500 font-bold text-3xl">
@@ -25,8 +25,11 @@
                     <div class="flex items-center w-full">
                         <div class="flex flex-col w-full ml-2">
                             <label for="cliente" class="text-sm text-gray-700">Cliente</label>
-                            <input type="text" id="cliente" name="cliente" placeholder="Busque pelo cliente..."
+                            <input onkeyup="buscaPorDestinatario(event)" type="text" id="cliente" name="cliente" placeholder="Busque pelo cliente..."
                                 class="px-1 py-1 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                            <div class="bg-white border rounded mt-1 hidden flex flex-col h-96 overflow-x-auto resultDestinatarios"> 
+
+                            </div>
                         </div>
                     </div>
 

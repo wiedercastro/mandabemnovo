@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="w-5/6 ml-auto lg:px-12">
+    <div class="sm:w-5/6 w-full ml-auto lg:px-12 p-4">
         <div class="w-full">
 
             <x-card-pagamentos_admin/>
@@ -10,10 +10,10 @@
             <x-modal-transferencias/>
             <x-modal-edita-banco-usuario/>
 
-            <div class="flex flex-row-reverse">
+            <div class="flex sm:flex-row-reverse flex-col sm:mt-0 mt-6 sm:space-y-0 space-y-2">
                 <button
                     onclick="abreModalAfiliados()" 
-                    class="bg-red-500 hover:bg-red-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                    class="bg-red-500 hover:bg-red-700 text-white font-bold px-2 py-1 rounded ml-0 sm:ml-2 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -23,7 +23,7 @@
                 </button>
                 <button
                     onclick="abreModalTransferencias()" 
-                    class="bg-cyan-500 hover:bg-cyan-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                    class="bg-cyan-500 hover:bg-cyan-700 text-white font-bold px-2 py-1 rounded ml-0 sm:ml-2 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -33,31 +33,31 @@
                 </button>
                 <button
                     onclick="abreModalBoletos()"
-                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                    class="bg-gray-500 hover:bg-gray-700 text-white font-bold px-2 py-1 rounded ml-0 sm:ml-2 flex items-center">
                     <i class="fa fa-barcode"></i>
                     <p class="ml-1">Boletos</p>
                 </button>
                 <button
                     onclick="abreModalCreditos()" 
-                    class="bg-orange-500 hover:bg-orange-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                    class="bg-orange-500 hover:bg-orange-700 text-white font-bold px-2 py-1 rounded ml-0 sm:ml-2 flex items-center">
                     <i class="fa fa-barcode"></i>
                     <p class="ml-1">Cŕedito</p>
                 </button>
                 <button
                     onclick="abreModalCobranca()"
-                    class="bg-green-500 hover:bg-green-700 text-white font-bold px-2 py-1 rounded ml-2 flex items-center">
+                    class="bg-green-500 hover:bg-green-700 text-white font-bold px-2 py-1 rounded ml-0 sm:ml-2 flex items-center">
                     <i class="fa fa-minus-circle"></i>
                     <p class="ml-1">Cobrança</p>
                 </button>
             </div>
 
-            <div class="mt-8 w-3/5">
+            <div class="mt-8 sm:w-3/5 w-full">
                 <form action="{{ route('estatisticas_admin_index') }}" method="GET"
                     class="mt-1 flex w-full flex-col space-x-1 p-4 items-end border rounded bg-white">
-                    <p class="border border-yellow-500 rounded p-2 bg-yellow-50 text-sm text-yellow-700 font-bold">
+                    <p class="border border-yellow-500 rounded p-2 bg-yellow-50 sm:text-sm text-xs text-yellow-700 font-bold">
                         R$ 1234,00
                     </p>
-                    <div class="flex items-center w-full">
+                    <div class="flex flex-col sm:flex-row items-center w-full">
                         <div class="flex flex-col w-full">
                             <label for="" class="text-sm text-gray-700">Período</label>
                             <select onchange="toggleCustomFields()" id="periodo" name="periodo"
@@ -116,11 +116,11 @@
                 </form>
             </div>
 
-            <div class="mt-6">
+            <div class="mt-6 overflow-x-auto">
                 <h1 class="text-gray-500 font-bold text-3xl text">Cobranças</h1>
                 <table
                     class="min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
-                    text-sm text-left text-gray-500 border-collapse overflow-x-auto border-1">
+                    text-xs sm:text-sm text-left text-gray-500 border-collapse border-1">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                         <tr>
                             <th scope="col" class="px-6 py-3">

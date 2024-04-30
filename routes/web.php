@@ -39,6 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/excluirEnvio/{id}',[GerarEnvioController::class, 'excluirEnvio'])->name('excluirEnvio');
   Route::post('/excluirEnviosSelecionados', [GerarEnvioController::class, 'excluirEnviosSelecionados'])->name('excluirEnviosSelecionados'); 
   Route::get('/buscarEnvio/{id}',[GerarEnvioController::class, 'buscarEnvio'])->name('buscarEnvio');
+  Route::get('/buscaDestinatario',[GerarEnvioController::class, 'buscaDestinatario']);
 
   /*
   Etiquetas

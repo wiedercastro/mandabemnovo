@@ -45,6 +45,18 @@ class GerarEnvioController extends Controller
 
   return view('layouts.gerar.gerar', $data);
   }
+
+
+  public function buscaDestinatario(Request $request)
+  {
+    $destinatario = Envio::query()
+          ->select('id', 'destinatario')
+          ->where('destinatario', "LIKE", "%{$request->text}%")
+          ->get();
+          
+    return response()->json(['destinatario' => $destinatario]);
+  }
+
   public function saveEnvio(GerarEnvioControllerRequest $request)
   {
 

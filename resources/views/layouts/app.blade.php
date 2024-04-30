@@ -78,5 +78,7 @@
         <script src="{{ url('js/faq/deleta_faq.js') }}"></script>
         <script src="{{ url('js/faq/fetch_dados_faq.js') }}"></script>
         <!--- FAQ --> 
+
+        <script src="{{ url('js/helpers/busca_destinatarios.js') }}"></script>
     </body>
 </html>
