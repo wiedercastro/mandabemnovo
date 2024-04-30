@@ -34,10 +34,12 @@ class Boleto extends Model
         return $query->first();
     }
 
-    public function getBoletoList()
+    public function getBoletoList($data = [])
     {
         $usuarioLogado = auth()->user()->user_group_id;
-        
+        $limit = isset($data['per_page']) ? $data['per_page'] : 10;
+        $start = isset($data['page_start']) ? $data['page_start'] : 0;
+
         $query = $this->select(DB::raw('CONCAT(user.razao_social, " | ", user.name ) as cliente'),
                                'boletos.id', 
                                'boletos.date_insert', 
@@ -48,7 +50,8 @@ class Boleto extends Model
                                'boletos.user_id',   
                                'p_credito.id as credito')
                       ->leftJoin('payment as p_credito', 'p_credito.boleto_id', '=', 'boletos.id')
-                      ->leftJoin('user', 'user.id', '=', 'boletos.user_id');
+                      ->leftJoin('user', 'user.id', '=', 'boletos.user_id')
+                      ->limit($limit, $start);
 
         if ($usuarioLogado != 3) {
             $query->where('boletos.user_id', $usuarioLogado);

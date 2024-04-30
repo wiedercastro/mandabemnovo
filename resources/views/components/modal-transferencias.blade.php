@@ -49,7 +49,7 @@
                 </form>
             </div>
 
-            <div class="mt-6 p-4 overflow-y-auto h-screen">
+            <div class="mt-6 p-4 overflow-y-auto h-96">
                 <table class="min-w-full table-auto ml-auto bg-white font-normal rounded text-xs text-left text-gray-600 border-collapse border-2">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                         <tr>

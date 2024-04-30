@@ -62,10 +62,8 @@
                 </form>
             </div>
 
-            <div class="mt-6 p-4 overflow-x-auto">
-                <table
-                    class="min-w-full table-auto ml-auto bg-white font-normal rounded shadow-lg
-                        text-xs text-left text-gray-500 border-collapse border-1">
+            <div class="mt-6 p-4 overflow-y-auto h-96">
+                <table class="min-w-full table-auto ml-auto bg-white font-normal rounded text-xs text-left text-gray-500 border-collapse border-2">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-300">
                         <tr>
                             <th scope="col" class="px-6 py-3">
