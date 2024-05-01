@@ -23,40 +23,42 @@
             </div>
 
             <div class="mt-2 p-4">
-                <form action="#" method="POST" class="mt-8 flex flex-col w-full">
+                <form action="#" method="POST" class="mt-8 flex flex-col w-full" id="submitFormCredito">
+                    @csrf
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" id="_token">
         
                     <div class="flex flex-col w-full">
-                        <label for="cliente" class="text-sm text-gray-700">Cliente</label>
-                        <input onkeyup="buscaPorDestinatario(event)" type="text" id="cliente" name="cliente" placeholder="Digite o nome do cliente..." class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                        <label for="cliente_creditos" class="text-sm text-gray-700">Cliente</label>
+                        <input onkeyup="buscaClientes(event)" type="text" id="cliente_creditos" name="cliente_creditos" placeholder="Digite o nome do cliente..." class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
                         <div class="bg-white border rounded mt-1 hidden flex flex-col h-96 overflow-x-auto resultDestinatarios"> 
 
                         </div>
                     </div>
 
                     <div class="flex flex-col w-full mt-4">
-                        <label for="valor" class="text-sm text-gray-700">Valor *</label>
-                        <input type="text" id="valor" name="valor" placeholder="Digite o valor..." class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                        <label for="valor_creditos" class="text-sm text-gray-700">Valor *</label>
+                        <input type="text" id="valor_creditos" name="valor_creditos" placeholder="Digite o valor..." class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
                     </div>
 
                     <div class="flex flex-col w-full mt-4">
-                        <label for="valor" class="text-sm text-gray-700">Valor *</label>
+                        <label for="tipo" class="text-sm text-gray-700">Tipo *</label>
                         <select id="tipo" name="tipo"
                             class="px-1 py-1 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
-                            <option @if (request('tipo') == 'boleto') selected @endif value="boleto">Boleto</option>
-                            <option @if (request('tipo') == 'transferencia') selected @endif value="transferencia">Transferência</option>
-                            <option @if (request('tipo') == 'transferencia_mercado_pago') selected @endif value="transferencia_mercado_pago">Transferência Mercado Pago</option>
-                            <option @if (request('tipo') == 'credito_antecipado') selected @endif value="credito_antecipado">Cŕedito antecipado</option>
-                            <option @if (request('tipo') == 'devolucao') selected @endif value="devolucao">Devolução</option>
-                            <option @if (request('tipo') == 'outros') selected @endif value="outros">Outros</option>
+                            <option value="boleto">Boleto</option>
+                            <option value="transferencia">Transferência</option>
+                            <option value="transferencia_mercado_pago">Transferência Mercado Pago</option>
+                            <option value="credito_antecipado">Cŕedito antecipado</option>
+                            <option value="devolucao">Devolução</option>
+                            <option value="outros">Outros</option>
                         </select>
                     </div>
 
                     <div class="flex flex-col w-full mt-4">
-                        <label for="valor" class="text-sm text-gray-700">Observação</label>
+                        <label for="observacao" class="text-sm text-gray-700">Observação</label>
                         <textarea 
                             required 
-                            id="observacao" 
-                            name="observacao" 
+                            id="observacao_creditos" 
+                            name="observacao_creditos" 
                             rows="6" 
                             class="resize-none outline-none block p-2.5 w-full text-sm text-gray-900 shadow-sm rounded-lg border border-gray-300 shadow bg-white" 
                             placeholder="Escreva uma observação..."></textarea>
@@ -66,6 +68,7 @@
 
                     <div class="mt-4 flex items-center space-x-1">
                         <button
+                            id="buttonFormCredito"
                             class="bg-green-600 hover:bg-green-700 text-white font-bold px-2 py-1 rounded flex items-center text-sm">
                             <i class="fa fa-credit-card"></i>
                             <p class="ml-1">Gerar cŕedito</p>

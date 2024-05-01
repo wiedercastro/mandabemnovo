@@ -8,3 +8,46 @@ const abreModalAfiliados = () => {
 const fechaModalAfiliados = () => {
   modal_afiliados.classList.add('hidden');
 }
+
+document.getElementById('submitFormAfiliados').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const buttonAfiliados = document.getElementById('buttonAfiliados');
+    buttonAfiliados.innerHTML = "Gerando...."
+    buttonAfiliados.disabled = true;
+
+    const formData = {
+        cliente_afiliados: document.getElementById('cliente_afiliados').value,
+        valor_afiliados  : document.getElementById('valor_afiliados').value,
+        _token           : document.getElementById('_token').value,
+    };
+
+    fetch('afiliados-pagamentos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao fazer requisição');
+        }
+        return response.json();
+    })
+    .then(data => {
+
+        buttonAfiliados.innerHTML = "Gerar crédito"
+        buttonAfiliados.disabled = false;
+
+        //fecha modal após o sucesso
+        modal_afiliados.classList.add('hidden');
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+    })
+    .finally(() => {
+        buttonAfiliados.innerHTML = "Gerar crédito"
+        buttonAfiliados.disabled = false;
+    })
+});

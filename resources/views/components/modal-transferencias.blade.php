@@ -20,21 +20,22 @@
             </div>
 
             <div class="mt-4 p-4">
-                <form action="#" method="GET"
-                    class="mt-1 flex w-full flex-col space-x-1 p-4 items-end border rounded bg-white">
+                <form action="#" method="GET" class="mt-1 flex w-full flex-col space-x-1 p-4 items-end border rounded bg-white">
                     <div class="flex items-center w-full">
                         <div class="flex flex-col w-full ml-2">
                             <label for="cliente" class="text-sm text-gray-700">Cliente</label>
-                            <input onkeyup="buscaPorDestinatario(event)" type="text" id="cliente" name="cliente" placeholder="Busque pelo cliente..."
+                            <input onkeyup="buscaClientes(event)" type="text" id="cliente" name="cliente" placeholder="Busque pelo cliente..."
                                 class="px-1 py-1 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
                             <div class="bg-white border rounded mt-1 hidden flex flex-col h-96 overflow-x-auto resultDestinatarios"> 
 
                             </div>
+                            <input type="hidden" name="id_cliente" value="" id="id_cliente">
                         </div>
                     </div>
 
                     <div class="mt-1 flex items-center space-x-1">
                         <button
+                            id="buttonTransferencia"
                             class="bg-green-600 hover:bg-green-700 text-white font-bold px-2 py-1 rounded flex items-center text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4">

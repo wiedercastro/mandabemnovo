@@ -35,11 +35,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::post('/saveEnvio', [GerarEnvioController::class, 'saveEnvio'])->name('saveEnvio');
   Route::get('/obter-dados-peso', [GerarEnvioController::class, 'buscarPeso'])->name('retornarPeso');
   Route::get('/obter-dados-estado', [GerarEnvioController::class, 'buscarEstado'])->name('retornarEstado');
-  Route::post('/buscarDestinatiro', [GerarEnvioController::class, 'buscarDestinatiro'])->name('buscarDestinatiro');
   Route::get('/excluirEnvio/{id}',[GerarEnvioController::class, 'excluirEnvio'])->name('excluirEnvio');
   Route::post('/excluirEnviosSelecionados', [GerarEnvioController::class, 'excluirEnviosSelecionados'])->name('excluirEnviosSelecionados'); 
   Route::get('/buscarEnvio/{id}',[GerarEnvioController::class, 'buscarEnvio'])->name('buscarEnvio');
-  Route::get('/buscaDestinatario',[GerarEnvioController::class, 'buscaDestinatario']);
+  Route::get('/buscaClientes',[GerarEnvioController::class, 'buscaClientes']);
 
   /*
   Etiquetas
@@ -89,9 +88,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/pagamentos',[PagamentoController::class, 'index'])->name('pagamentos.index');
   Route::get('/transferencia',[PagamentoController::class, 'get_transferencia']);
   Route::get('/boleto',[PagamentoController::class, 'get_boletos']);
-  Route::get('/afiliados-pagamentos',[PagamentoController::class, 'afiliados'])->name('afiliados.pagamento');
-  Route::get('/creditos',[PagamentoController::class, 'creditos'])->name('creditos.pagamento');
-  Route::get('/cobranca',[PagamentoController::class, 'cobranca'])->name('cobranca.pagamento');
+  Route::post('/afiliados-pagamentos',[PagamentoController::class, 'afiliados']);
+  Route::post('/creditos',[PagamentoController::class, 'creditos']);
+  Route::post('/cobranca',[PagamentoController::class, 'cobranca']);
 
   /*
   Cotação

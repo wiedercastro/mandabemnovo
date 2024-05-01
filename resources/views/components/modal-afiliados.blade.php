@@ -23,19 +23,21 @@
             </div>
 
             <div class="mt-2 p-4">
-                <form action="#" method="POST" class="mt-8 flex flex-col w-full">
+                <form action="#" method="POST" class="mt-8 flex flex-col w-full" id="submitFormAfiliados">
+                    @csrf
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" id="_token">
         
                     <div class="flex flex-col w-full">
-                        <label for="cliente" class="text-sm text-gray-700">Cliente</label>
-                        <input onkeyup="buscaPorDestinatario(event)" type="text" id="cliente" name="cliente" placeholder="Digite o nome do cliente..." class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                        <label for="cliente_afiliados" class="text-sm text-gray-700">Cliente</label>
+                        <input onkeyup="buscaClientes(event)" type="text" id="cliente_afiliados" name="cliente_afiliados" placeholder="Digite o nome do cliente..." class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
                         <div class="bg-white border rounded mt-1 hidden flex flex-col h-96 overflow-x-auto resultDestinatarios"> 
 
                         </div>
                     </div>
 
                     <div class="flex flex-col w-full mt-4">
-                        <label for="valor" class="text-sm text-gray-700">Valor *</label>
-                        <input type="text" id="valor" name="valor" placeholder="Digite o valor..." class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                        <label for="valor_afiliados" class="text-sm text-gray-700">Valor *</label>
+                        <input type="text" id="valor_afiliados" name="valor_afiliados" placeholder="Digite o valor..." class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
                     </div>
 
                     <hr class="mt-6">
@@ -46,6 +48,7 @@
 
                     <div class="mt-4 flex items-center space-x-1">
                         <button
+                            id="buttonAfiliados"
                             class="bg-green-600 hover:bg-green-700 text-white font-bold px-2 py-1 rounded flex items-center text-sm">
                             <i class="fa fa-credit-card"></i>
                             <p class="ml-1">Realizar cobrança</p>

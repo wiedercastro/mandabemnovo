@@ -57,15 +57,17 @@ class PagamentoController extends Controller
 
     public function get_transferencia(Request $request): JsonResponse
     {
-
         $usuarioMandaBem = auth()->user()->user_group_id;
         $params = ['type' => 'pendentes'];
+
+        //dd($request->cliente);
 
         if ($usuarioMandaBem != 3) {
             $params['user_id'] = $usuarioMandaBem;
         } else {
-            if ($request->filter_trans_cliente) {
-                $params['user_id'] = $request->filter_trans_cliente;
+
+            if ($request->cliente) {
+                $params['user_id'] = $request->cliente;
             }
         }
 
@@ -80,9 +82,9 @@ class PagamentoController extends Controller
         return response()->json(['data' => $list]);
     }
 
-    public function afiliados(): View
+    public function afiliados(Request $request)
     {
-      return view('layouts.pagamentos.admin.afiliados');
+        dd($request->all());
     }
 
     public function get_boletos(): JsonResponse
@@ -90,14 +92,14 @@ class PagamentoController extends Controller
         return response()->json(['boletos' => $this->boleto->getBoletoList()]);
     }
 
-    public function creditos(): View
+    public function creditos(Request $request)
     {
-      return view('layouts.pagamentos.admin.creditos');
+        dd($request->all());
     }
 
-    public function cobranca(): View
+    public function cobranca(Request $request)
     {
-      return view('layouts.pagamentos.admin.cobranca');
+        dd($request->all());
     }
 
 }

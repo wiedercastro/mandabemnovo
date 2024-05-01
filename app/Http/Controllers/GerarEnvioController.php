@@ -7,6 +7,7 @@ use App\Enums\ComprimentoEnum;
 use App\Enums\LarguraEnum;
 use App\Http\Requests\GerarEnvioControllerRequest;
 use App\Models\Envio;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -47,14 +48,14 @@ class GerarEnvioController extends Controller
   }
 
 
-  public function buscaDestinatario(Request $request)
+  public function buscaClientes(Request $request)
   {
-    $destinatario = Envio::query()
-          ->select('id', 'destinatario')
-          ->where('destinatario', "LIKE", "%{$request->text}%")
+    $clientes = User::query()
+          ->select('id', 'name')
+          ->where('name', "LIKE", "%{$request->text}%")
           ->get();
           
-    return response()->json(['destinatario' => $destinatario]);
+    return response()->json(['clientes' => $clientes]);
   }
 
   public function saveEnvio(GerarEnvioControllerRequest $request)
@@ -108,13 +109,6 @@ class GerarEnvioController extends Controller
     }
   }
 
-  public function buscarDestinatiro(Request $request)
-  {
-
-    // dd($request->searchTerm);
-
-    return "Wieder teste";
-  }
 
   public function excluirEnvio($id)
   { 
