@@ -62,7 +62,7 @@ class PagamentoController extends Controller
 
         //dd($request->cliente);
 
-        if ($usuarioMandaBem != 3) {
+        if ($usuarioMandaBem != 1) {
             $params['user_id'] = $usuarioMandaBem;
         } else {
 
