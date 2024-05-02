@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="sm:w-5/6 w-full ml-auto lg:px-12 p-4 flex justify-center items-center flex-col">
-        <div class="w-3/4 bg-white shadow rounded p-4">
+        <div class="sm:w-3/4 w-full bg-white shadow rounded p-4">
 
             <div class="border p-2 rounded">
                 <div class="flex items-center text-gray-500 font-bold">
@@ -8,7 +8,7 @@
                     <h5 class="text-2xl ml-1"> Incluir nova tabela</h5>
                 </div>
                 <hr class="mt-4">
-                <div class="mt-4 flex justify-between space-x-6">
+                <div class="mt-4 flex flex-col sm:flex-row justify-between sm:space-x-6 space-x-0">
                     <div class="border rounded w-full p-2">
                         <h1 class="text-gray-500 font-bold">Simulação Normal</h1>
 
@@ -56,7 +56,7 @@
                             </button>
                         </form>
                     </div>
-                    <div class="border rounded w-full p-2">
+                    <div class="border rounded w-full p-2 mt-4 sm:mt-0">
                         <h1 class="text-gray-500 font-bold">Simulação Amazon</h1>
                         <form action="#" method="POST" class="mt-2" id="submitFormSimulacaoAmazon">
       
@@ -109,7 +109,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-3/4 bg-white shadow rounded p-4 mt-4">
+        <div class="sm:w-3/4 w-full bg-white shadow rounded p-4 mt-4">
             <form action="#" method="GET">
 
                 <div class="flex flex-col w-full mt-4">
@@ -121,14 +121,14 @@
                     <button
                         type="submit"
                         id="buttonCreateManifestacao"
-                        class="text-sm bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-1 mt-6 rounded flex items-center"> 
+                        class="sm:text-sm text-xs bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-1 mt-6 rounded flex items-center"> 
                         <i class="fa fa-search"></i>                   
                         <p class="ml-1">Filtrar</p>
                     </button>
                     <button
                         type="submit"
                         id="buttonCreateManifestacao"
-                        class="text-sm bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 mt-6 rounded flex items-center"> 
+                        class="sm:text-sm text-xs bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 mt-6 rounded flex items-center"> 
                         <i class="fa fa-trash"></i>                   
                         <p class="ml-1">Limpar filtro</p>
                     </button>
@@ -136,7 +136,7 @@
             </form>
         </div>
 
-        <div class="w-3/4 p-4 mt-4 overflow-x-auto">
+        <div class="sm:w-3/4 w-full p-4 mt-4 overflow-x-auto">
             <div class="flex items-center text-gray-500 font-bold">
                 <h5 class="text-3xl ml-1">Tabelas Criadas</h5>
             </div>
