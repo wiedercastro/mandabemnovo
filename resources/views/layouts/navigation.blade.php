@@ -192,7 +192,7 @@
                                 <a href="{{route('faq.index')}}" class="block px-4 py-2 hover:bg-gray-100">FAQ - Me ajuda</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Tabela Simulação</a>
+                                <a href="{{route('simulacao.index')}}" class="block px-4 py-2 hover:bg-gray-100">Tabela Simulação</a>
                             </li>
                             <li>
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-100">Limpar Cache</a>

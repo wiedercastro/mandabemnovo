@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     FaqAjudaController,
     NotFoundPermissionController,
     ReversaController,
+    SimulacaoController,
     SoapController,
     UserController
 };
@@ -132,6 +133,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/faq/{id}', [FaqAjudaController::class, 'show']);
   Route::put('/faq/{id}', [FaqAjudaController::class, 'update']);
   Route::delete('/faq/{id}', [FaqAjudaController::class, 'destroy']);
+
+   /*
+  Simulacao
+  */
+  Route::get('/tabela_simulacao', [SimulacaoController::class, 'index'])->name('simulacao.index');
 
   
    /*
