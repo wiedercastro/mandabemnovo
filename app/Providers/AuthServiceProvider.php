@@ -27,11 +27,11 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('user_admin_mandabem', function () {
-            return auth()->user()->user_group_id === 3;
+            return auth()->user()->user_group_id === 1;
         });
 
         Gate::define('users', function () {
-            return auth()->user()->user_group_id !== 3;
+            return auth()->user()->user_group_id !== 1;
         });
     }
 }
