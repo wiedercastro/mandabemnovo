@@ -19,17 +19,17 @@
                 </svg>
             </div>
 
-            <div class="mt-4 p-4">
+            <div class="mt-4 p-4 form-container">
                 <form action="#" method="GET" class="mt-1 flex w-full flex-col space-x-1 p-4 items-end border rounded bg-white">
                     <div class="flex items-center w-full">
                         <div class="flex flex-col w-full ml-2">
                             <label for="cliente" class="text-sm text-gray-700">Cliente</label>
                             <input onkeyup="buscaClientes(event)" type="text" id="cliente" name="cliente" placeholder="Busque pelo cliente..."
-                                class="px-1 py-1 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                                class="cliente px-1 py-1 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
                             <div class="bg-white border rounded mt-1 hidden flex flex-col h-96 overflow-x-auto resultDestinatarios"> 
 
                             </div>
-                            <input type="hidden" name="id_cliente" value="" id="id_cliente">
+                            <input type="hidden" name="id_cliente" class="id_cliente" value="" id="id_cliente_transferencia">
                         </div>
                     </div>
 

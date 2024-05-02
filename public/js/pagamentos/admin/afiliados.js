@@ -7,6 +7,10 @@ const abreModalAfiliados = () => {
 
 const fechaModalAfiliados = () => {
   modal_afiliados.classList.add('hidden');
+
+  document.getElementById('cliente_id_afiliados').value = "";
+  document.getElementById('cliente_afiliados').value = "";
+  document.getElementById('valor_afiliados').value = "";
 }
 
 document.getElementById('submitFormAfiliados').addEventListener('submit', (e) => {
@@ -18,6 +22,7 @@ document.getElementById('submitFormAfiliados').addEventListener('submit', (e) =>
 
     const formData = {
         cliente_afiliados: document.getElementById('cliente_afiliados').value,
+        cliente_id       : document.getElementById('cliente_id_afiliados').value,
         valor_afiliados  : document.getElementById('valor_afiliados').value,
         _token           : document.getElementById('_token').value,
     };

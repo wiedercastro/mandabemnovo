@@ -1,5 +1,10 @@
 const buscaClientes = async (event) => {
-    let textoDigitado = event.target.value
+    const inputElement = event.target; // O campo de entrada onde o evento foi disparado
+    const textoDigitado = inputElement.value;
+
+    // Encontra o contêiner do modal a partir do elemento que acionou o evento
+    const modalContainer = inputElement.closest('.form-container');
+    const clientesList = modalContainer.querySelector('.resultDestinatarios');
 
     const res = await fetch(`http://localhost:8989/buscaClientes?text=${encodeURIComponent(textoDigitado)}`, {
         method: 'GET',
@@ -13,9 +18,6 @@ const buscaClientes = async (event) => {
     }
 
     const resJson = await res.json();
-    let clientesList = event.target.parentElement.querySelector('.resultDestinatarios');
-
-    console.log(resJson);
 
     if (resJson.clientes.length === 0 || textoDigitado.length === 0) {
         clientesList.classList.add('hidden');
@@ -23,30 +25,26 @@ const buscaClientes = async (event) => {
         clientesList.classList.remove('hidden');
     }
 
-    let lista = ''
-
+    let lista = '';
     resJson.clientes.forEach(item => {
-        lista +=
-        `<ul>
-            <li onclick="selecionaDestinatario('${item.name}', ${item.id})" class="bg-white-50 hover:bg-blue-500 hover:text-white hover:font-bold text-xs px-2 py-1 cursor-pointer">${item.name}</li>
+        lista += `
+        <ul>
+            <li data-id="${item.id}" onclick="selecionaCliente(this)" class="bg-white-50 hover:bg-blue-500 hover:text-white hover:font-bold text-xs px-2 py-1 cursor-pointer">${item.name}</li>
         </ul>`;
     });
 
     clientesList.innerHTML = lista;
-}
+};
 
-const selecionaDestinatario = (nameUser, idUser) => {
-    console.log(nameUser, idUser)
+const selecionaCliente = (element) => {
 
-    const cliente = document.getElementById('cliente');
-    const id_cliente = document.getElementById('id_cliente');
+    const modalContainer = element.closest('.form-container');
+    const clienteInput = modalContainer.querySelector('.cliente');
+    const idClienteInput = modalContainer.querySelector('.id_cliente'); 
 
-    if (cliente) {
-        cliente.value = nameUser;
-        id_cliente.value = idUser;
-    }
+    const itemName = element.innerText; // Nome do cliente
+    const itemId = element.getAttribute('data-id'); // Adicione este atributo ao criar a lista
 
-   /*  let clientesList = event.target.parentElement.querySelector('.resultDestinatarios');
-    //clientesList.classList.remove('hidden');
-    clientesList.classList.add('hidden'); */
-}
+    clienteInput.value = itemName;
+    idClienteInput.value = itemId;
+};

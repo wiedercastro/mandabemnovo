@@ -93,7 +93,7 @@ buttonTransferencia.addEventListener('click', (e) => {
     buttonTransferencia.innerHTML = "Filtrando...."
     buttonTransferencia.disabled = true;
 
-    const id_cliente = document.getElementById('id_cliente').value;
+    const id_cliente = document.getElementById('id_cliente_transferencia').value;
 
     fetch(`transferencia/?cliente=${encodeURIComponent(id_cliente)}`, {
         method: 'GET',

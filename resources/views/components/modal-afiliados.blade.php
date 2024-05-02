@@ -22,14 +22,15 @@
                 </svg>
             </div>
 
-            <div class="mt-2 p-4">
+            <div class="mt-2 p-4 form-container">
                 <form action="#" method="POST" class="mt-8 flex flex-col w-full" id="submitFormAfiliados">
                     @csrf
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" id="_token">
+                    <input type="hidden" value="" id="cliente_id_afiliados" class="id_cliente">
         
                     <div class="flex flex-col w-full">
                         <label for="cliente_afiliados" class="text-sm text-gray-700">Cliente</label>
-                        <input onkeyup="buscaClientes(event)" type="text" id="cliente_afiliados" name="cliente_afiliados" placeholder="Digite o nome do cliente..." class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                        <input onkeyup="buscaClientes(event)" type="text" id="cliente_afiliados" name="cliente_afiliados" placeholder="Digite o nome do cliente..." class="cliente px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
                         <div class="bg-white border rounded mt-1 hidden flex flex-col h-96 overflow-x-auto resultDestinatarios"> 
 
                         </div>

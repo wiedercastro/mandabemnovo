@@ -7,6 +7,13 @@ const abreModalCobranca = () => {
 
 const fechaModalCobranca = () => {
     modal_cobranca.classList.add('hidden');
+
+    document.getElementById('cobranca_cliente').value = "";
+    document.getElementById('cobranca_id_credito').value = "";
+    document.getElementById('valor').value = "";
+    document.getElementById('forma_cobranca').value = "";
+    document.getElementById('descricao').value = "";
+    document.getElementById('observacao').value = "";
 }
 
 document.getElementById('submitFormCobranca').addEventListener('submit', (e) => {
@@ -17,12 +24,13 @@ document.getElementById('submitFormCobranca').addEventListener('submit', (e) => 
     buttonFormCobranca.disabled = true;
 
     const formData = {
-        destinatario_cliente: document.getElementById('destinatario_cliente').value,
-        valor               : document.getElementById('valor').value,
-        forma_cobranca      : document.getElementById('forma_cobranca').value,
-        descricao           : document.getElementById('descricao').value,
-        observacao          : document.getElementById('observacao').value,
-        _token              : document.getElementById('_token').value,
+        cobranca_cliente: document.getElementById('cobranca_cliente').value,
+        cliente_id      : document.getElementById('cobranca_id_credito').value,
+        valor           : document.getElementById('valor').value,
+        forma_cobranca  : document.getElementById('forma_cobranca').value,
+        descricao       : document.getElementById('descricao').value,
+        observacao      : document.getElementById('observacao').value,
+        _token          : document.getElementById('_token').value,
     };
 
     fetch('cobranca', {
