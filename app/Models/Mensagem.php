@@ -2,24 +2,32 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Mensagem extends Model
 {
-    public function mensagens()
+    public $table = 'mensagens';
+
+    public function getDateInsertAttribute($value)
     {
-        return DB::table('mensagens')->orderByDesc('id')->limit(10)->get();
+        return Carbon::parse($value)->format('d/m/Y H:i');
+    }
+
+    public function getMensagens()
+    {
+        return $this->orderByDesc('id')->limit(10)->get();
     }
 
     public function getMensagensUser($user_id)
     {
-        return DB::table('mensagens')->where('user_id', $user_id)->orderByDesc('id')->get();
+        return $this->where('user_id', $user_id)->orderByDesc('id')->get();
     }
 
     public function getMensagemUser($user_id)
     {
-        $row = DB::table('mensagens')
+        $row = $this
             ->where('user_id', $user_id)
             ->where('status', 'ATIVO')
             ->where('conf_leitura', 0)

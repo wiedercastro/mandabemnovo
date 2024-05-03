@@ -198,6 +198,9 @@
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-100">Limpar Cache</a>
                             </li>
                             <li>
+                                <a href="{{route('mensagem.index')}}" class="block px-4 py-2 hover:bg-gray-100">Mensagem</a>
+                            </li>
+                            <li>
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-100">Retornar PIX</a>
                             </li>
                         @endcan
@@ -283,6 +286,10 @@
                         {{ __('Limpar Cache') }}
                     </x-dropdown-link>
 
+                    <x-dropdown-link :href="route('mensagem.index')">
+                        {{ __('Mensagem') }}
+                    </x-dropdown-link>
+                    
                     <x-dropdown-link :href="route('profile.edit')">
                         {{ __('Retornar PIX') }}
                     </x-dropdown-link>

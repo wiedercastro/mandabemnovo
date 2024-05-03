@@ -13,6 +13,7 @@ use App\Http\Controllers\{
     EstatisticasAdminController,
     FaqAjudaController,
     ManifestacaoController,
+    MensagemController,
     NotFoundPermissionController,
     ReversaController,
     SimulacaoController,
@@ -141,9 +142,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/tabela_simulacao', [SimulacaoController::class, 'index'])->name('simulacao.index');
 
    /*
-  Simulacao
+  Manifestacoes
   */
   Route::get('/manifestacoes', [ManifestacaoController::class, 'index'])->name('manifestacao.index');
+
+  /*
+  Mensagem
+  */
+  Route::get('/mensagem', [MensagemController::class, 'index'])->name('mensagem.index');
+  
   
    /*
   Not Found Permission
