@@ -15,6 +15,7 @@ use App\Http\Controllers\{
     ManifestacaoController,
     MensagemController,
     NotFoundPermissionController,
+    RetornarPixController,
     ReversaController,
     SimulacaoController,
     SoapController,
@@ -150,6 +151,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Mensagem
   */
   Route::get('/mensagem', [MensagemController::class, 'index'])->name('mensagem.index');
+
+  /*
+  Retornar pix
+  */
+  Route::post('/transferencia-buscar', [RetornarPixController::class, 'buscar']);
   
   
    /*

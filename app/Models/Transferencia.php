@@ -26,7 +26,7 @@ class Transferencia extends Model
     {
         $seteDias = now()->subDays(7)->startOfDay();
 
-        $idUsuario = $param['filter_cliente'];
+        $idUsuario = (int) $param['filter_cliente'];
 
         $result = DB::table('transferencia')
             ->select('transferencia.*', 'user.*', 'transferencia.date_insert as data_insercao', 'transferencia.id as id_transferencia', 'transferencia.status as status_transferencia')

@@ -201,7 +201,7 @@
                                 <a href="{{route('mensagem.index')}}" class="block px-4 py-2 hover:bg-gray-100">Mensagem</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Retornar PIX</a>
+                                <a onclick="abreModalRetornarPix()" href="#" class="block px-4 py-2 hover:bg-gray-100">Retornar PIX</a>
                             </li>
                         @endcan
 
@@ -256,6 +256,8 @@
                 </div>
             </div>
         </div>
+
+        <x-modal-retornar-pix />
 
         <!-- Responsive Navigation Menu -->
         <div :class="{ 'block': open, 'hidden': !open }" class="hidden lg:hidden">
@@ -349,8 +351,64 @@
 </nav>
 
 <script>
+    let cliente_id = document.getElementById('cliente_id_retornar_pix')
+    let modal_retorna_pix = document.getElementById('modal_retorna_pix');
+
+    const fechaModalRetornarPix = () => {
+        modal_retorna_pix.classList.add('hidden');
+    }
+
     const abreFechaDropDown = () => {
         const dropdown = document.getElementById('dropdownAvatarName');
         dropdown.classList.toggle('hidden');
     };
+
+    const abreModalRetornarPix = () => {
+        modal_retorna_pix.classList.remove('hidden'); 
+        modal_retorna_pix.classList.add('flex');
+    };
+
+    document.getElementById('submitRetornarPix').addEventListener('submit', (e) => {
+        e.preventDefault();
+        let csrfToken = document.getElementById('token');
+        
+        let buscaRetornarPix = document.getElementById('buscaRetornarPix')
+        buscaRetornarPix.innerHTML = "Buscando...."
+        buscaRetornarPix.disabled = true;
+
+        const formData = {
+            cliente_id: cliente_id.value,
+            _token    : csrfToken.value
+        };
+
+        fetch('/transferencia-buscar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao fazer requisição');
+            }
+            return response.json();
+        })
+        .then(data => {
+            let msgRetornarPix = document.getElementById('msgRetornarPix')
+
+            if (data.status === 1) {
+                msgRetornarPix.classList.remove('hidden'); 
+                msgRetornarPix.classList.add('flex');
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+        })
+        .finally(() => {
+            buscaRetornarPix.innerHTML = "Buscar"
+            buscaRetornarPix.disabled = false;
+        })
+    }); 
+     
 </script>
