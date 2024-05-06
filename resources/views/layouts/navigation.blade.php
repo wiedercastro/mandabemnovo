@@ -215,10 +215,10 @@
                             <li>
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-100">Integrações</a>
                             </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Cupom</a>
-                            </li>
                         @endcan
+                        <li>
+                            <a href="{{route('cupom-admin.index')}}" class="block px-4 py-2 hover:bg-gray-100">Cupom</a>
+                        </li>
 
                         <li>
                             <a href="{{route('manifestacao.index')}}" class="block px-4 py-2 hover:bg-gray-100">Manifestações</a>

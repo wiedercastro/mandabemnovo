@@ -56,12 +56,9 @@
         <script src="{{ url('js/etiquetas/admin/auditor.js') }}"></script>
         <script src="{{ url('js/etiquetas/admin/manifestacao.js') }}"></script>
         <script src="{{ url('js/etiquetas/admin/cancelamento_objeto.js') }}"></script>
-        <!--- ADMIN --> 
-
 
         <!--- CLIENTE --> 
         <script src="{{ url('js/etiquetas/clientes/expande_itens_etiquetas_cliente.js') }}"></script>
-        <!--- CLIENTE --> 
 
         <!--- PAGAMENTOS --> 
         <script src="{{ url('js/pagamentos/admin/cobranca.js') }}"></script>
@@ -69,7 +66,6 @@
         <script src="{{ url('js/pagamentos/admin/creditos.js') }}"></script>
         <script src="{{ url('js/pagamentos/admin/boletos.js') }}"></script>
         <script src="{{ url('js/pagamentos/admin/transferencias.js') }}"></script>
-        <!--- PAGAMENTOS --> 
 
         <script src="{{ url('js/usuario/edita_usuario.js') }}"></script>
 
@@ -77,7 +73,9 @@
         <script src="{{ url('js/faq/insere_faq.js') }}"></script>
         <script src="{{ url('js/faq/deleta_faq.js') }}"></script>
         <script src="{{ url('js/faq/fetch_dados_faq.js') }}"></script>
-        <!--- FAQ --> 
+
+         <!--- CUPOM --> 
+         <script src="{{ url('js/cupom/criar_cupom.js') }}"></script>
 
         <script src="{{ url('js/helpers/busca_destinatarios.js') }}"></script>
     </body>

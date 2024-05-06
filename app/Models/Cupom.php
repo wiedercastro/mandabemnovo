@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -10,15 +11,21 @@ class Cupom extends Model
     protected $table = 'cupons';
     protected $primaryKey = 'id';
     public $timestamps = false;
+    public $guarded = [];
 
     public function getCupons()
     {
         return $this->orderBy('id', 'desc')->get();
     }
 
+    public function getDuracaoAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
+    }
+
     public function getCupomById($cupomId)
     {
-        return $this->where('id', $cupomId)->first();
+        return $this->where('id', $cupomId)->count();
     }
 
     public function getUserCupons($cupomId, $userId)
@@ -107,31 +114,30 @@ class Cupom extends Model
         }
     }
 
-    public function salvar($param = [])
+    public function salvar(array $param = []): void
     {
-        if ($param['duracao']) {
-            $param['duracao'] = now()->addDays($param['duracao'])->startOfDay();
+        if ($param['tempo_duracao_dias']) {
+            $param['tempo_duracao_dias'] = now()->addDays($param['tempo_duracao_dias'])->startOfDay();
         } else {
             // $param['duracao'] = now()->addDays(30)->startOfDay();
         }
 
-        if ($param['afiliados']) {
-            $param['afiliados'] = User::where('id', $param['afiliados'])->value('name');
+        if ($param['vincular_afiliado']) {
+            $param['vincular_afiliado'] = User::where('id', $param['vincular_afiliado'])->value('name');
         }
 
         $dataInsert = [
-            "type" => isset($param['tipo']) ? $param['tipo'] : null,
-            "name" => isset($param['name']) ? $param['name'] : null,
+            "type" => isset($param['tipo_cupom']) ? $param['tipo_cupom'] : null,
+            "name" => isset($param['nome_ativacao']) ? $param['nome_ativacao'] : null,
             "valor" => isset($param['valor']) ? $param['valor'] : null,
-            "duracao" => isset($param['duracao']) ? $param['duracao'] : null,
-            "num_envios" => isset($param['num_envios']) ? $param['num_envios'] : null,
+            "duracao" => isset($param['tempo_duracao_dias']) ? $param['tempo_duracao_dias'] : null,
+            "num_envios" => isset($param['qtd_envios']) ? $param['qtd_envios'] : null,
             "status" => 1,
-            "afiliados" => isset($param['afiliados']) ? $param['afiliados'] : null,
+            "afiliados" => isset($param['vincular_afiliado']) ? $param['vincular_afiliado'] : null,
             "date_update" => now(),
             "date_insert" => now(),
         ];
-
-        return $this->insert($dataInsert);
+        $this->create($dataInsert);
     }
 
     public function ativar($id)

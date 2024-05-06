@@ -119,6 +119,13 @@ class User extends Authenticatable
         }
     }
 
+    public function getAfiliados()
+    {
+        return $this->select('id', 'name')
+            ->where('config', 'like', '%config_enable_afiliado%')
+            ->get();
+    }
+
     public function getFields()
     {
         $grupoTaxaModel = new GrupoTaxa();

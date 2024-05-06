@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     PagamentoController,
     ProfileController,
     CotacaoController,
+    CupomAdminController,
     EstatisticasAdminController,
     FaqAjudaController,
     ManifestacaoController,
@@ -144,6 +145,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Simulacao
   */
   Route::get('/manifestacoes', [ManifestacaoController::class, 'index'])->name('manifestacao.index');
+
+  /*
+  Cupom admin
+  */
+  Route::get('/cupom', [CupomAdminController::class, 'index'])->name('cupom-admin.index')->middleware('user_admin_mandabem');
+  Route::post('/cupom', [CupomAdminController::class, 'salvar']);
   
    /*
   Not Found Permission
