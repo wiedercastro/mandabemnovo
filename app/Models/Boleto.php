@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -12,6 +13,12 @@ class Boleto extends Model
     public function getError()
     {
         return $this->error;
+    }
+
+
+    public function getDateInsertAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y H:i:s');
     }
 
     public function getBoleto($data)
@@ -34,33 +41,38 @@ class Boleto extends Model
         return $query->first();
     }
 
-    public function getBoletoList($data = [])
+    public function getBoletoList(bool $limitParam)
     {
         $usuarioLogado = auth()->user()->user_group_id;
-        $limit = isset($data['per_page']) ? $data['per_page'] : 10;
-        $start = isset($data['page_start']) ? $data['page_start'] : 0;
 
-        $query = $this->select(DB::raw('CONCAT(user.razao_social, " | ", user.name ) as cliente'),
-                               'boletos.id', 
-                               'boletos.date_insert', 
-                               'boletos.value', 
-                               'boletos.file_comprovante', 
-                               'boletos.doc as impressao', 
-                               'boletos.status', 
-                               'boletos.user_id',   
-                               'p_credito.id as credito')
-                      ->leftJoin('payment as p_credito', 'p_credito.boleto_id', '=', 'boletos.id')
-                      ->leftJoin('user', 'user.id', '=', 'boletos.user_id')
-                      ->limit($limit, $start);
+        $query = $this->select(
+                    DB::raw(
+                        'CONCAT(user.razao_social, " | ", user.name ) as cliente'
+                    ),
+                    'boletos.id', 
+                    'boletos.date_insert', 
+                    'boletos.value', 
+                    'boletos.file_comprovante', 
+                    'boletos.doc as impressao', 
+                    'boletos.status', 
+                    'boletos.user_id',   
+                    'p_credito.id as credito'
+                )
+                ->leftJoin('payment as p_credito', 'p_credito.boleto_id', '=', 'boletos.id')
+                ->leftJoin('user', 'user.id', '=', 'boletos.user_id')
+                ->where('boletos.bar_code', 'IS NOT', null)
+                ->where('boletos.status', 'NOT LIKE', 'DELETE');
 
         if ($usuarioLogado != 3) {
             $query->where('boletos.user_id', $usuarioLogado);
         }
 
-        $query->where('boletos.bar_code', 'IS NOT', null)
-              ->where('boletos.status', 'NOT LIKE', 'DELETE');
+        if ($limitParam) {
+            return $query->limit(10, 10)->get();
+        } else {
+            return $query->paginate(15);
+        }
 
-        return $query->get();
     }
 
     public function saveBoleto($data)
@@ -406,7 +418,7 @@ class Boleto extends Model
         return $setar;
     }
 
-    public function getInfoTotal($type = 'PAGO')
+    public function getInfoTotal(string $type = 'PAGO')
     {
         if ($type == 'PAGO') {
             return DB::table('boletos')

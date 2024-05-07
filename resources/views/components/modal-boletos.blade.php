@@ -6,7 +6,7 @@
         <div
             class="sm:ml-56 ml-0 inline-block align-bottom bg-white
             rounded-lg text-left shadow-xl overflow-y-auto
-            transform transition-all sm:my-8 sm:align-middle sm:w-2/5">
+            transform transition-all sm:my-8 sm:align-middle sm:w-3/5">
             <!-- Modal Header -->
             <div class="text-gray-600 px-4 py-4 flex justify-between bg-gray-200">
                 <div class="flex items-center text-gray-500 font-bold text-3xl">
@@ -44,7 +44,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-1 flex items-center space-x-1">
+                    <div class="mt-2 flex items-center space-x-1">
                         <button
                             class="bg-green-600 hover:bg-green-700 text-white font-bold px-2 py-1 rounded flex items-center text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -54,10 +54,10 @@
                             </svg>
                             <p class="ml-1">Filtrar</p>
                         </button>
-                        <button class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-2 py-1 rounded flex items-center text-sm">
+                        <a href="{{route('boletos.todos')}}" class="bg-cyan-600 hover:bg-cyan-700 text-white font-bold px-2 py-1 rounded flex items-center text-sm">
                             <i class="fa fa-eye"></i>
                             <p class="ml-1">Todos</p>
-                        </button>
+                        </a>
                     </div>
                 </form>
             </div>
@@ -86,6 +86,9 @@
                             </th>
                             <th scope="col" class="px-1 py-3">
                                 Impressão
+                            </th>
+                            <th scope="col" class="px-1 py-3">
+                                Opções
                             </th>
                         </tr>
                     </thead>
