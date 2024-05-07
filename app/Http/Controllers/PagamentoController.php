@@ -87,7 +87,7 @@ class PagamentoController extends Controller
         dd($request->all());
     }
 
-    public function get_boletos(): JsonResponse|View
+    public function get_boletos(Request $request): JsonResponse|View
     {
         $caminhoUrl = request()->path();
         $limit = true;
@@ -95,13 +95,13 @@ class PagamentoController extends Controller
         if ($caminhoUrl === "todos-boletos") {
             $limit = false;
             return view('layouts.boletos.index', [
-                'boletos'         => $this->boleto->getBoletoList($limit),
+                'boletos'         => $this->boleto->getBoletoList($limit, $request->cliente ?? ''),
                 'boletosPago'     => $this->boleto->getInfoTotal(),
                 'boletosPendente' => $this->boleto->getInfoTotal('PENDING'),
                 
             ]);
         }
-        return response()->json(['boletos' => $this->boleto->getBoletoList($limit)]);
+        return response()->json(['boletos' => $this->boleto->getBoletoList($limit, $request->cliente ?? '')]);
     }
 
     public function creditos(Request $request)

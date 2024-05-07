@@ -41,7 +41,7 @@ class Boleto extends Model
         return $query->first();
     }
 
-    public function getBoletoList(bool $limitParam)
+    public function getBoletoList(bool $limitParam, ?string $cliente)
     {
         $usuarioLogado = auth()->user()->user_group_id;
 
@@ -65,6 +65,10 @@ class Boleto extends Model
 
         if ($usuarioLogado != 3) {
             $query->where('boletos.user_id', $usuarioLogado);
+        }
+
+        if ($cliente) {
+            $query->where(DB::raw('CONCAT(user.razao_social, " | ", user.name)'), 'LIKE', "%$cliente%");
         }
 
         if ($limitParam) {

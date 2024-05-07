@@ -19,7 +19,7 @@
                 
                             <div class="flex flex-col w-full">
                                 <label for="cliente" class="text-xs sm:text-sm text-gray-600 font-bold">Cliente</label>
-                                <input required type="text" id="cobranca_cliente" name="cliente" placeholder="Digite o nome do cliente..." class="cliente id_cliente px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                                <input type="text" id="cliente" name="cliente" placeholder="Digite o nome do cliente..." class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
                             </div>
         
                             <div class="mt-2">
@@ -99,7 +99,9 @@
                         @endforeach
                     </table>
                     <div class="mt-4">
-                        {{ $boletos->links() }}
+                        {{ $boletos->appends([
+                            'cliente' => request()->get('cliente', '')
+                        ])->links() }}
                     </div>
                 </div>
             </div>
