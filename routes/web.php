@@ -55,13 +55,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/etiquetas/cancelamento/{idEtiqueta}', [EtiquetasController::class, 'getCancelamento']);
   Route::post('/etiquetas/cancelamento', [EtiquetasController::class, 'cancelaEnvio']);
   Route::post('/etiquetas/send_auditor', [EtiquetasController::class, 'sendAuditor']);
-  Route::get('/etiquetas/{id}', [EtiquetasController::class, 'show'])->name('etiqueta.show');
-  Route::post('/gerar-etiquetas', [ColetasController::class, 'gerarEtiquetas']);
+  Route::get('/etiquetas/{id}', [EtiquetasController::class, 'show'])->name('etiqueta.show');  
 
   /*
   Coletas
   */
   Route::get('/coleta/{id}',[ColetasController::class, 'getlistItens'])->name('coleta.show');
+  Route::post('/gerar-etiquetas', [ColetasController::class, 'gerarEtiquetas']);
+  Route::get('/consultar_plp', [ColetasController::class, 'consultar_plp'])->name('consultar.plp');
 
    /*
   Soap
@@ -157,8 +158,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Retornar pix
   */
   Route::post('/transferencia-buscar', [RetornarPixController::class, 'buscar']);
-  
-  
+
    /*
   Not Found Permission
   */

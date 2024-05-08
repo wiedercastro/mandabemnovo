@@ -186,7 +186,7 @@
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-100">NFSE</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Consultar PLP</a>
+                                <a href="{{route('consultar.plp')}}" class="block px-4 py-2 hover:bg-gray-100">Consultar PLP</a>
                             </li>
                             <li>
                                 <a href="{{route('faq.index')}}" class="block px-4 py-2 hover:bg-gray-100">FAQ - Me ajuda</a>
@@ -272,7 +272,7 @@
                         {{ __('NFSE') }}
                     </x-dropdown-link>
 
-                    <x-dropdown-link :href="route('profile.edit')">
+                    <x-dropdown-link :href="route('consultar.plp')">
                         {{ __('Consultar PLP') }}
                     </x-dropdown-link>
 
