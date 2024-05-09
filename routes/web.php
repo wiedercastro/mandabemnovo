@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{
+    AcaoCampanhaController,
     AcompanhamentoController,
     AfiliadosController,
     ColetasController,
@@ -165,6 +166,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   */
   Route::get('/conf_maps', [MapsUsuarioController::class, 'index'])->name('index.maps');
   Route::get('/maps', [MapsUsuarioController::class, 'maps'])->name('maps');
+
+  /*
+  Estatisticas campanhas
+  */
+  Route::get('/estatisticas_campanhas', [AcaoCampanhaController::class, 'index'])->name('estatisticas_campanhas');
 
   
 
