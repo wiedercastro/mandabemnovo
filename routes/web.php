@@ -13,6 +13,7 @@ use App\Http\Controllers\{
     EstatisticasAdminController,
     FaqAjudaController,
     ManifestacaoController,
+    MapsUsuarioController,
     MensagemController,
     NotFoundPermissionController,
     RetornarPixController,
@@ -158,6 +159,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Retornar pix
   */
   Route::post('/transferencia-buscar', [RetornarPixController::class, 'buscar']);
+
+  /*
+  Retornar pix
+  */
+  Route::get('/conf_maps', [MapsUsuarioController::class, 'index'])->name('index.maps');
+  Route::get('/maps', [MapsUsuarioController::class, 'maps'])->name('maps');
+
+  
 
    /*
   Not Found Permission

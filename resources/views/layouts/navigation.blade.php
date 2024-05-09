@@ -203,6 +203,9 @@
                             <li>
                                 <a onclick="abreModalRetornarPix()" href="#" class="block px-4 py-2 hover:bg-gray-100">Retornar PIX</a>
                             </li>
+                            <li>
+                                <a href="{{route('index.maps')}}" class="block px-4 py-2 hover:bg-gray-100">Mapa usuários</a>
+                            </li>
                         @endcan
 
                         @can('users')
