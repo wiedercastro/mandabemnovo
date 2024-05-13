@@ -10,6 +10,7 @@ use App\Models\Coleta;
 use App\Models\Envio;
 use App\Models\Manifestacao;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
@@ -26,6 +27,7 @@ class EtiquetasController extends Controller
     public function __construct(
         protected Envio $envio,
         protected Coleta $coleta,
+        protected User $user,
         protected Payment $payment
     ){ }
 
@@ -81,7 +83,7 @@ class EtiquetasController extends Controller
     {
         $etiquetas = $this->envio->getDetalhesEtiquetasUsuario($idEtiqueta);
         $usuarioLogado = auth()->user()->id;
-   /*      $data = new stdClass();
+        /*      $data = new stdClass();
 
         $coletas = $this->coleta->getList();
 
@@ -442,8 +444,133 @@ class EtiquetasController extends Controller
         return Redirect::to('/');
     }
 
-    public function gerarEtiquetas(Request $request)
+    public function apuracao(): View
     {
-        dd($request->all());
+    /*     if (!$this->is_logged || $this->session->group_code != 'mandabem') {
+            exit();
+            exit("DEVOLUÇÔES em manutenção, aguarde alguns ajustes, volte mais tarde. Obrigado");
+        } */
+
+        $enviosIds = request()->get('envios_id');
+        $userId = (int) request()->get('user_id');
+        $valorDevolver = request()->get('valor_devolver');
+        $etiquetas = request()->get('etiquetas');
+
+        $data = new stdClass();
+
+        if (request()->get('devolver') == 1) {
+
+            if (! $enviosIds) {
+                return redirect()->back('error', 'Nenhum envio marcado para devolução');
+            }
+
+            if (! $userId) {
+                return redirect()->back('error', 'Usuário não informado');
+            }
+
+            $valor_total_credito = 0;
+
+            // Somando total a devolver para lancar credito
+            foreach ($enviosIds as $envio_id) {
+                $valor_total_credito += $valorDevolver[$envio_id];
+            }
+
+            if ($valor_total_credito <= 0) {
+                return redirect()->back('error', 'O valor total ZERADO');
+            }
+
+            foreach ($enviosIds as $envio_id) {
+                $valor = $valorDevolver[$envio_id];
+                $etiqueta = $etiquetas[$envio_id];
+
+                if ($valor) {
+                    $data_credito = [
+                        'user_id'          => $userId,
+                        'value'            => $valor,
+                        'description'      => 'Crédito devolução etiquetas a menor - Envio: ' . $etiqueta,
+                        'description_tipo' => 'credito',
+                        'user_id_creator'  => auth()->user()->id,
+                        'obs' => null
+                    ];
+
+                    $credito_id = $this->payment->saveCredito($data_credito);
+
+                    if (!$credito_id) {
+                        return redirect()->back('error', 'Falha ao adicionar Crédito.');
+                    }
+
+                    $devolucao = $this->envio->devolveValor([
+                        'user_id' => $userId,
+                        'envio_id' => $envio_id,
+                        'valor_devolvido' => $valor,
+                        'payment_devolvido_id' => $credito_id
+                    ]);
+                    if (!$devolucao) {
+                        $this->payment->removeCredit($credito_id);
+                    }
+                }
+            }
+        }
+
+        if (request()->get('buscar') == 1) {
+
+            $list = $this->envio->getList([
+                'type' => 'NORMAL',
+                'only_postados' => true,
+                'user_id' => $userId,
+                'date_from' => request()->get('date_fim'),
+                'date_to' => request()->get('date_inicial')
+            ]);
+
+            $total_dev = 0;
+            
+            $user = $this->user->get($userId);
+            // Config
+            $user_config = $this->user->getConfig($user);
+
+            foreach ($list as $k => $i) {
+
+                $taxa_atual = $this->envio->getTaxaEnvio([
+                    'valor_envio' => $i->valor_correios,
+                    'forma_envio' => $i->forma_envio,
+                ]);
+                
+                // Ajuste para envios insustriais
+                if( (isset($user_config['config_enable_industrial']) && (int) $user_config['config_enable_industrial']) || ($i->user_id == 6727 || $i->user_id == 16947 || $i->user_id == 62885 || $i->user_id == 10743)){
+                    $coleta = $this->coleta->get(['id' => $i->coleta_id]);
+                    if(strlen($coleta->agencia_id_fecha)){
+
+                        $dif = ($i->valor_industrial ) - ($i->valor_correios );
+                        $taxa_atual = ($i->valor_total - $dif) - ($i->valor_correios);
+                        $list[$k]->etiqueta_correios = "<span class='red'> --IND -- </span>" . $list[$k]->etiqueta_correios;
+                        $list[$k]->taxa_mandabem = ($i->valor_total) - ($i->valor_correios);
+                    } else {
+                        $dif = ($i->valor_total ) - ($i->valor_correios + $taxa_atual);
+                    }
+                } else {
+
+                    $dif = ($i->valor_total ) - ($i->valor_correios + $taxa_atual);
+                }
+                if ($dif <= 0) {
+                    unset($list[$k]);
+                    continue;
+                }
+
+
+                $i->dif = $dif;
+                
+                $i->taxa_atual = $taxa_atual;
+
+                // se já não foi pago, soma valor
+                if (!$i->payment_devolvido_id) {
+                    $total_dev += $dif;
+                }
+            }
+
+            $data->total_dev = $total_dev;
+            $data->list = $list;
+            $data->user_id = $userId;
+        }
+        return view('layouts.etiquetas.apuracao');
     }
 }

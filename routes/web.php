@@ -57,6 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/etiquetas/cancelamento/{idEtiqueta}', [EtiquetasController::class, 'getCancelamento']);
   Route::post('/etiquetas/cancelamento', [EtiquetasController::class, 'cancelaEnvio']);
   Route::post('/etiquetas/send_auditor', [EtiquetasController::class, 'sendAuditor']);
+  Route::get('/apuracao', [EtiquetasController::class, 'apuracao'])->name('apuracao.valores');  
   Route::get('/etiquetas/{id}', [EtiquetasController::class, 'show'])->name('etiqueta.show');  
 
   /*
