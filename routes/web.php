@@ -4,6 +4,7 @@ use App\Http\Controllers\{
     AcaoCampanhaController,
     AcompanhamentoController,
     AfiliadosController,
+    AgenciaController,
     ColetasController,
     EnderecoController,
     EtiquetasController,
@@ -172,6 +173,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Estatisticas campanhas
   */
   Route::get('/estatisticas_campanhas', [AcaoCampanhaController::class, 'index'])->name('estatisticas_campanhas');
+
+   /*
+  Agencias
+  */
+  Route::get('/agencias', [AgenciaController::class, 'index'])->name('agencias.index');
 
   
 

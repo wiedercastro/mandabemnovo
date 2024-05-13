@@ -180,6 +180,9 @@
                     <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownInformdropdownAvatarNameButtonationButton">
                         @can('user_admin_mandabem')
                             <li>
+                                <a href="{{route('agencias.index')}}" class="block px-4 py-2 hover:bg-gray-100">Agências</a>
+                            </li>
+                            <li>
                                 <a href="{{route('apuracao.valores')}}" class="block px-4 py-2 hover:bg-gray-100">Devolução Valores</a>
                             </li>
                             <li>
