@@ -73,6 +73,9 @@
 
         <script src="{{ url('js/usuario/edita_usuario.js') }}"></script>
 
+
+        <script src="{{ url('js/agencias/atualiza_endereco.js') }}"></script>
+
         <!--- FAQ --> 
         <script src="{{ url('js/faq/insere_faq.js') }}"></script>
         <script src="{{ url('js/faq/deleta_faq.js') }}"></script>
