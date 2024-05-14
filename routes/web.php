@@ -21,6 +21,7 @@ use App\Http\Controllers\{
     NotFoundPermissionController,
     RetornarPixController,
     ReversaController,
+    RotinaController,
     SimulacaoController,
     SoapController,
     UserController
@@ -184,6 +185,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Agencias
   */
   Route::get('/nfse', [NFseController::class, 'index'])->name('nfse.index');
+
+   /*
+  Rotina
+  */
+  Route::get('/clean_cache', [RotinaController::class, 'clean_cache_correios'])->name('clean_cache');
 
   
 

@@ -201,7 +201,7 @@
                                 <a href="{{route('simulacao.index')}}" class="block px-4 py-2 hover:bg-gray-100">Tabela Simulação</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Limpar Cache</a>
+                                <a  href="{{route('clean_cache')}}" class="block px-4 py-2 hover:bg-gray-100">Limpar Cache</a>
                             </li>
                             <li>
                                 <a href="{{route('mensagem.index')}}" class="block px-4 py-2 hover:bg-gray-100">Mensagem</a>
