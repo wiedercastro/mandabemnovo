@@ -17,6 +17,7 @@ use App\Http\Controllers\{
     ManifestacaoController,
     MapsUsuarioController,
     MensagemController,
+    NFseController,
     NotFoundPermissionController,
     RetornarPixController,
     ReversaController,
@@ -178,6 +179,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Agencias
   */
   Route::get('/agencias', [AgenciaController::class, 'index'])->name('agencias.index');
+
+    /*
+  Agencias
+  */
+  Route::get('/nfse', [NFseController::class, 'index'])->name('nfse.index');
 
   
 

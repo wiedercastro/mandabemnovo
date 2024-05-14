@@ -65,9 +65,11 @@ class Nfse extends Model
         $query = $this->select('nfse.*')
             ->selectRaw('CONCAT(user.id, "-", user.name, " - ", user.razao_social) as cliente')
             ->join('user', 'user.id', '=', 'nfse.user_id')
-            ->where('nfse.environment', $environment);
+            ->where('nfse.environment', $environment)->get();
 
-        if (isset($param['get_total']) && $param['get_total']) {
+        return $query;
+
+      /*   if (isset($param['get_total']) && $param['get_total']) {
             return $query->count('nfse.id');
         } elseif (isset($param['get_valor_total']) && $param['get_valor_total']) {
             $result = $query->where('nfse.status', 'OK')->selectRaw('sum(nfse.valor) as total, count(*) as num_rows')->first();
@@ -114,7 +116,7 @@ class Nfse extends Model
 
                 return $query->get();
             }
-        }
+        } */
     }
 
     public function cancelar($nfse_id)

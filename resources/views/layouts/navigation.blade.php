@@ -186,10 +186,10 @@
                                 <a href="{{route('apuracao.valores')}}" class="block px-4 py-2 hover:bg-gray-100">Devolução Valores</a>
                             </li>
                             <li>
-                                <a href="{{route('estatisticas_campanhas')}}" class="block px-4 py-2 hover:bg-gray-100">Ação Campanhas</a>
+                                <a href="{{route('nfse.index')}}" class="block px-4 py-2 hover:bg-gray-100">NFSe</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">NFSE</a>
+                                <a href="{{route('estatisticas_campanhas')}}" class="block px-4 py-2 hover:bg-gray-100">Ação Campanhas</a>
                             </li>
                             <li>
                                 <a href="{{route('consultar.plp')}}" class="block px-4 py-2 hover:bg-gray-100">Consultar PLP</a>
