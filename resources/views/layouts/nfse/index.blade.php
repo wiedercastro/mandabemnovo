@@ -13,7 +13,7 @@
                     <p class="ml-1">Exportar ZIP (mensal)</p>
                 </button>
                 <hr class="mt-6">
-                <div class="flex items-center space-x-0 sm:space-x-6">
+                <div class="flex sm:flex-row flex-col items-center space-x-0 sm:space-x-6">
                         <form action="{{route('maps')}}" method="GET" class="border p-4 rounded mt-6 w-full">
                             <div class="mt-4">
                                 <p class="text-2xl text-gray-500 font-bold">Filtro</p>
@@ -51,7 +51,7 @@
                                 </button>
                             </div>
                         </form>
-                        <div class="w-2/5 border rounded p-2">
+                        <div class="sm:w-2/5 w-full border rounded p-2 sm:mt-0 mt-4">
                             <h1 class="text-xl text-gray-500 font-bold">Total</h1>
                             <hr class="mt-2">
                             <div class="flex items-center mt-2">
