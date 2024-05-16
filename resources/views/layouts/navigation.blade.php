@@ -189,6 +189,9 @@
                                 <a href="{{route('nfse.index')}}" class="block px-4 py-2 hover:bg-gray-100">NFSe</a>
                             </li>
                             <li>
+                                <a href="{{route('grupo_taxa.index')}}" class="block px-4 py-2 hover:bg-gray-100">Grupo Taxas</a>
+                            </li>
+                            <li>
                                 <a href="{{route('estatisticas_campanhas')}}" class="block px-4 py-2 hover:bg-gray-100">Ação Campanhas</a>
                             </li>
                             <li>

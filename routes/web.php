@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     CotacaoController,
     EstatisticasAdminController,
     FaqAjudaController,
+    GrupoTaxaController,
     ManifestacaoController,
     MapsUsuarioController,
     MensagemController,
@@ -191,7 +192,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
   */
   Route::get('/clean_cache', [RotinaController::class, 'clean_cache_correios'])->name('clean_cache');
 
-  
+   /*
+  Grupo taxa
+  */
+  Route::get('/grupo_taxa', [GrupoTaxaController::class, 'grupo_taxa'])->name('grupo_taxa.index');
+  Route::post('/grupo_taxa', [GrupoTaxaController::class, 'save']);
+  Route::post('/deleta-grupo-taxa', [GrupoTaxaController::class, 'remove']);
+
+ 
 
    /*
   Not Found Permission

@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\User;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Libraries\FormBuilder;
+use Carbon\Carbon;
 
 class GrupoTaxa extends Model
 {
     private $error;
     protected $fields;
+    public $table = "grupo_taxa";
+    public $guarded = [];
 
     public function __construct()
     {
@@ -72,7 +75,7 @@ class GrupoTaxa extends Model
 
         if (!$validator) {
             $this->error = $formBuilder->getErrorValidation();
-            return FALSE;
+            return false;
         } else {
             try {
                 DB::beginTransaction();
@@ -180,7 +183,7 @@ class GrupoTaxa extends Model
         return $grupo;
     }
 
-    public function getList($data = [])
+    public function getList(array $data = [])
     {
         $query = DB::table('grupo_taxa');
 
@@ -197,7 +200,6 @@ class GrupoTaxa extends Model
         foreach ($grupos as $g) {
             $g->itens = DB::table('grupo_taxa_itens')->where('grupo_taxa_id', $g->id)->get();
         }
-
         return $grupos;
     }
 
