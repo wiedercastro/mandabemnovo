@@ -77,6 +77,7 @@
         <script src="{{ url('js/agencias/atualiza_endereco.js') }}"></script>
         <script src="{{ url('js/nfse/gerar_nfse.js') }}"></script>
         <script src="{{ url('js/grupo-taxa/incluir_novo.js') }}"></script>
+        <script src="{{ url('js/grupo-taxa/delete.js') }}"></script>
 
         <!--- FAQ --> 
         <script src="{{ url('js/faq/insere_faq.js') }}"></script>

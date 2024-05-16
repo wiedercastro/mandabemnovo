@@ -63,104 +63,100 @@ class GrupoTaxa extends Model
         return $opts;
     }
 
-    public function saveGrupoTaxa($post)
+    public function saveGrupoTaxa(array $data)
     {
-        // Formatacao do retorno do Error
-        $typeErrorReturn = 'NORMAL';
-        if (isset($post['type_error_return'])) {
-            $typeErrorReturn = $post['type_error_return'];
-        }
-        $formBuilder = new FormBuilder();
-        $validator = $formBuilder->validadeData($post, $this->fields, [], []);
+        try {
+            DB::beginTransaction();
 
-        if (!$validator) {
-            $this->error = $formBuilder->getErrorValidation();
-            return false;
-        } else {
-            try {
-                DB::beginTransaction();
-
-                $dataInsert = [
-                    'date_update' => now(),
-                    'name' => $post['name'],
-                    'status' => (int) $post['status'],
-                    'type' => $post['type'],
-                    'tabela' => $post['tabela'],
-                    'application' => $post['application'],
-                ];
-
-                if ($post['type'] == 'PERCENT') {
-                    $percent = (float) str_replace(',', '.', $post['percent']);
-                    if (!$percent) {
-                        throw new \Exception("Informe o valor Percentual");
-                    }
-                    $dataInsert['percent'] = $percent;
+            $dataInsert = [
+                'date_update' => now(),
+                'name' => $data['name'],
+                'status' => $data['situacao'] === 'habilitado' ? 1 : 0,
+                'type' => $data['type'] === 'percentual' ? "PERCENT" : "FIX",
+                'tabela' => $data['tabela'],
+                'application' => $data['application'] === "pac_mini" ? "PACMINI" : "DEFAULT",
+            ];
+            
+            if ($data['type'] == 'percentual') {
+                $percent = (float) str_replace(',', '.', $data['percentual']);
+                if (!$percent) {
+                    throw new \Exception("Informe o valor Percentual");
                 }
+                $dataInsert['percentual'] = $percent;
+            }
+            
+            if (isset($data['id']) && (int) $data['id']) {
+                $grupoTaxaId = $data['id'];
+                $dataInsert['date_insert'] = now();
+                $this->where('id', $grupoTaxaId)->update($dataInsert);
+            } else {
+                $dataInsert['date_insert'] = now();
+            }
 
-                if (isset($post['id']) && (int) $post['id']) {
-                    $grupoTaxaId = $post['id'];
-                    $dataInsert['date_insert'] = now();
-                    $this->where('id', $grupoTaxaId)->update($dataInsert);
-                } else {
-                    $dataInsert['date_insert'] = now();
-                    $grupoTaxaId = $this->insertGetId($dataInsert);
-                }
+            if ($data['type'] == 'fixos') {
+                $grupoTaxaId = $this->insertGetId($dataInsert);
 
                 if (!$grupoTaxaId) {
                     throw new \Exception("Falha ao inserir, tente novamente mais tarde");
                 }
 
-                if ($grupoTaxaId && $post['type'] == 'FIX') {
-                    foreach ($post['faixa_init'] as $k => $v) {
-                        $taxa = (float) str_replace(',', '.', $post['taxa'][$k]);
-                        $faixaInit = (float) str_replace(',', '.', $post['faixa_init'][$k]);
-                        $faixaEnd = (float) str_replace(',', '.', $post['faixa_end'][$k]);
+                foreach ($data['faixa_init'] as $k => $v) {
+                    $taxa = (float) str_replace(',', '.', $data['taxas'][$k]);
+                    $faixaInit = (float) str_replace(',', '.', $data['faixa_init'][$k]);
+                    $faixaEnd = (float) str_replace(',', '.', $data['faixa_end'][$k]);
+       
+                    $exist = DB::table('grupo_taxa_itens')
+                        ->where('grupo_taxa_id', $grupoTaxaId)
+                        ->where('min', $faixaInit)
+                        ->where('max', $faixaEnd)
+                        ->first();
 
-                        $exist = DB::table('grupo_taxa_itens')
-                            ->where('grupo_taxa_id', $grupoTaxaId)
-                            ->where('min', $faixaInit)
-                            ->where('max', $faixaEnd)
-                            ->first();
+                    $itensInsert = [
+                        'taxa' => $taxa,
+                        'date_update' => now(),
+                    ];
 
-                        $itensInsert = [
-                            'taxa' => $taxa,
-                            'date_update' => now(),
-                        ];
+                    if ($exist) {
+                        DB::table('grupo_taxa_itens')
+                            ->where('id', $exist->id)
+                            ->update($itensInsert);
+                    } else {
+                        $itensInsert['grupo_taxa_id'] = $grupoTaxaId;
+                        $itensInsert['date_insert'] = now();
+                        $itensInsert['min'] = $faixaInit;
+                        $itensInsert['max'] = $faixaEnd;
 
-                        if ($exist) {
-                            DB::table('grupo_taxa_itens')
-                                ->where('id', $exist->id)
-                                ->update($itensInsert);
-                        } else {
-                            $itensInsert['grupo_taxa_id'] = $grupoTaxaId;
-                            $itensInsert['date_insert'] = now();
-                            $itensInsert['min'] = $faixaInit;
-                            $itensInsert['max'] = $faixaEnd;
-
-                            DB::table('grupo_taxa_itens')->insert($itensInsert);
-                        }
+                        DB::table('grupo_taxa_itens')->insert($itensInsert);
                     }
                 }
-
-                DB::commit();
-                return true;
-            } catch (\Exception $e) {
-                DB::rollback();
-                $this->error = $e->getMessage();
-                return false;
+            } else {
+                DB::table('grupo_taxa')->insert([
+                    'name' => $dataInsert['name'],
+                    'status' => $dataInsert['status'],
+                    'type' => $dataInsert['type'],
+                    'tabela' => $dataInsert['tabela'],
+                    'application' => $dataInsert['application'],
+                    'date_update' => $dataInsert['date_update']->format('Y-m-d H:i:s'),
+                    'date_insert' => $dataInsert['date_insert']->format('Y-m-d H:i:s'),
+                ]);
             }
+
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollback();
+            $this->error = $e->getMessage();
+            return false;
         }
     }
 
-    public function deleteGrupoTaxa($data)
+    public function deleteGrupoTaxa(int $idGrupoTaxa)
     {
-        $id = $data['id'];
-
         try {
             DB::beginTransaction();
 
-            DB::table('grupo_taxa_itens')->where('grupo_taxa_id', $id)->delete();
-            DB::table('grupo_taxa')->where('id', $id)->delete();
+            DB::table('grupo_taxa_itens')->where('grupo_taxa_id', $idGrupoTaxa)->delete();
+            DB::table('grupo_taxa')->where('id', $idGrupoTaxa)->delete();
 
             DB::commit();
             return true;

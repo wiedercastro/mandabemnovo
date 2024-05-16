@@ -19,30 +19,42 @@
             </div>
 
             <div class="mt-2 p-4">
-                <form action="#" method="POST" class="mt-8 flex flex-col w-full border p-2 rounded" id="submitAtualizaEndereco">
+                <div class="hidden p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-200 alert" role="alert">
+                    <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                    </svg>
+                    <span class="sr-only">Danger</span>
+                    <div>
+                        <ul class="mt-1.5 list-disc list-inside" id="resultErros"></ul>
+                    </div>
+                </div>
+  
+                <form action="#" method="POST" class="mt-8 flex flex-col w-full border p-2 rounded" id="submitFormIncluirNovoGrupoTaxa">
                     @csrf
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" id="_token">
 
                     <div class="flex items-center space-x-8">
                         <div class="flex flex-col w-full">
-                            <label for="nome_grupo" class="text-sm text-gray-700">Nome</label>
-                            <input required type="text" id="nome_grupo" name="nome_grupo" placeholder="Nome do grupo" class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                            <label for="name" class="text-sm text-gray-700">Nome</label>
+                            <input type="text" id="name" name="name" placeholder="Nome do grupo" class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
                         </div>
     
                         <div class="flex flex-col w-full">
                             <div class="flex items-center">
-                                <label for="aplicacao" class="text-sm text-gray-700">Aplicação</label>
+                                <label for="application" class="text-sm text-gray-700">Aplicação</label>
                                 <i class="fa fa-info-circle text-blue-600 ml-1"></i>
                             </div>
-                            <select name="aplicacao" id="aplicacao" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                            <select name="application" id="application" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                <option value="">Selecione</option>
                                 <option value="default">Default</option>
                                 <option value="pac_mini">Pac Mini</option>
                             </select>
                         </div>
 
                         <div class="flex flex-col w-full">
-                            <label for="tipo_desconto" class="text-sm text-gray-700">Tipo de Desconto *</label>
-                            <select name="tipo_desconto" id="tipo_desconto" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                            <label for="type" class="text-sm text-gray-700">Tipo de Desconto *</label>
+                            <select onchange="toggleTipoDesconto()" name="type" id="type" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                <option value="">Selecione</option>
                                 <option value="fixos">Valores Fixos</option>
                                 <option value="percentual">Percentual</option>
                             </select>
@@ -53,6 +65,7 @@
                         <div class="flex flex-col w-full mt-4">
                             <label for="situacao" class="text-sm text-gray-700">Situação</label>
                             <select name="situacao" id="situacao" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                <option value="">Selecione</option>
                                 <option value="habilitado">Habilitado</option>
                                 <option value="desabilitado">Desabilitado</option>
                             </select>
@@ -61,18 +74,19 @@
                         <div class="flex flex-col w-full mt-4">
                             <label for="tabela" class="text-sm text-gray-700">Tabela *</label>
                             <select name="tabela" id="tabela" class="text-gray-700 shadow p-1 w-full border-1 rounded outline-none border-gray-200 focus:border-blue-500">
+                                <option value="">Selecione</option>
                                 <option value="varejo">Varejo</option>
                                 <option value="industrial">Industrial</option>
                             </select>
                         </div>
     
-                        <div class="flex flex-col w-full mt-4">
+                        <div class="flex flex-col w-full mt-4 hidden" id="inputPercentual">
                             <label for="percentual" class="text-sm text-gray-700">Percentual (%)</label>
-                            <input required type="text" id="percentual" name="percentual" placeholder="Percentual a ser aplicado" class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
+                            <input type="text" id="percentual" name="percentual" placeholder="Percentual a ser aplicado" class="px-1 py-2 w-full border outline-none rounded bg-white border-gray-200 text-sm text-gray-600">
                         </div>
                     </div>
 
-                    <div class="mt-6 overflow-y-auto h-96">
+                    <div class="mt-6 overflow-y-auto h-96 hidden" id="exibeTableParaCustomizado">
                         <h3 class="text-2xl text-gray-600 font-bold">Faixas</h3>
                         <hr class="bg-gray-500 border-2">
                         <table class="mt-2 w-96 divide-y divide-gray-200">
@@ -103,7 +117,8 @@
                             <p class="ml-1">Cancelar</p>
                         </button>
                         <button
-                            id="buttonFormCobranca"
+                            id="buttonIncluirNovoGrupoTaxa"
+                            type="submit"
                             class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-2 py-1 rounded flex items-center text-sm">
                             <i class="fa fa-save"></i>
                             <p class="ml-1">Salvar</p>

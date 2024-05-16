@@ -1,6 +1,6 @@
 <x-app-layout>
-    <div class="sm:w-5/6 w-full ml-auto lg:px-12 p-4 flex justify-center items-center flex-col">
-        <div class="sm:w-3/4 w-full bg-white shadow rounded p-4">
+    <div class="sm:w-5/6 w-full ml-auto p-4 flex justify-center items-center flex-col">
+        <div class="sm:w-5/6 w-full bg-white shadow rounded p-4">
             <div class="p-2">
                 <button
                     onclick="modalIncluirNovoGrupoTaxa()"
@@ -12,6 +12,7 @@
             </div>
 
             <x-modal-grupo-taxas :faixas="$faixas" />
+            <x-modal-deletar-grupo-taxa />
 
             <div class="p-2 rounded">
                 <div class="border rounded p-2 mt-2">
@@ -61,7 +62,9 @@
                                                             <i class="fa fa-edit"></i>
                                                         </button>
                                 
-                                                        <button class="text-xl bg-red-500 hover:bg-red-600 px-2 py-1 rounded text-white font-bold inline-flex items-center">
+                                                        <button 
+                                                            onclick="modalDeletaGrupoTaxa({{$grupo->id}})"
+                                                            class="text-xl bg-red-500 hover:bg-red-600 px-2 py-1 rounded text-white font-bold inline-flex items-center">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     </td>

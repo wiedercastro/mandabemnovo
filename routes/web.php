@@ -196,8 +196,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Grupo taxa
   */
   Route::get('/grupo_taxa', [GrupoTaxaController::class, 'grupo_taxa'])->name('grupo_taxa.index');
-  Route::post('/grupo_taxa', [GrupoTaxaController::class, 'save']);
-  Route::post('/deleta-grupo-taxa', [GrupoTaxaController::class, 'remove']);
+  Route::post('/grupo_taxa_incluir', [GrupoTaxaController::class, 'save']);
+  Route::delete('/deleta-grupo-taxa/{id}', [GrupoTaxaController::class, 'remove']);
 
  
 
