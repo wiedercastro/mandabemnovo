@@ -17,6 +17,37 @@ class Transferencia extends Model
         parent::__construct();
     }
 
+    public function getTotal(string $banco, string $dateStart, string $dateEnd)
+    {
+        return Transferencia::where('banco', $banco)
+            ->whereBetween('date_insert', [$dateStart, $dateEnd])
+            ->count();
+    }
+
+    public function getDeletados(string $banco, string $dateStart, string $dateEnd)
+    {
+        return Transferencia::where('banco', $banco)
+                ->whereBetween('date_insert', [$dateStart, $dateEnd])
+                ->whereIn('status', ['delete', 'delete_auto'])
+                ->count();
+    }
+
+    public function getPagos(string $banco, string $dateStart, string $dateEnd)
+    {
+        return Transferencia::where('banco', $banco)
+            ->whereBetween('date_insert', [$dateStart, $dateEnd])
+            ->where('status', 'liberado')
+            ->count();
+    }
+
+    public function getAguardando(string $banco, string $dateStart, string $dateEnd)
+    {
+        return Transferencia::where('banco', $banco)
+                ->whereBetween('date_insert', [$dateStart, $dateEnd])
+                ->whereNull('status')
+                ->count();
+    }
+
     public function getDateInsertAttribute($value)
     {
         return Carbon::parse($value)->format('d/m/Y');

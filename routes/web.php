@@ -15,6 +15,7 @@ use App\Http\Controllers\{
     EstatisticasAdminController,
     FaqAjudaController,
     GrupoTaxaController,
+    HomeController,
     ManifestacaoController,
     MapsUsuarioController,
     MensagemController,
@@ -191,6 +192,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Rotina
   */
   Route::get('/clean_cache', [RotinaController::class, 'clean_cache_correios'])->name('clean_cache');
+
+  /*
+  Home
+  */
+  Route::get('/apuracao_pix', [HomeController::class, 'apuracao_pix'])->name('apuracao_pix');
 
    /*
   Grupo taxa
