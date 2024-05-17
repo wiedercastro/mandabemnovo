@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="sm:w-5/6 w-full ml-auto lg:px-12 p-4 flex justify-center items-center flex-col">
-        <div class="sm:w-3/4 w-full bg-white shadow rounded p-4">
+        <div class="sm:w-5/6 w-full bg-white shadow rounded p-4">
 
             <div class="p-2 rounded">
                 <div class="flex items-center text-xl sm:text-4xl text-gray-500 font-bold">
