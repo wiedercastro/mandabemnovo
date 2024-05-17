@@ -193,9 +193,9 @@ class GrupoTaxa extends Model
 
         $grupos = $query->get();
 
-        foreach ($grupos as $g) {
+       /*  foreach ($grupos as $g) {
             $g->itens = DB::table('grupo_taxa_itens')->where('grupo_taxa_id', $g->id)->get();
-        }
+        } */
         return $grupos;
     }
 
