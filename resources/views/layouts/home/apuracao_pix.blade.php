@@ -3,7 +3,7 @@
         <div class="sm:w-3/4 w-full bg-white shadow rounded p-4">
             <h1 class="text-gray-500 font-bold text-2xl sm:text-4xl">Apuração PIX</h1>
 
-            <div class="border p-4 rounded mt-6 w-3/5">            
+            <div class="border p-4 rounded mt-6 sm:w-3/5 w-full">            
                 <form action="{{route('apuracao_pix')}}" method="GET" class="flex w-full" id="formGetValoresPix">   
                     <label for="date" class="sr-only">Search</label>
                     <div class="relative w-full">
