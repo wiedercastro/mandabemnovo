@@ -21,6 +21,7 @@ use App\Http\Controllers\{
     MensagemController,
     NFseController,
     NotFoundPermissionController,
+    PesquisaController,
     RetornarPixController,
     ReversaController,
     RotinaController,
@@ -205,7 +206,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::post('/grupo_taxa_incluir', [GrupoTaxaController::class, 'save']);
   Route::delete('/deleta-grupo-taxa/{id}', [GrupoTaxaController::class, 'remove']);
 
- 
+   /*
+    Pesquisa
+  */
+  Route::get('/research', [PesquisaController::class, 'research'])->name('research'); 
 
    /*
   Not Found Permission

@@ -192,6 +192,9 @@
                                 <a href="{{route('grupo_taxa.index')}}" class="block px-4 py-2 hover:bg-gray-100">Grupo Taxas</a>
                             </li>
                             <li>
+                                <a href="{{route('research')}}" class="block px-4 py-2 hover:bg-gray-100">Pesquisas Sistema</a>
+                            </li>
+                            <li>
                                 <a href="{{route('apuracao_pix')}}" class="block px-4 py-2 hover:bg-gray-100">Apuração Pix</a>
                             </li>
                             <li>
