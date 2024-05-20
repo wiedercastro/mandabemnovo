@@ -168,12 +168,12 @@ class Manifestacao extends Model
             $date_end = now()->subYear()->endOfYear();
         }
 
-        if (!isset($param['apuracao']) && session('group_code') == 'mandabem') {
+        if (!isset($param['apuracao']) && $param['user_id'] == 'mandabem') {
             $query->where('ma.date_insert', '>=', $date_start)
                 ->where('ma.date_insert', '<=', $date_end);
         }
 
-        if (!isset($param['apuracao']) && session('group_code') != 'mandabem') {
+        if (!isset($param['apuracao']) && $param['user_id'] != 'mandabem') {
             $query->whereNull('ma.type_view')
                 ->whereNotNull('ma.numero_pi')
                 ->where('ma.numero_pi', '<>', 'f');

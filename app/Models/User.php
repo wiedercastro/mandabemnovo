@@ -50,6 +50,11 @@ class User extends Authenticatable
     ];
 
     protected $table = "user";
+
+    public function group()
+    {
+        return $this->belongsTo(UserGroup::class, 'user_group_id');
+    }
     
 
     public function migrateUser()

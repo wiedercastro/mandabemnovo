@@ -143,7 +143,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
    /*
   Simulacao
   */
-  Route::get('/manifestacoes', [ManifestacaoController::class, 'index'])->name('manifestacao.index');
+  Route::get('/manifestacoes', [ManifestacaoController::class, 'index'])->name('manifestacao.index')->middleware('user_admin_mandabem');;
   
    /*
   Not Found Permission
