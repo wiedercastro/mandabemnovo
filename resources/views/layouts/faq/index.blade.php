@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="sm:w-5/6 w-full ml-auto lg:px-12 pb-10 animate__animated animate__fadeIn p-4">
+    <div class="w-full md:w-full lg:w-4/5 2xl:w-5/6 ml-auto lg:px-12 p-4 animate__animated animate__fadeIn">
 
         <div class="flex sm:flex-row justify-between flex-col mt-6">
             <div class="flex justify-center sm:hidden">
