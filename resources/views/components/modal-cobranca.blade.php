@@ -22,7 +22,7 @@
                 </svg>
             </div>
 
-            <div class="mt-2 p-4 form-container">
+            <div class="mt-2 p-4 form-container overflow-y-auto" style="height: 500px;">
                 <form action="#" method="POST" class="mt-8 flex flex-col w-full" id="submitFormCobranca">
                     @csrf
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" id="_token">

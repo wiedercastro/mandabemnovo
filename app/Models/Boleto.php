@@ -63,7 +63,7 @@ class Boleto extends Model
                 ->where('boletos.bar_code', 'IS NOT', null)
                 ->where('boletos.status', 'NOT LIKE', 'DELETE');
 
-        if ($usuarioLogado != 3) {
+        if ($usuarioLogado != 1) {
             $query->where('boletos.user_id', $usuarioLogado);
         }
 

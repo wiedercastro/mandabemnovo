@@ -4,8 +4,8 @@
         <!-- Modal Content -->
         <div
             class="sm:ml-56 ml-0 inline-block align-bottom bg-white
-            rounded-lg text-left shadow-xl
-            transform transition-all sm:my-8 sm:align-middle sm:w-2/5 w-full">
+            rounded-lg text-left shadow-xl overflow-y-auto
+            transform transition-all sm:my-8 sm:align-middle sm:w-2/5 w-full sm:h-96 h-auto">
             <!-- Modal Header -->
             <div class="text-gray-600 px-4 py-4 flex justify-between bg-gray-200">
                 <div class="flex items-center text-gray-500 font-bold text-3xl">

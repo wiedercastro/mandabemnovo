@@ -89,10 +89,19 @@ class PagamentoController extends Controller
 
     public function get_boletos(Request $request): JsonResponse|View
     {
+        if ($request->cliente) {
+            $clienteId = (int) $request->cliente;
+        }
+
+        if ($request->situacao) {
+            dd('mandou situacao');
+        }
+
         $caminhoUrl = request()->path();
         $limit = true;
 
         if ($caminhoUrl === "todos-boletos") {
+            //aqui retorna a view de TODOS OS BOLETOS
             $limit = false;
             return view('layouts.boletos.index', [
                 'boletos'         => $this->boleto->getBoletoList($limit, $request->cliente ?? ''),
@@ -101,7 +110,8 @@ class PagamentoController extends Controller
                 
             ]);
         }
-        return response()->json(['boletos' => $this->boleto->getBoletoList($limit, $request->cliente ?? '')]);
+        //aqui retorna o JSON para o modal de TODOS OS BOLETOS
+        return response()->json(['boletos' => $this->boleto->getBoletoList($limit, $clienteId ?? '')]);
     }
 
     public function creditos(Request $request)
